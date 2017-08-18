@@ -3,23 +3,9 @@ var path = require('path')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 var isProduction = process.env.NODE_ENV === 'production'
-
-var vueLoaderConfig = {
-  loaders: {
-    loader: 'css-loader',
-    options: {
-      minimize: isProduction,
-    },
-  },
-  transformToRequire: {
-    video: 'src',
-    source: 'src',
-    img: 'src',
-    image: 'xlink:href',
-  },
-}
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -88,12 +74,29 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: vueLoaderConfig,
+        options: {
+          transformToRequire: {
+            video: 'src',
+            source: 'src',
+            img: 'src',
+            image: 'xlink:href',
+          },
+        },
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [resolve('client'), resolve('test')],
+      },
+      {
+        test: /\.css$/,
+        loader: isProduction
+          ? ExtractTextPlugin.extract({
+              fallback: 'style-loader',
+              use: ['css-loader'],
+            })
+          : ['style-loader', 'css-loader'],
+        include: [resolve('node_modules')],
       },
     ],
   },
