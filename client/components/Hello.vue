@@ -1,16 +1,26 @@
 <template>
   <div>
-    {{ msg }}
+    {{ counter }}
+    <button v-on:click="increment">+</button>
   </div>
 </template>
 
 <script>
+import store, { INCREMENT } from '@/store'
+
 export default {
-  name: 'hi',
   data() {
-    return {
-      msg: 'Hello world',
-    }
+    return {}
+  },
+  computed: {
+    counter() {
+      return store.state.counter
+    },
+  },
+  methods: {
+    increment() {
+      store.dispatch(INCREMENT)
+    },
   },
 }
 </script>
