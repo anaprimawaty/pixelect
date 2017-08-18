@@ -10,7 +10,9 @@ module.exports = {
   // * Trailing commas: always
   // * Space before function paren: never
   extends: ['standard', 'plugin:vue/recommended', 'prettier'],
-  plugins: ['vue', 'html', 'prettier'],
+  plugins: isProduction
+    ? ['vue', 'html', 'prettier']
+    : ['vue', 'html', 'prettier', 'only-warn'],
   rules: {
     'arrow-parens': 0,
     'generator-star-spacing': 0,
