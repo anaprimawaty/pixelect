@@ -4,7 +4,7 @@
   "description": "Poll on which photos to upload to Facebook",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node server/index.js",
+    "start": "ssh -N pixelect | nodemon --exec babel-node server/index.js",
     "dev": "nodemon --exec babel-node server/index.js",
     "production": "NODE_ENV=production babel-node server/index.js",
     "build": "webpack",
@@ -27,7 +27,7 @@
     "body-parser": "^1.17.2",
     "buefy": "^0.5.0",
     "express": "^4.15.4",
-    "mongoose": "^4.11.7",
+    "mysql": "^2.14.1",
     "vue": "^2.4.2",
     "vue-router": "^2.7.0",
     "vuex": "^2.3.1",
