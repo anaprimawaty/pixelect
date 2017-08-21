@@ -1,0 +1,17 @@
+{
+  "name": "My First Group",
+  "photos": [
+    {
+      "url": "https://source.unsplash.com/random",
+      "votes": 0
+    },
+    {
+      "url": "https://source.unsplash.com/random",
+      "votes": 2
+    },
+    {
+      "url": "https://source.unsplash.com/random",
+      "votes": -1
+    }
+  ]
+}

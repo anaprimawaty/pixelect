@@ -5,17 +5,19 @@ Vue.use(Vuex)
 
 const state = {
   counter: 0,
+  groups: {},
+  facebook: null,
 }
 
 const mutations = {
-  increment(state) {
-    state.counter++
+  addGroup(state, { groupId, group }) {
+    Vue.set(state.groups, groupId, group)
   },
 }
 
 const actions = {
-  increment({ commit }) {
-    commit('increment')
+  addGroup({ commit }, { groupId, group: { name, photos } }) {
+    commit('addGroup', { groupId, group: { name, photos } })
   },
 }
 
@@ -25,4 +27,4 @@ export default new Vuex.Store({
   actions,
 })
 
-export const INCREMENT = 'increment'
+export const ADD_GROUP = 'addGroup'

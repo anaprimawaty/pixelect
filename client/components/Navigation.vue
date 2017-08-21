@@ -12,7 +12,7 @@
 
     <div :class="`navbar-menu${ menu ? ' is-active' : '' }`">
       <div class="navbar-start">
-        <router-link class="navbar-item" @click="menu = false" to="/group/1">Sample Group</router-link>
+        <router-link class="navbar-item" @click="menu = false" to="/group/a">Sample Group</router-link>
         <router-link class="navbar-item" @click="menu = false" to="/user/1">Sample User</router-link>
       </div>
 

@@ -3,6 +3,9 @@ import Buefy from 'buefy'
 import App from '@/components/App'
 import router from '@/router'
 
+import 'babel-polyfill'
+import 'whatwg-fetch'
+
 import 'buefy/lib/buefy.css'
 
 Vue.use(Buefy)

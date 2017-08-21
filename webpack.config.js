@@ -75,6 +75,21 @@ module.exports = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
+          loaders: isProduction
+            ? ExtractTextPlugin.extract({
+              use: loaders,
+              fallback: 'vue-style-loader',
+            })
+          : [
+            'vue-style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                minimize: isProduction,
+                sourceMap: isProduction,
+              },
+            },
+          ],
           transformToRequire: {
             video: 'src',
             source: 'src',
@@ -92,10 +107,19 @@ module.exports = {
         test: /\.css$/,
         loader: isProduction
           ? ExtractTextPlugin.extract({
-              fallback: 'style-loader',
-              use: ['css-loader'],
-            })
-          : ['style-loader', 'css-loader'],
+            fallback: 'vue-style-loader',
+            use: ['css-loader'],
+          })
+        : [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              minimize: isProduction,
+              sourceMap: isProduction,
+            },
+          },
+        ],
         include: [resolve('node_modules')],
       },
     ],

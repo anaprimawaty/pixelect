@@ -3,7 +3,7 @@
     <navigation/>
     <section class="section">
       <router-view></router-view>
-    </section class="section">
+    </section>
   </main>
 </template>
 

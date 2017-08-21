@@ -1,0 +1,11 @@
+{
+  "facebook": {
+    "accessToken": "",
+    "expiresIn": "",
+    "signedRequest": "",
+    "userID": ""
+  },
+  "groups": [
+    '1'
+  ]
+}
