@@ -20,9 +20,21 @@ export default new Router({
       props: true,
     },
     {
+      path: '/group/:groupId/:groupName',
+      component: Group,
+      alias: '/group/:groupId',
+      props: true,
+    },
+    {
       path: '/user/:userId',
       name: 'user',
       component: User,
+      props: true,
+    },
+    {
+      path: '/user/:userId/:userName',
+      component: User,
+      alias: '/user/:userId',
       props: true,
     },
   ],
