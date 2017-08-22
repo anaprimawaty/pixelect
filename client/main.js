@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Buefy from 'buefy'
-import VueProgressiveImage from 'vue-progressive-image'
 import Toasted from 'vue-toasted'
+import VueProgressiveImage from 'vue-progressive-image'
+import VueResize from 'vue-resize'
 import App from '@/App'
 import router from '@/router'
 import store from '@/store'
@@ -12,8 +13,9 @@ import 'whatwg-fetch'
 import 'buefy/lib/buefy.css'
 
 Vue.use(Buefy)
-Vue.use(VueProgressiveImage)
 Vue.use(Toasted)
+Vue.use(VueProgressiveImage)
+Vue.use(VueResize)
 
 // eslint-disable-next-line no-new
 new Vue({

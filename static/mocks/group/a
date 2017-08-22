@@ -1,30 +1,35 @@
 {
   "name": "My First Group",
-  "photos": [
-    {
+  "photos": {
+    "123": {
+      "photoId": "123",
       "url": "https://unsplash.it/300/300?random&0",
       "voted": true,
-      "votes": 0
+      "votes": 1
     },
-    {
-      "url": "https://unsplash.it/300/300?random&1",
+    "124": {
+      "photoId": "124",
+      "url": "https://unsplash.it/400/300?random&1",
       "voted": false,
       "votes": 2
     },
-    {
-      "url": "https://unsplash.it/300/300?random&2",
+    "125": {
+      "photoId": "125",
+      "url": "https://unsplash.it/300/400?random&2",
       "voted": true,
-      "votes": -1
+      "votes": 3
     },
-    {
-      "url": "https://unsplash.it/300/300?random&3",
+    "126": {
+      "photoId": "126",
+      "url": "https://unsplash.it/100/100?random&3",
       "voted": true,
-      "votes": 0
+      "votes": 5
     },
-    {
+    "127": {
+      "photoId": "127",
       "voted": false,
       "url": "https://unsplash.it/300/300?random&4",
       "votes": 2
     }
-  ]
+  }
 }

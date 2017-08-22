@@ -4,27 +4,61 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  group: null,
+  groupId: '',
+  name: '',
+  photos: {},
   facebook: null,
 }
 
 const mutations = {
   initialiseGroup(state, { name, photos }) {
-    state.group = { name, photos }
+    state.name = name
+    state.photos = photos
   },
   updateGroupName(state, name) {
-    Vue.set(state.group, 'name', name)
+    state.name = name
+  },
+  vote(state, { photoId, isUnvote }) {
+    const photo = state.photos[photoId]
+    state.photos[photoId] = {
+      ...photo,
+      voted: !isUnvote,
+      votes: photo.votes + (isUnvote ? -1 : 1),
+    }
   },
 }
 
 const actions = {
   fetchGroup({ commit }, groupId) {
+    // fetch(`/api/group/${groupId}`)
+
     fetch(`/mocks/group/${groupId}`)
       .then(response => response.json())
       .then(json => commit(INITIALISE_GROUP, json))
   },
-  updateGroupName({ commit }, name) {
+  updateGroupName({ commit }, { groupId, name }) {
+    // const payload = { groupId, name }
+    // const data = new FormData()
+    // data.append('json', JSON.stringify(payload))
+
+    // fetch(`/api/group/updateName`, {
+    //   method: 'POST',
+    //   body: data,
+    // })
+
     commit(UPDATE_GROUP_NAME, name)
+  },
+  vote({ commit }, { photoId, isUnvote }) {
+    // const payload = { photoId }
+    // const data = new FormData()
+    // data.append('json', JSON.stringify(payload))
+
+    // fetch(`/api/photo/vote`, {
+    //   method: 'POST',
+    //   body: data,
+    // })
+
+    commit(VOTE, { photoId, isUnvote })
   },
 }
 
@@ -35,8 +69,9 @@ export default new Vuex.Store({
 })
 
 // Mutations
-const INITIALISE_GROUP = 'initialiseGroup'
+export const INITIALISE_GROUP = 'initialiseGroup'
 
 // Actions
 export const FETCH_GROUP = 'fetchGroup'
 export const UPDATE_GROUP_NAME = 'updateGroupName'
+export const VOTE = 'vote'

@@ -1,12 +1,12 @@
 <template>
-  <div class="box is-paddingless">
-    <figure class="image">
-      <progressive-img :src="url" />
+  <Div class="box is-paddingless">
+    <figure class="image" :style="imageStyle" @dblclick="vote">
+      <progressive-background :src="url" />
     </figure>
     <div class="meta">
       <span class="likes">
-        <a class="icon heart">
-          <svg  viewBox="0 0 24 24">
+        <a class="icon heart" @click="vote">
+          <svg viewBox="0 0 24 24">
             <path
               :fill="voted ? '#f95d55' : 'rgba(0,0,0,0)'"
               :stroke="voted ? null : '#404040'"
@@ -27,20 +27,35 @@
 </template>
 
 <script>
+import store, { VOTE } from '@/store'
+
 export default {
-  props: ['url', 'voted', 'votes'],
+  props: ['photoId', 'url', 'voted', 'votes', 'width'],
+  computed: {
+    imageStyle() {
+      const width = `${this.width}px`
+      return { width, height: width }
+    },
+    boxStyle() {
+      const width = `${this.width}px`
+      return { width, height: width }
+    },
+  },
+  methods: {
+    vote(e) {
+      store.dispatch(VOTE, { photoId: this.photoId, isUnvote: this.voted })
+    },
+  },
 }
 </script>
 
 <style scoped>
 .box {
   overflow: hidden;
+  transition: all 0.5s ease-in-out;
 }
 
 .image {
-  width: 256px;
-  height: 256px;
-
   /* Fix 'overflow: hidden' (https://stackoverflow.com/questions/5736503/how-to-make-css3-rounded-corners-hide-overflow-in-chrome-opera) */
   -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
 }
@@ -49,6 +64,7 @@ export default {
   position: relative;
   padding: 5px;
   font-size: 0.8em;
+  height: 40px;
 }
 
 .meta a {

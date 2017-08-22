@@ -32,7 +32,7 @@ export default {
   },
   beforeUpdate: function() {
     if (this.name === '') {
-      this.name = store.state.group ? store.state.group.name : ''
+      this.name = store.state.name
     }
   },
   data() {
@@ -43,11 +43,10 @@ export default {
   props: ['groupId'],
   computed: {
     ...mapState({
-      photos: state => (state.group ? state.group.photos : []),
+      photos: state => state.photos,
       link: function(state) {
-        return `${window.location.origin}/#/group/${this.groupId}/${state.group
-          ? state.group.name.toLowerCase().replace(/ /g, '-')
-          : ''}`
+        return `${window.location.origin}/#/group/${this
+          .groupId}/${state.name.toLowerCase().replace(/ /g, '-')}`
       },
     }),
   },
@@ -66,7 +65,7 @@ export default {
       if (name !== e.target.innerText) {
         e.target.innerText = name
       }
-      store.dispatch(UPDATE_GROUP_NAME, name)
+      store.dispatch(UPDATE_GROUP_NAME, { groupId: this.groupId, name })
     },
     clickLink(e) {
       this.$refs.link.select()
