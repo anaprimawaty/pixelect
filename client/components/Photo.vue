@@ -1,7 +1,7 @@
 <template>
   <div class="box is-paddingless">
     <figure class="image">
-      <img :src="url">
+      <progressive-img :src="url" />
     </figure>
     <div class="meta">
       <span class="likes">
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style scoped>
-.image img {
+.image {
   width: 256px;
   height: 256px;
 }
