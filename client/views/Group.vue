@@ -1,8 +1,7 @@
 <template>
   <div class="container">
     <div class="group-title">
-      <span class="title" contenteditable="true" @input="updateName">{{ name }}
-      </span>
+      <span class="title" contenteditable="true" @keydown="nameKeydown" @input="nameUpdate">{{ name }}</span>
       <b-icon icon="pencil" pack="fa" class="is-medium" />
     </div>
     <photo-list :photos="photos"/>
@@ -36,8 +35,18 @@ export default {
     PhotoList,
   },
   methods: {
-    updateName(e) {
-      store.dispatch(UPDATE_GROUP_NAME, e.target.innerText)
+    nameKeydown(e) {
+      if (e.which === 13) {
+        e.preventDefault()
+        return false
+      }
+    },
+    nameUpdate(e) {
+      const name = e.target.innerText.replace(/\r?\n|\r/g, '')
+      if (name !== e.target.innerText) {
+        e.target.innerText = name
+      }
+      store.dispatch(UPDATE_GROUP_NAME, name)
     },
   },
 }
