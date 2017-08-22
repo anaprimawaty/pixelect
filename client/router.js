@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
-import Group from '@/components/Group'
-import User from '@/components/User'
+import Index from '@/views/Index'
+import Group from '@/views/Group'
+import User from '@/views/User'
 
 Vue.use(Router)
 
@@ -10,8 +10,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'hello',
-      component: Hello,
+      name: 'index',
+      component: Index,
     },
     {
       path: '/group/:groupId',

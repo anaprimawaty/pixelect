@@ -4,20 +4,27 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  counter: 0,
-  groups: {},
+  group: null,
   facebook: null,
 }
 
 const mutations = {
-  addGroup(state, { groupId, group }) {
-    Vue.set(state.groups, groupId, group)
+  initialiseGroup(state, { name, photos }) {
+    state.group = { name, photos }
+  },
+  updateGroupName(state, name) {
+    Vue.set(state.group, 'name', name)
   },
 }
 
 const actions = {
-  addGroup({ commit }, { groupId, group: { name, photos } }) {
-    commit('addGroup', { groupId, group: { name, photos } })
+  fetchGroup({ commit }, groupId) {
+    fetch(`/mocks/group/${groupId}`)
+      .then(response => response.json())
+      .then(json => commit(INITIALISE_GROUP, json))
+  },
+  updateGroupName({ commit }, name) {
+    commit(UPDATE_GROUP_NAME, name)
   },
 }
 
@@ -27,4 +34,9 @@ export default new Vuex.Store({
   actions,
 })
 
-export const ADD_GROUP = 'addGroup'
+// Mutations
+const INITIALISE_GROUP = 'initialiseGroup'
+
+// Actions
+export const FETCH_GROUP = 'fetchGroup'
+export const UPDATE_GROUP_NAME = 'updateGroupName'

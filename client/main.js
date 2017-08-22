@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Buefy from 'buefy'
-import App from '@/components/App'
+import App from '@/App'
 import router from '@/router'
+import store from '@/store'
 
 import 'babel-polyfill'
 import 'whatwg-fetch'
@@ -14,6 +15,7 @@ Vue.use(Buefy)
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App },
 })
