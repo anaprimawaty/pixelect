@@ -33,9 +33,16 @@ export default {
 </script>
 
 <style scoped>
+.box {
+  overflow: hidden;
+}
+
 .image {
   width: 256px;
   height: 256px;
+
+  /* Fix 'overflow: hidden' (https://stackoverflow.com/questions/5736503/how-to-make-css3-rounded-corners-hide-overflow-in-chrome-opera) */
+  -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
 }
 
 .meta {
