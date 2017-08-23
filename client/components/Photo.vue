@@ -1,5 +1,5 @@
 <template>
-  <div class="box is-paddingless">
+  <div class="box is-paddingless is-clipped">
     <figure :class="{ image: true, animate }" :style="imageStyle" @dblclick="vote">
       <progressive-background :src="url" />
       <svg class="heart" viewBox="0 0 24 24">
@@ -11,7 +11,7 @@
     </figure>
     <div class="meta">
       <span class="likes">
-        <a class="icon heart" @click="vote">
+        <a class="icon heart" @click="vote" aria-label="vote">
           <svg viewBox="0 0 24 24">
             <path
               :fill="voted ? '#f95d55' : 'rgba(0,0,0,0)'"
@@ -23,9 +23,20 @@
         </a>
         {{ votes }} likes
       </span>
-      <a class="icon download" :href="url" download>
+      <a class="icon preview" @click="preview" aria-label="preview">
         <svg viewBox="0 0 24 24">
-          <path fill="#404040" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
+          <path
+            fill="#404040"
+            d="M9.5,13.09L10.91,14.5L6.41,19H10V21H3V14H5V17.59L9.5,13.09M10.91,9.5L9.5,10.91L5,6.41V10H3V3H10V5H6.41L10.91,9.5M14.5,13.09L19,17.59V14H21V21H14V19H17.59L13.09,14.5L14.5,13.09M13.09,9.5L17.59,5H14V3H21V10H19V6.41L14.5,10.91L13.09,9.5Z"
+            />
+        </svg>
+      </a>
+      <a class="icon download" :href="url" aria-label="download" download>
+        <svg viewBox="0 0 24 24">
+          <path
+            fill="#404040"
+            d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"
+            />
         </svg>
       </a>
     </div>
@@ -33,10 +44,15 @@
 </template>
 
 <script>
-import store, { VOTE } from '@/store'
+import store, { VOTE, PREVIEW } from '@/store'
 
 export default {
   props: ['photoId', 'url', 'voted', 'votes', 'width'],
+  data() {
+    return {
+      animate: false,
+    }
+  },
   computed: {
     imageStyle() {
       const width = `${this.width}px`
@@ -52,13 +68,15 @@ export default {
       this.animate = !this.voted
       store.dispatch(VOTE, { photoId: this.photoId, isUnvote: this.voted })
     },
+    preview(e) {
+      store.dispatch(PREVIEW, this.photoId)
+    },
   },
 }
 </script>
 
 <style scoped>
 .box {
-  overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
 
@@ -98,6 +116,11 @@ export default {
   width: 32px;
   height: 32px;
   padding: 5px;
+}
+
+.preview {
+  position: absolute;
+  right: 37px;
 }
 
 .download {

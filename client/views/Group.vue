@@ -17,6 +17,7 @@
       </span>
       <input ref="link" :value="link" />
     </div>
+    <preview :url="preview && preview.url" />
     <photo-list :photos="photos" />
   </div>
 </template>
@@ -25,6 +26,7 @@
 import { mapState } from 'vuex'
 import store, { FETCH_GROUP, UPDATE_GROUP_NAME } from '@/store'
 import PhotoList from '@/components/PhotoList'
+import Preview from '@/components/Preview'
 
 export default {
   mounted: function() {
@@ -38,12 +40,14 @@ export default {
   data() {
     return {
       name: '',
+      selected: null,
     }
   },
   props: ['groupId'],
   computed: {
     ...mapState({
       photos: state => state.photos,
+      preview: state => state.preview,
       link: function(state) {
         return `${window.location.origin}/#/group/${this
           .groupId}/${state.name.toLowerCase().replace(/ /g, '-')}`
@@ -52,6 +56,7 @@ export default {
   },
   components: {
     PhotoList,
+    Preview,
   },
   methods: {
     nameKeydown(e) {

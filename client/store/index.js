@@ -7,6 +7,7 @@ const state = {
   groupId: '',
   name: '',
   photos: {},
+  preview: null,
   facebook: null,
 }
 
@@ -25,6 +26,9 @@ const mutations = {
       voted: !isUnvote,
       votes: photo.votes + (isUnvote ? -1 : 1),
     }
+  },
+  preview(state, photoId) {
+    state.preview = state.photos[photoId]
   },
 }
 
@@ -60,6 +64,9 @@ const actions = {
 
     commit(VOTE, { photoId, isUnvote })
   },
+  preview({ commit }, photoId) {
+    commit(PREVIEW, photoId)
+  },
 }
 
 export default new Vuex.Store({
@@ -75,3 +82,4 @@ export const INITIALISE_GROUP = 'initialiseGroup'
 export const FETCH_GROUP = 'fetchGroup'
 export const UPDATE_GROUP_NAME = 'updateGroupName'
 export const VOTE = 'vote'
+export const PREVIEW = 'preview'
