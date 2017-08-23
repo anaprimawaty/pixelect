@@ -116,6 +116,12 @@ export default {
   width: 32px;
   height: 32px;
   padding: 5px;
+  opacity: 1;
+  transition: all 200ms ease-in-out;
+}
+
+.icon:hover {
+  opacity: 0.5;
 }
 
 .preview {
