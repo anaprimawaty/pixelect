@@ -33,7 +33,8 @@ const User = sequelize.define('user', {
   },
   facebookId: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   }
 });
 
@@ -45,29 +46,90 @@ Group.belongsTo(User, {
     name: 'owner',
     allowNull: false
   },
-  onDelete: 'CASCADE'
+  onDelete: 'RESTRICT'
 });
 
 // User-Group table
-Group.belongsToMany(User, {through: 'UserGroup'});
-User.belongsToMany(Group, {through: 'UserGroup'});
+Group.belongsToMany(User, {through: 'user_group'});
+User.belongsToMany(Group, {through: 'user_group'});
 
-// API stuff for future
-// To create User
+// Photo table
+const Photo = sequelize.define('photo', {
+  link: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
+});
+Photo.belongsTo(User, {
+  foreignKey: {
+    allowNull: false
+  },
+  onDelete: 'RESTRICT'
+});
+Photo.belongsTo(Group, {
+  foreignKey: {
+    allowNull: false
+  },
+  onDelete: 'RESTRICT'
+});
+
+// Vote table
+const Vote = sequelize.define('vote', {
+  isValid: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
+  }
+});
+Photo.belongsToMany(User, {through: 'vote'});
+User.belongsToMany(Photo, {through: 'vote'});
+
+// sequelize.sync();
+
+// // API stuff for future
+// // To create User
 // User.create({
 //   firstName: 'Ana',
 //   lastName: 'Chua',
 //   facebookId: '123'
 // });
+// User.create({
+//   firstName: 'Benny',
+//   lastName: 'Chua',
+//   facebookId: '456'
+// });
 
-// To create Group
+// // To create Group
 // Group.create({
 //   owner: 1
 // });
 
-// To add User to Group
-// User.findById(3).then(user => {
+// // To add User to Group
+// User.findById(1).then(user => {
 //   Group.findById(1).then(group => {
 //     user.setGroups([group]);
 //   });
+// });
+// User.findById(2).then(user => {
+//   Group.findById(1).then(group => {
+//     user.setGroups([group]);
+//   });
+// });
+
+// // To create Photo
+// Photo.create({
+//   link: 'http://blahblah',
+//   userId: 1,
+//   groupId: 1
+// });
+
+// To create Vote
+// Vote.create({
+//   userId: 1,
+//   photoId: 1,
+//   isValid: false
+// });
+// Vote.create({
+//   userId: 2,
+//   photoId: 1
 // });
