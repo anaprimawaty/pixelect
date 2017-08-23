@@ -23,7 +23,7 @@
         </a>
         {{ votes }} likes
       </span>
-      <a class="icon download">
+      <a class="icon download" :href="url" download>
         <svg viewBox="0 0 24 24">
           <path fill="#404040" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
         </svg>
