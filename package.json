@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node server/index.js",
-    "db": "nodemon --exec babel-node server/db.js",
-    "dev": "concurrently --kill-others \"npm run start\" \"npm run db\"",
+    "dev": "nodemon --exec babel-node server/index.js",
     "production": "NODE_ENV=production babel-node server/index.js",
     "build": "webpack",
     "lint": "eslint --ext .js,.vue .",
@@ -29,6 +28,8 @@
     "buefy": "^0.5.0",
     "express": "^4.15.4",
     "mysql": "^2.14.1",
+    "mysql2": "^1.4.1",
+    "sequelize": "^4.6.0",
     "vue": "^2.4.2",
     "vue-progressive-image": "^2.1.2",
     "vue-resize": "^0.1.4",

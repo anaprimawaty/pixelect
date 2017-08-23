@@ -8,6 +8,9 @@ import users from './users'
 
 const app = express()
 
+// Models
+app.set('models', require('./models.js'))
+
 // API routes
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
