@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node server/index.js",
-    "db": "nodemon --exec babel-node server/db.js",
-    "dev": "concurrently --kill-others \"npm run start\" \"npm run db\"",
+    "dev": "nodemon --exec babel-node server/index.js",
     "production": "NODE_ENV=production babel-node server/index.js",
     "build": "webpack",
     "lint": "eslint --ext .js,.vue .",

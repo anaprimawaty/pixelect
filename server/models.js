@@ -50,8 +50,10 @@ Group.belongsTo(User, {
 });
 
 // User-Group table
-Group.belongsToMany(User, {through: 'user_group'});
-User.belongsToMany(Group, {through: 'user_group'});
+const UserGroup = sequelize.define('userGroup', {
+});
+Group.belongsToMany(User, {through: 'userGroup'});
+User.belongsToMany(Group, {through: 'userGroup'});
 
 // Photo table
 const Photo = sequelize.define('photo', {
@@ -83,6 +85,14 @@ const Vote = sequelize.define('vote', {
 });
 Photo.belongsToMany(User, {through: 'vote'});
 User.belongsToMany(Photo, {through: 'vote'});
+
+// Exports
+module.exports.User = User;
+module.exports.Group = Group;
+module.exports.UserGroup = UserGroup;
+module.exports.Photo = Photo;
+module.exports.Vote = Vote;
+module.exports.sequelize = sequelize;
 
 // sequelize.sync();
 
