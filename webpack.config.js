@@ -3,7 +3,8 @@ var path = require('path')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 var isProduction = process.env.NODE_ENV === 'production'
 
@@ -30,6 +31,7 @@ module.exports = {
   },
   plugins: isProduction
     ? [
+      new FaviconsWebpackPlugin('./static/favicon.png'),
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: '"production"',
@@ -57,6 +59,7 @@ module.exports = {
       new FriendlyErrorsPlugin(),
     ]
   : [
+    new FaviconsWebpackPlugin('./static/favicon.png'),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
