@@ -6,9 +6,7 @@
       @error="onSignInError">
       Sign in with Facebook
     </fb-signin-button>
-    <h1>Hi! {{myName}}</h1>
-    <br>
-    <h2>Access Token: {{accessToken}}</h2>
+    <h1>Hi!</h1>
     <br>
     <h3>Login State: {{isLoggedIn}}</h3>
   </div>
@@ -35,12 +33,19 @@ export default {
     onSignInSuccess(response) {
       FB.api('/me', dude => {
         console.log(`Good to see you, ${dude.name}.`)
-        this.myName = dude.name
         store.dispatch(SET_LOGIN_STATE, true)
+        fetch('/users', {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          body: JSON.stringify(dude),
+        })
       })
       FB.getLoginStatus(response => {
         if (response.status === 'connected') {
-          this.accessToken = response.authResponse.accessToken
+          // this.accessToken = response.authResponse.accessToken
           console.log('successfully connected!')
           console.log(response)
         } else {
