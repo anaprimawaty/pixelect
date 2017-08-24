@@ -1,14 +1,17 @@
 <template>
-  <div>
-    <fb-signin-button
-      :params="fbSignInParams"
-      @success="onSignInSuccess"
-      @error="onSignInError">
-      Sign in with Facebook
-    </fb-signin-button>
-    <h1>Hi!</h1>
-    <br>
-    <h3>Login State: {{isLoggedIn}}</h3>
+  <div class="container has-text-centered">
+    <section class="section">
+      <h1 class="title" :style="{fontSize: '30px'}">Welcome to Pixelect!</h1>
+    </section>
+    <section class="section">
+      <p class="subtitle">Jump right in:</p>
+      <fb-signin-button
+        :params="fbSignInParams"
+        @success="onSignInSuccess"
+        @error="onSignInError">
+        Sign in with Facebook
+      </fb-signin-button>
+    </section>
   </div>
 </template>
 
@@ -61,7 +64,7 @@ export default {
 console.log(store.state.isLoggedIn)
 </script>
 
-<style>
+<style scoped>
 .fb-signin-button {
   /* This is where you control how the button looks. Be creative! */
   display: inline-block;

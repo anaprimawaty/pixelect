@@ -1,8 +1,6 @@
 <template>
   <main v-if="isLoggedIn === null">
-    <section>
-      <h1>Loading...</h1>
-    </section>
+    <b-loading :active="true" :canCancel="false" :style="{marginBottom: '150px'}"></b-loading>
   </main>
   <main v-else-if="isLoggedIn">
     <navigation/>
