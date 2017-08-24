@@ -10,7 +10,7 @@ function get_unique_filename(id) {
 
 // TODO: Fix route and fix to post request
 // TODO: Fix req.body
-router.get('/create', function(req,res) {
+router.post('/create', function(req,res) {
   var s3 = req.app.get('s3');
   var filename = get_unique_filename(req.body['userid']);
   s3.presignedPutObject('pixelectstaging', filename, 1000, function(e, presignedUrl) {
