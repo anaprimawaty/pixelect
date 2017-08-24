@@ -1,6 +1,7 @@
 <template>
   <div class="box is-paddingless is-clipped">
     <figure :class="{ image: true, animate }" :style="imageStyle" @dblclick="vote">
+      <div class="loader" :src="url" />
       <progressive-background :src="url" />
       <svg class="heart" viewBox="0 0 24 24">
         <path
@@ -80,13 +81,23 @@ export default {
   transition: all 0.5s ease-in-out;
 }
 
-.image .heart {
+.image > * {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.image .heart {
   opacity: 0;
   z-index: 1;
   transition: opacity 500ms;
+}
+
+.image .loader {
+  top: 33%;
+  left: 33%;
+  width: 34%;
+  height: 34%;
 }
 
 .image.animate .heart { 
@@ -116,6 +127,12 @@ export default {
   width: 32px;
   height: 32px;
   padding: 5px;
+  opacity: 1;
+  transition: all 200ms ease-in-out;
+}
+
+.icon:hover {
+  opacity: 0.5;
 }
 
 .preview {

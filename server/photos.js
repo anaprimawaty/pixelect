@@ -31,9 +31,11 @@ router.post('/confirm', function(req, res) {
     link: req.body['link'],
     userId: req.body['userid'],
     groupId: req.body['groupid']
-  }).then(() => {
+  })
+  .then(() => {
     res.send("Success");
-  }).catch((e) => {
+  })
+  .catch((e) => {
     console.log(e);
     res.send("Error");
   });

@@ -7,6 +7,7 @@ import webpackConfig from '../webpack.config'
 import users from './users'
 import photos from './photos'
 import groups from './groups'
+import votes from './votes'
 
 const app = express()
 
@@ -30,7 +31,7 @@ app.use(bodyParser.json())
 app.use('/users', users)
 app.use('/photos', photos)
 app.use('/groups', groups)
-
+app.use('/votes', votes)
 
 // Webpack bundle
 if (process.env.NODE_ENV === 'production') {
