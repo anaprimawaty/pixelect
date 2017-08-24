@@ -18,7 +18,7 @@
 
       <div class="navbar-end">
         <div class="navbar-item field">
-          <button class="button">Login</button>
+          Hey there!
         </div>
       </div>
     </div>
