@@ -1,29 +1,41 @@
 var express = require('express');
 var router = express.Router();
+var crypto = require('crypto');
 
-// TODO: Fix 'testing'. Unique filename required
-// TODO: Fix route
-// TODO: Fix userId and groupId
-// TODO: Fix to post
-router.get('/:groupid', function(req,res) {
-  var models = req.app.get('models');
+function get_unique_filename(id) {
+  var data = new Date() + id;
+  var filename = crypto.createHash('md5').update(data).digest('hex');
+  return filename
+}
+
+// TODO: Fix route and fix to post request
+// TODO: Fix req.body
+router.get('/create', function(req,res) {
   var s3 = req.app.get('s3');
-  var presignedUrl = s3.presignedPutObject('pixelectstaging', 'testing', 1000, function(e, presignedUrl) {
+  var filename = get_unique_filename(req.body['userid']);
+  s3.presignedPutObject('pixelectstaging', filename, 1000, function(e, presignedUrl) {
     if (e) {
       console.log(e);
-      res.send("Error");
+      res.send("Error generating presigned url");
     } else {
-      models.Photo.create({
-        link: presignedUrl,
-        userId: 1,
-        groupId: req.params.groupid
-      }).then(() => {
-        res.send(presignedUrl);
-      }).catch((e) => {
-        console.log(e);
-        res.send("Error");
-      });
+      res.send(presignedUrl);
     }
+  });
+});
+
+// TODO: Fix route and fix to post request
+// TODO: Fix req.body
+router.post('/confirm', function(req, res) {
+  var models = req.app.get('models');
+  models.Photo.create({
+    link: req.body['link'],
+    userId: req.body['userid'],
+    groupId: req.body['groupid']
+  }).then(() => {
+    res.send("Success");
+  }).catch((e) => {
+    console.log(e);
+    res.send("Error");
   });
 });
 
