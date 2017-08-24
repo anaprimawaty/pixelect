@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node server/index.js",
-    "dev": "nodemon --exec babel-node server/index.js",
+    "dev": "ssh -N pixelect | nodemon --exec babel-node server/index.js",
     "production": "NODE_ENV=production babel-node server/index.js",
     "build": "webpack",
     "lint": "eslint --ext .js,.vue .",
