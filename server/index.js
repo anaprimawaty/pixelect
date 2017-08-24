@@ -5,17 +5,29 @@ import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpackConfig from '../webpack.config'
 import users from './users'
+import photos from './photos'
 
 const app = express()
 
 // Models
 app.set('models', require('./models.js'))
 
+// AWS configuration
+var Minio = require('minio')
+var s3Client = new Minio.Client({
+  endPoint: process.env.PIXELECT_AWS_ENDPOINT,
+  accessKey: process.env.PIXELECT_AWS_ACCESSKEY,
+  secretKey: process.env.PIXELECT_AWS_SECRETKEY,
+  secure: true
+})
+app.set('s3', s3Client)
+
 // API routes
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 app.use('/users', users)
+app.use('/photos', photos)
 
 // Webpack bundle
 if (process.env.NODE_ENV === 'production') {
