@@ -7,7 +7,8 @@
     "start": "nodemon --exec babel-node server/index.js",
     "dev": "ssh -N pixelect | nodemon --exec babel-node server/index.js",
     "production": "NODE_ENV=production babel-node server/index.js",
-    "build": "webpack",
+    "tunnel": "ssh -N pixelect",
+    "build": "NODE_ENV=production webpack --progress --color",
     "lint": "eslint --ext .js,.vue .",
     "fix": "eslint --ext .js,.vue --fix .",
     "test": "mocha"
@@ -68,6 +69,7 @@
     "eslint-plugin-vue": "^3.12.0",
     "eventsource-polyfill": "^0.9.6",
     "extract-text-webpack-plugin": "^3.0.0",
+    "favicons-webpack-plugin": "0.0.7",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
     "nodemon": "^1.11.0",
