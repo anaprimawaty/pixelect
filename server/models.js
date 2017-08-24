@@ -40,6 +40,11 @@ const User = sequelize.define('user', {
 
 // Group table
 const Group = sequelize.define('group', {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    defaultValue: ''
+  },
 });
 Group.belongsTo(User, {
   foreignKey: {

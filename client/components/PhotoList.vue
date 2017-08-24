@@ -36,7 +36,6 @@ export default {
         const photo = sorted[i][1]
         sortedPhotos[photoId] = { ...photo, index: i }
       }
-      console.log(sortedPhotos)
       return sortedPhotos
     },
   },
