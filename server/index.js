@@ -6,6 +6,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpackConfig from '../webpack.config'
 import users from './users'
 import photos from './photos'
+import votes from './votes'
 
 const app = express()
 
@@ -28,6 +29,7 @@ app.use(bodyParser.json())
 
 app.use('/users', users)
 app.use('/photos', photos)
+app.use('/votes', votes)
 
 // Webpack bundle
 if (process.env.NODE_ENV === 'production') {
