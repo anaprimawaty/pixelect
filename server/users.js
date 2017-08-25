@@ -18,8 +18,8 @@ router.post('/', function(req, res){
 	var models = req.app.get('models');
 	models.User.create({
 		firstName: req.body.name,
-		lastName: "",
-		facebookId: req.body.id
+		lastName: "null",
+		facebookId: req.body.userId
 	}).then(function(){
 		res.send('success')
 	}, function(error){
