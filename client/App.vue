@@ -8,11 +8,7 @@
       <router-view></router-view>
     </section>
   </main>
-  <main v-else>
-    <section class="section">
-      <login/>
-    </section>
-  </main>
+  <login v-else/>
 </template>
 
 <script>
