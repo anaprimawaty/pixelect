@@ -67,7 +67,11 @@ export default {
   methods: {
     vote(e) {
       this.animate = !this.voted
-      store.dispatch(VOTE, { photoId: this.photoId, isUnvote: this.voted })
+      store.dispatch(VOTE, {
+        fbId: this.fbId,
+        photoId: this.photoId,
+        isUnvote: this.voted,
+      })
     },
     preview(e) {
       store.dispatch(PREVIEW, this.photoId)
