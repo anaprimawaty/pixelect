@@ -66,7 +66,7 @@ router.get('/:id/photos', function(req, res){
 })
 
 router.post('/:id/changeName', function(req, res){
-	console.log('changing name of group with id '+ req.body.id)
+	console.log('changing name of group with id '+ req.params.id)
 	var models = req.app.get('models')
 	var groupid = req.params.id
 	var group = models.Group

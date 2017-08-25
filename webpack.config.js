@@ -12,7 +12,11 @@ function resolve(dir) {
 }
 
 module.exports = {
-  entry: {
+  entry: isProduction
+    ? {
+      'assets/app': './client/main.js',
+    }
+  : {
     'assets/app': './client/main.js',
     'assets/hot': './client/hot-reload.js',
   },
@@ -30,42 +34,42 @@ module.exports = {
   },
   plugins: isProduction
     ? [
-        new webpack.DefinePlugin({
-          'process.env': {
-            NODE_ENV: '"production"',
-          },
-        }),
-        new ExtractTextPlugin('assets/index.css'),
-        new webpack.optimize.UglifyJsPlugin({
-          compress: { warnings: false },
-          sourceMap: true,
-        }),
-        new OptimizeCSSPlugin({
-          cssProcessorOptions: {
-            safe: true,
-          },
-        }),
-        new HtmlWebpackPlugin({
-          template: 'client/index.html',
-          minify: {
-            removeComments: true,
-            collapseWhitespace: true,
-            removeAttributeQuotes: true,
-          },
-          inject: true,
-        }),
-        new FriendlyErrorsPlugin(),
-      ]
-    : [
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new HtmlWebpackPlugin({
-          filename: 'index.html',
-          template: 'client/index.html',
-          inject: true,
-        }),
-        new FriendlyErrorsPlugin(),
-      ],
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: '"production"',
+        },
+      }),
+      new ExtractTextPlugin('assets/index.css'),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: { warnings: false },
+        sourceMap: true,
+      }),
+      new OptimizeCSSPlugin({
+        cssProcessorOptions: {
+          safe: true,
+        },
+      }),
+      new HtmlWebpackPlugin({
+        template: 'client/index.html',
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeAttributeQuotes: true,
+        },
+        inject: true,
+      }),
+      new FriendlyErrorsPlugin(),
+    ]
+  : [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'client/index.html',
+      inject: true,
+    }),
+    new FriendlyErrorsPlugin(),
+  ],
   module: {
     rules: [
       {
@@ -83,19 +87,19 @@ module.exports = {
         options: {
           loaders: isProduction
             ? ExtractTextPlugin.extract({
-                use: ['vue-style-loader', 'css-loader'],
-                fallback: 'vue-style-loader',
-              })
-            : [
-                'vue-style-loader',
-                {
-                  loader: 'css-loader',
-                  options: {
-                    minimize: isProduction,
-                    sourceMap: isProduction,
-                  },
-                },
-              ],
+              use: ['vue-style-loader', 'css-loader'],
+              fallback: 'vue-style-loader',
+            })
+          : [
+            'vue-style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                minimize: isProduction,
+                sourceMap: isProduction,
+              },
+            },
+          ],
           transformToRequire: {
             video: 'src',
             source: 'src',
@@ -113,19 +117,19 @@ module.exports = {
         test: /\.css$/,
         loader: isProduction
           ? ExtractTextPlugin.extract({
-              fallback: 'vue-style-loader',
-              use: ['css-loader'],
-            })
-          : [
-              'style-loader',
-              {
-                loader: 'css-loader',
-                options: {
-                  minimize: isProduction,
-                  sourceMap: isProduction,
-                },
-              },
-            ],
+            fallback: 'vue-style-loader',
+            use: ['css-loader'],
+          })
+        : [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              minimize: isProduction,
+              sourceMap: isProduction,
+            },
+          },
+        ],
         include: [resolve('node_modules')],
       },
     ],
