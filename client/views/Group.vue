@@ -17,8 +17,8 @@
       </span>
       <input ref="link" :value="link" />
     </div>
-    <preview :url="preview && preview.url" />
-    <dropzone id="imageDropzone" autoProcessQueue="true" url="https://httpbin.org/post" v-on:vdropzone-success="showSuccess">
+    <preview :url="preview && preview.link" />
+    <dropzone id="imageDropzone" autoProcessQueue url="https://httpbin.org/post" v-on:vdropzone-success="showSuccess">
     </dropzone>
     <photo-list :photos="photos" />
   </div>

@@ -1,8 +1,8 @@
 <template>
-  <div :class="{ modal: true, 'is-active': this.url != null }" @keypress="close">
+  <div :class="{ modal: true, 'is-active': this.link != null }" @keypress="close">
     <div class="modal-background" @click="close"></div>
     <div class="modal-content" @click="close">
-      <div class="preview-image" :style="{ backgroundImage: `url(${url})` }" v-if="url"  />
+      <div class="preview-image" :style="{ backgroundImage: `url(${link})` }" v-if="link"  />
     </div>
     <button class="modal-close is-large" @click="close" aria-label="close"></button>
   </div>
@@ -12,7 +12,7 @@
 import store, { PREVIEW } from '@/store'
 
 export default {
-  props: ['url'],
+  props: ['link'],
   methods: {
     close(e) {
       console.log(e)

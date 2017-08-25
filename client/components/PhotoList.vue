@@ -1,7 +1,7 @@
 <template>
   <ul class="photo-list" ref="photoList">
     <li class="photo" v-for="photo in Object.values(sortedPhotos)" :key="photo.photoId" :style="photoStyle(photo.index)">
-      <photo :photoId="photo.photoId" :url="photo.url" :voted="photo.voted" :votes="photo.votes" :width="width" />
+      <photo :photoId="photo.photoId" :url="photo.link" :voted="photo.voted" :votes="photo.votes" :width="width" />
     </li>
     <resize-observer @notify="handleResize" />
   </ul>
