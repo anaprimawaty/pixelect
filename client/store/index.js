@@ -45,33 +45,37 @@ const mutations = {
 
 const actions = {
   fetchGroup({ commit }, groupId) {
-    // fetch(`/api/group/${groupId}`)
-
-    fetch(`/mocks/group/${groupId}`)
-      .then(response => response.json())
+    Promise.all([
+      fetch(`/groups/${groupId}`),
+      fetch(`/groups/${groupId}/photos`),
+    ])
+      .then(responses =>
+            Promise.all(responses.map(response => response.json()))
+           )
+      .then(jsons => ({ ...jsons[0], photos: jsons[1] }))
       .then(json => commit(INITIALISE_GROUP, json))
   },
   updateGroupName({ commit }, { groupId, name }) {
-    // const payload = { groupId, name }
-    // const data = new FormData()
-    // data.append('json', JSON.stringify(payload))
+    const payload = { name }
+    const data = new FormData()
+    data.append('json', JSON.stringify(payload))
 
-    // fetch(`/api/group/updateName`, {
-    //   method: 'POST',
-    //   body: data,
-    // })
+    fetch(`/groups/${groupId}/changeName`, {
+      method: 'POST',
+      body: data,
+    })
 
     commit(UPDATE_GROUP_NAME, name)
   },
-  vote({ commit }, { photoId, isUnvote }) {
-    // const payload = { photoId }
-    // const data = new FormData()
-    // data.append('json', JSON.stringify(payload))
+  vote({ commit }, { fbId, photoId, isUnvote }) {
+    const payload = { facebookId: fbId, photoId }
+    const data = new FormData()
+    data.append('json', JSON.stringify(payload))
 
-    // fetch(`/api/photo/vote`, {
-    //   method: 'POST',
-    //   body: data,
-    // })
+    fetch(`/votes/`, {
+      method: 'POST',
+      body: data,
+    })
 
     commit(VOTE, { photoId, isUnvote })
   },

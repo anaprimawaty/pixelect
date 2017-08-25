@@ -47,9 +47,19 @@ router.get('/:id/photos', function(req, res){
 	var groupid = req.params.id 
 	models.Photo.findAll()
 		.then(function(photos){
-			photos.forEach(function(photo){
-				if(photo.groupId == groupid)
+			photos.forEach(function(photo1){
+				if(photo1.groupId == groupid){
+					var photo =JSON.parse(JSON.stringify(photo1))
+					photo.votes = 0
+					models.Vote.findAll()
+					.then(function(votes){
+						votes.forEach(function(vote){
+							if(vote.photoId == photo.id && vote.isValid)
+								photo.votes++ 
+						})
+					})
 					groupPhotos.push(photo)
+				}
 			})
 			res.send(groupPhotos)
 		})
