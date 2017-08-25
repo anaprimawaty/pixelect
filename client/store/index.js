@@ -8,7 +8,9 @@ const state = {
   name: '',
   photos: {},
   preview: null,
-  facebook: null,
+  isLoggedIn: null,
+  username: '',
+  fbId: '',
 }
 
 const mutations = {
@@ -29,6 +31,15 @@ const mutations = {
   },
   preview(state, photoId) {
     state.preview = state.photos[photoId]
+  },
+  setLoginState(state, newLoginState) {
+    state.isLoggedIn = newLoginState
+  },
+  setUsername(state, username) {
+    state.username = username
+  },
+  setFbId(state, fbId) {
+    state.fbId = fbId
   },
 }
 
@@ -67,6 +78,15 @@ const actions = {
   preview({ commit }, photoId) {
     commit(PREVIEW, photoId)
   },
+  setLoginState({ commit }, newLoginState) {
+    commit(SET_LOGIN_STATE, newLoginState)
+  },
+  setUsername({ commit }, username) {
+    commit(SET_USERNAME, username)
+  },
+  setFbId({ commit }, fbId) {
+    commit(SET_FB_ID, fbId)
+  },
 }
 
 export default new Vuex.Store({
@@ -83,3 +103,6 @@ export const FETCH_GROUP = 'fetchGroup'
 export const UPDATE_GROUP_NAME = 'updateGroupName'
 export const VOTE = 'vote'
 export const PREVIEW = 'preview'
+export const SET_LOGIN_STATE = 'setLoginState'
+export const SET_USERNAME = 'setUsername'
+export const SET_FB_ID = 'setFbId'

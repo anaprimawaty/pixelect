@@ -18,7 +18,7 @@
 
       <div class="navbar-end">
         <div class="navbar-item field">
-          <button class="button">Login</button>
+          Welcome Back, {{username}} !
         </div>
       </div>
     </div>
@@ -26,11 +26,18 @@
 </template>
 
 <script>
+import store from '@/store'
+
 export default {
   data() {
     return {
       menu: false,
     }
+  },
+  computed: {
+    username() {
+      return store.state.username
+    },
   },
 }
 </script>
