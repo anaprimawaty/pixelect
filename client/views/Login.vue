@@ -43,7 +43,7 @@ export default {
             'Content-Type': 'application/json',
           },
           method: 'POST',
-          body: JSON.stringify(dude),
+          body: JSON.stringify({ userId: dude.id, name: dude.name }),
         })
       })
       FB.getLoginStatus(response => {
