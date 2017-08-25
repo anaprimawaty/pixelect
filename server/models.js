@@ -64,7 +64,8 @@ User.belongsToMany(Group, {through: 'userGroup'});
 const Photo = sequelize.define('photo', {
   link: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   }
 });
 Photo.belongsTo(User, {
