@@ -12,7 +12,7 @@ function get_unique_filename(id) {
 // TODO: Fix req.body
 router.post('/create', function(req,res) {
   var s3 = req.app.get('s3');
-  var filename = get_unique_filename(req.body['userid']);
+  var filename = get_unique_filename(req.body['facebookId']);
   s3.presignedPutObject('pixelectstaging', filename, 1000, function(e, presignedUrl) {
     if (e) {
       console.log(e);
@@ -27,17 +27,28 @@ router.post('/create', function(req,res) {
 // TODO: Fix req.body
 router.post('/confirm', function(req, res) {
   var models = req.app.get('models');
-  models.Photo.create({
-    link: req.body['link'],
-    userId: req.body['userid'],
-    groupId: req.body['groupid']
+  models.User.findOne({
+    where: {
+      facebookId: req.body['facebookId']
+    }
   })
-  .then(() => {
-    res.send("Success");
+  .then(user => {
+    models.Photo.create({
+      link: req.body['link'],
+      userId: user.get('id'),
+      groupId: req.body['groupid']
+    })
+    .then(() => {
+      res.send("Success");
+    })
+    .catch((e) => {
+      console.log(e);
+      res.send("Error");
+    });
   })
-  .catch((e) => {
+  .catch(e => {
     console.log(e);
-    res.send("Error");
+    res.send("Cannot find User with facebookId");
   });
 });
 
