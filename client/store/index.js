@@ -57,24 +57,28 @@ const actions = {
   },
   updateGroupName({ commit }, { groupId, name }) {
     const payload = { name }
-    const data = new FormData()
-    data.append('json', JSON.stringify(payload))
 
     fetch(`/groups/${groupId}/changeName`, {
       method: 'POST',
-      body: data,
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify(payload),
     })
+      .then(res => res.text())
+      .then(console.log)
 
     commit(UPDATE_GROUP_NAME, name)
   },
   vote({ commit }, { fbId, photoId, isUnvote }) {
     const payload = { facebookId: fbId, photoId }
-    const data = new FormData()
-    data.append('json', JSON.stringify(payload))
 
     fetch(`/votes/`, {
       method: 'POST',
-      body: data,
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify(payload),
     })
 
     commit(VOTE, { photoId, isUnvote })
