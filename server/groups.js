@@ -137,4 +137,26 @@ router.post('/:id/publish', function(req, res){
 	res.send('publish photos of group with id '+ req.params.id)
 })
 
+router.get('/:id/users', function(req, res) {
+	var models = req.app.get('models');
+	var groupId = req.body.id;
+	models.User.findAll({
+		include: [{
+			model: models.Group,
+			through: {
+				where: {
+					groupId: groupId,
+				}
+			}
+		}]
+	})
+	.then(users => {
+		res.send(users);
+	})
+	.catch(e => {
+		console.log(e);
+		res.send("Error getting users of group");
+	});
+});
+
 module.exports = router
