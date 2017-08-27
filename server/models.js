@@ -45,6 +45,11 @@ const Group = sequelize.define('group', {
     allowNull: false,
     defaultValue: ''
   },
+  hash: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true
+  }
 });
 Group.belongsTo(User, {
   foreignKey: {
@@ -117,7 +122,8 @@ module.exports.sequelize = sequelize;
 
 // // To create Group
 // Group.create({
-//   owner: 1
+//   owner: 1,
+//   hash: "testhash123"
 // });
 
 // // To add User to Group
