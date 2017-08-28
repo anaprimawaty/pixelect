@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <user-list :users="users" />
     <div class="group-title">
       <span class="title" contenteditable="true" @keydown="nameKeydown" @input="nameUpdate">{{ name }}</span>
       <span class="icon">
@@ -23,8 +24,6 @@
       <input ref="link" :value="link" />
     </div>
     <preview :url="preview && preview.link" />
-<!--     <user-list :users="[{ username: 'Goh Wei Wen', photo: 'https://lh4.googleusercontent.com/-XiznigWDjX4/AAAAAAAAAAI/AAAAAAAACZ8/tmHoLFVWWAc/photo.jpg?sz=50'}, { username: 'Goh Wei Wen', photo: 'https://lh4.googleusercontent.com/-XiznigWDjX4/AAAAAAAAAAI/AAAAAAAACZ8/tmHoLFVWWAc/photo.jpg?sz=50'}]"/>
- -->    <user-list :users="users"/>
     <dropzone id="imageDropzone" autoProcessQueue url="https://httpbin.org/post" v-on:vdropzone-success="showSuccess">
     </dropzone>
     <photo-list :photos="photos" />

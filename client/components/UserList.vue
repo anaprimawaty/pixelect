@@ -1,6 +1,6 @@
 <template>
 <ul class="user-list">
-	<li v-for="user in users">
+	<li v-for="user in users.slice(0, 4)">
 		<a :href="`//www.facebook.com/${user.facebookId}`">
 			<img :src="`//graph.facebook.com/v2.10/${user.facebookId}/picture`" />
 			<span class="label">{{ user.firstName }} {{ user.lastName }}</span>
@@ -18,7 +18,9 @@ export default {
 
 <style lang="css" scoped>
 .user-list {
-	margin: 2em 0;
+	position: absolute;
+	right: 0;
+	top: 0;
 }
 
 .user-list li {
@@ -27,12 +29,16 @@ export default {
 	margin-right: 0.5em;
 }
 
-.user-list li img {
-	border-radius: 50px;
+.user-list li img, .user-list li svg {
 	border: 2px solid transparent;
-	width: 50px;
-	height: 50px;
-	transition: all 200ms ease-in-out;
+	border-radius: 2.8rem;
+	width: 2.8rem;
+	height: 2.8rem;
+	transition: all 200ms ease-out;
+}
+
+.user-list li:hover img, .user-list li:hover svg {
+	border: 2px solid #404040;
 }
 
 .user-list li .label {
@@ -43,14 +49,12 @@ export default {
 	left: -75px;
 	width: 200px;
 	opacity: 0;
-	transition: all 200ms ease-in-out;
-}
-
-.user-list li:hover img {
-	border: 2px solid #404040;
+	visibility: hidden;
+	transition: all 200ms ease-out;
 }
 
 .user-list li:hover .label {
 	opacity: 1;
+	visibility: visible;
 }
 </style>
