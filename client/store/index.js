@@ -7,6 +7,7 @@ const state = {
   groupId: '',
   name: '',
   photos: {},
+  users: [],
   preview: null,
   isLoggedIn: null,
   username: '',
@@ -14,9 +15,10 @@ const state = {
 }
 
 const mutations = {
-  initialiseGroup(state, { name, photos }) {
+  initialiseGroup(state, { name, photos, users }) {
     state.name = name
     state.photos = photos
+    state.users = users
   },
   updateGroupName(state, name) {
     state.name = name
@@ -48,11 +50,16 @@ const actions = {
     Promise.all([
       fetch(`/groups/${groupId}`),
       fetch(`/groups/${groupId}/photos`),
+      fetch(`/groups/${groupId}/users`),
     ])
       .then(responses =>
-            Promise.all(responses.map(response => response.json()))
-           )
-      .then(jsons => ({ ...jsons[0], photos: jsons[1] }))
+        Promise.all(responses.map(response => response.json()))
+      )
+      .then(jsons => ({
+        ...jsons[0],
+        photos: jsons[1],
+        users: jsons[2],
+      }))
       .then(json => commit(INITIALISE_GROUP, json))
   },
   updateGroupName({ commit }, { groupId, name }) {

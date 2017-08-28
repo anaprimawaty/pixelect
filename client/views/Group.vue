@@ -23,6 +23,8 @@
       <input ref="link" :value="link" />
     </div>
     <preview :url="preview && preview.link" />
+<!--     <user-list :users="[{ username: 'Goh Wei Wen', photo: 'https://lh4.googleusercontent.com/-XiznigWDjX4/AAAAAAAAAAI/AAAAAAAACZ8/tmHoLFVWWAc/photo.jpg?sz=50'}, { username: 'Goh Wei Wen', photo: 'https://lh4.googleusercontent.com/-XiznigWDjX4/AAAAAAAAAAI/AAAAAAAACZ8/tmHoLFVWWAc/photo.jpg?sz=50'}]"/>
+ -->    <user-list :users="users"/>
     <dropzone id="imageDropzone" autoProcessQueue url="https://httpbin.org/post" v-on:vdropzone-success="showSuccess">
     </dropzone>
     <photo-list :photos="photos" />
@@ -34,6 +36,7 @@ import { mapState } from 'vuex'
 import Dropzone from 'vue2-dropzone'
 import store, { FETCH_GROUP, UPDATE_GROUP_NAME } from '@/store'
 import PhotoList from '@/components/PhotoList'
+import UserList from '@/components/UserList'
 import Preview from '@/components/Preview'
 
 export default {
@@ -55,6 +58,7 @@ export default {
   computed: {
     ...mapState({
       photos: state => state.photos,
+      users: state => state.users,
       preview: state => state.preview,
       link: function(state) {
         return `${window.location.origin}/#/group/${this
@@ -66,6 +70,7 @@ export default {
     PhotoList,
     Preview,
     Dropzone,
+    UserList,
   },
   methods: {
     nameKeydown(e) {
