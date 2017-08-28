@@ -1,9 +1,13 @@
 <template>
-  <div class="bg">
+  <div class="login">
+    <video class="bg" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0">
+      <source src="/assets/bg.mp4" type="video/mp4" />
+      <source src="/assets/bg.webm" type="video/webm" />
+    </video>
     <section class="section">
       <div class="container has-text-centered">
-          <img :style="{height: '300px', paddingRight: '50px'}" src="/favicon.png"/>
-          <h1 class="title" :style="{fontSize: '50px'}">Pixelect</h1>
+          <img class="logo" src="/assets/logo.svg"/>
+          <h1 class="title">Pixelect</h1>
           <fb-signin-button
             :params="fbSignInParams"
             @success="onSignInSuccess"
@@ -64,6 +68,25 @@ export default {
 </script>
 
 <style scoped>
+.login {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.logo {
+  height: 300px;
+  margin: 0 50px 50px 0;
+}
+
+.title {
+  font-size: 50px;
+  color: #fff;
+}
+
 .fb-signin-button {
   /* This is where you control how the button looks. Be creative! */
   display: inline-block;
@@ -73,11 +96,19 @@ export default {
   color: #fff;
   cursor: pointer;
   font-size: 20px;
-  margin-top:20px;
+  margin: 20px 0 50px 0;
 }
 
 .bg {
-  height: -webkit-fill-available;
-  background-color: hsl(171, 100%, 41%);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
 }
 </style>
