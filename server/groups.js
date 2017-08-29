@@ -139,24 +139,48 @@ router.post('/:id/publish', function(req, res){
 
 router.get('/:id/users', function(req, res) {
 	var models = req.app.get('models');
-	var groupId = req.body.id;
+	var groupId = req.params.id;
 	models.User.findAll({
 		include: [{
 			model: models.Group,
+			required: true, // inner join
+			attributes: [],
 			through: {
 				where: {
 					groupId: groupId,
-				}
+				},
+				attributes: [],
 			}
 		}]
 	})
-	.then(users => {
-		res.send(users);
+	.then(info => {
+		res.send(info)
 	})
 	.catch(e => {
 		console.log(e);
-		res.send("Error getting users of group");
+		res.send("Error finding users of group");
 	});
+
+	// // This works too:
+	// models.Group.find({
+	// 	where: {
+	// 		id: groupId,
+	// 	}
+	// })
+	// .then(group => {
+	// 	group.getUsers()
+	// 	.then(users => {
+	// 		res.send(users);
+	// 	})
+	// 	.catch(e => {
+	// 		console.log(e);
+	// 		res.send("Error finding users of group");
+	// 	});
+	// })
+	// .catch(e => {
+	// 	console.log(e);
+	// 	res.send("Error finding group");
+	// });
 });
 
 module.exports = router
