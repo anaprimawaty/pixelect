@@ -4,6 +4,7 @@ import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpackConfig from '../webpack.config'
+import session from 'express-session'
 import users from './users'
 import photos from './photos'
 import groups from './groups'
@@ -27,6 +28,19 @@ app.set('s3', s3Client)
 // API routes
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
+//session
+app.set('session', require('express-session'))
+app.use(session({
+  secret: 'pixels',
+  saveUninitialized: false
+}))
+app.use(function (req, res, next) {
+  if (!req.session.facebookId) {
+    req.session.facebookId = ""
+  }
+  next()
+})
 
 app.use('/users', users)
 app.use('/photos', photos)

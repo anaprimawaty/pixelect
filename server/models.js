@@ -129,12 +129,12 @@ module.exports.sequelize = sequelize;
 // // To add User to Group
 // User.findById(1).then(user => {
 //   Group.findById(1).then(group => {
-//     user.setGroups([group]);
+//     user.addGroup(group);
 //   });
 // });
 // User.findById(2).then(user => {
 //   Group.findById(1).then(group => {
-//     user.setGroups([group]);
+//     user.addGroup(group);
 //   });
 // });
 

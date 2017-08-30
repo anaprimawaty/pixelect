@@ -27,9 +27,10 @@ router.post('/create', function(req,res) {
 // TODO: Fix req.body
 router.post('/confirm', function(req, res) {
   var models = req.app.get('models');
+  var session = req.app.get('session');
   models.User.findOne({
     where: {
-      facebookId: req.body['facebookId']
+      facebookId: session.facebookId
     }
   })
   .then(user => {
