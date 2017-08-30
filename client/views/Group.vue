@@ -24,19 +24,18 @@
       <input ref="link" :value="link" />
     </div>
     <preview :url="preview && preview.link" />
-    <dropzone id="imageDropzone" autoProcessQueue url="https://httpbin.org/post" v-on:vdropzone-success="showSuccess">
-    </dropzone>
+    <dropzone></dropzone>
     <photo-list :photos="photos" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import Dropzone from 'vue2-dropzone'
 import store, { FETCH_GROUP, UPDATE_GROUP_NAME } from '@/store'
 import PhotoList from '@/components/PhotoList'
 import UserList from '@/components/UserList'
 import Preview from '@/components/Preview'
+import Dropzone from '@/components/Dropzone'
 
 export default {
   mounted: function() {
@@ -108,9 +107,6 @@ export default {
         })
       }
     },
-    showSuccess() {
-      console.log('uploaded!')
-    },
   },
 }
 </script>
@@ -140,10 +136,6 @@ export default {
 }
 
 .group-link {
-  margin-bottom: 1.5em;
-}
-
-#imageDropzone {
   margin-bottom: 1.5em;
 }
 </style>
