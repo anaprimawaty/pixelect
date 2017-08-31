@@ -43,12 +43,31 @@ new Vue({
               facebookId: response.id,
               name: response.name,
             })
+            fetch('/users/loggedIn', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ facebookId: response.id }),
+            })
+            fetch('/users', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                facebookId: response.id,
+                name: response.name,
+              }),
+            })
           })
         } else {
           store.dispatch(LOGIN, { facebookId: 0, name: '' })
         }
       })
     }
+
+    // FB SDK
     ;(function(d, s, id) {
       var js
       var fjs = d.getElementsByTagName(s)[0]
