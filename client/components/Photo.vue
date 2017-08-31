@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import store, { VOTE, PREVIEW } from '@/store'
 
 export default {
@@ -55,6 +56,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      facebookId: state => state.facebookId,
+    }),
     imageStyle() {
       const width = `${this.width}px`
       return { width, height: width }
@@ -68,7 +72,6 @@ export default {
     vote(e) {
       this.animate = !this.voted
       store.dispatch(VOTE, {
-        fbId: this.fbId,
         photoId: this.photoId,
         isUnvote: this.voted,
       })
