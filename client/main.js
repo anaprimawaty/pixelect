@@ -6,7 +6,7 @@ import VueResize from 'vue-resize'
 import FBSignInButton from 'vue-facebook-signin-button'
 import App from '@/App'
 import router from '@/router'
-import store, { SET_LOGIN_STATE, SET_USERNAME, SET_FB_ID } from '@/store'
+import store, { LOGIN } from '@/store'
 
 import 'babel-polyfill'
 import 'whatwg-fetch'
@@ -37,14 +37,15 @@ new Vue({
       // eslint-disable-next-line
       FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
-          store.dispatch(SET_LOGIN_STATE, true)
           // eslint-disable-next-line
           FB.api('/me', function(response) {
-            store.dispatch(SET_USERNAME, response.name)
-            store.dispatch(SET_FB_ID, response.id)
+            store.dispatch(LOGIN, {
+              facebookId: response.id,
+              name: response.name,
+            })
           })
         } else {
-          store.dispatch(SET_LOGIN_STATE, false)
+          store.dispatch(LOGIN, { facebookId: 0, name: '' })
         }
       })
     }

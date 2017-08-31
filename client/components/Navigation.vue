@@ -18,7 +18,7 @@
 
       <div class="navbar-end">
         <div class="navbar-item field">
-          Welcome Back, {{username}} !
+          Welcome Back, {{userName}}!
         </div>
       </div>
     </div>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import store from '@/store'
 
 export default {
@@ -34,11 +35,9 @@ export default {
       menu: false,
     }
   },
-  computed: {
-    username() {
-      return store.state.username
-    },
-  },
+  computed: mapState({
+    userName: state => state.userName,
+  }),
 }
 </script>
 
