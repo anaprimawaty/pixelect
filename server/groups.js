@@ -1,12 +1,6 @@
 var express = require('express')
 var router = express.Router()
-var crypto = require('crypto');
-
-function get_unique_groupName(id) {
-  var data = new Date() + id;
-  var groupName = crypto.createHash('md5').update(data).digest('hex');
-  return groupName
-}
+var helper = require('./helper')
 
 /* GET specific group details with group ID
  * params -> groupId: id of the group
@@ -163,7 +157,7 @@ router.post('/', function(req, res){
 		models.Group.create({
 			name: req.body.name,
 			owner: owner,
-			hash: get_unique_groupName(session.facebookId)
+			hash: helper.getHash(session.facebookId)
 		}).then(group =>{
 			console.log("success adding new group")
 			models.User.findById(owner).then(user => {
