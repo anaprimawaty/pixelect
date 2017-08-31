@@ -23,7 +23,7 @@
       </span>
       <input ref="link" :value="link" />
     </div>
-    <preview :url="preview && preview.link" />
+    <preview :link="preview && preview.link" />
     <dropzone></dropzone>
     <photo-list :photos="photos" />
   </div>
