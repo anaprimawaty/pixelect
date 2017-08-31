@@ -1,22 +1,15 @@
 var express = require('express')
 var router = express.Router()
-var crypto = require('crypto')
 var multer = require('multer')
 var upload = multer()
+var helper = require('./helper')
 
-function get_unique_filename(id) {
-  var data = new Date() + id
-  var filename = crypto.createHash('md5').update(data).digest('hex')
-  return filename
-}
 
-// TODO: Fix route and fix to post request
-// TODO: Fix req.body
 router.post('/create', upload.single('file'), function(req, res, next) {
   var s3 = req.app.get('s3')
   var file = req.file.buffer
   var session = req.app.get('session')
-  var filename = get_unique_filename(session.facebookId)
+  var filename = helper.getHash(session.facebookId)
   s3.putObject(
     'pixelectstaging',
     filename,
