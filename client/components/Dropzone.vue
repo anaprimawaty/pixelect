@@ -1,32 +1,32 @@
 <template>
-  <dropzone id="imageDropzone" ref="myDropzone" :url="url" :dropzone-options="options" :use-custom-dropzone-options="true" @vdropzone-success="showSuccess" @vdropzone-sending="sending">
+  <dropzone id="imageDropzone" ref="imageDropzone" :url="url" :dropzone-options="customOptionsObject" :use-custom-dropzone-options="true" @vdropzone-sending="sending" @vdropzone-success="showSuccess">
   </dropzone>
 </template>
 
 <script>
 import Dropzone from 'vue2-dropzone'
+import store from '@/store'
 
 export default {
   data() {
     return {
-      options: {
-        method: 'put',
+      customOptionsObject: {
         acceptedFileTypes: 'image/jpeg,image/png',
+        // autoProcessQueue: false,
+        // autoQueue: false,
       },
-      url: '#',
+      url: '/photos/create',
     }
   },
   components: {
     Dropzone,
   },
   methods: {
+    sending(file, xhr, formData) {
+      formData.append('facebookId', store.state.fbId)
+    },
     showSuccess() {
       console.log('uploaded!')
-    },
-    sending(file, xhr, formData) {
-      xhr.abort()
-      xhr.open('POST', 'https://httpbin.org/post')
-      console.log('intercepted!')
     },
   },
 }
