@@ -74,8 +74,8 @@ router.get('/:groupId/photos', function(req, res){
 							if(vote.photoId == photo.id && vote.isValid)
 								photo.votes++ 
 						})
+						groupPhotos.push(photo)
 					})
-					groupPhotos.push(photo)
 				}
 			})
 			res.send(groupPhotos)
