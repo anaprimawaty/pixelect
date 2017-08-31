@@ -1,35 +1,23 @@
 var express = require('express')
 var router = express.Router()
+var crypto = require('crypto');
 
+function get_unique_groupName(id) {
+  var data = new Date() + id;
+  var groupName = crypto.createHash('md5').update(data).digest('hex');
+  return groupName
+}
 
-router.post('/', function(req, res){
+/* GET specific group details with group ID
+ * params -> groupId: id of the group
+ * response -> {groupId, owner of the group}
+ */
+router.get('/:groupId', function(req, res){
+	console.log('get group with id '+ req.params.groupId)
 	var models = req.app.get('models')
-	var  groups = []
-	var userfbId = req.body.id
-	models.User.findOne({
-	    where: {
-	      facebookId: userfbId
-	    }
-	}).then(user => {
-		var userId = user.id
-		models.UserGroup.findAll()
-		.then(groups => {
-			res.send(groups)
-			//	groups.forEach(group){
-			//		if(group.userId )
-			//}
-		})
-	})
-	var queried_group = models.Group
-})
-
-
-router.get('/:id', function(req, res){
-	console.log('get group with id '+ req.params.id)
-	var models = req.app.get('models')
-	var groupid = req.params.id
+	var groupId = req.params.groupId
 	var group = models.Group
-		.findById(groupid)
+		.findById(groupId)
 		.then(group => {
 			if(group == null)
 				res.send('group does not exist')
@@ -37,18 +25,52 @@ router.get('/:id', function(req, res){
 					res.send(group)
 			}
 		}, function(error){
-			res.send(error)
+			console.log(error)
+			res.send("Error getting group");
 		})
 })
 
-router.get('/:id/photos', function(req, res){
+/* GET group users with group ID
+ * params -> groupId: id of the group
+ * response -> {users}
+ */
+router.get('/:groupId/users', function(req, res) {
+	var models = req.app.get('models');
+	var groupId = req.params.groupId;
+	 models.Group.find({
+	 	where: {
+	 		id: groupId,
+	 	}
+	 })
+	.then(group => {
+	 	group.getUsers()
+	 	.then(users => {
+	 		res.send(users);
+	 	})
+	 	.catch(e => {
+	 		console.log(e);
+	 		res.send("Error finding users of group");
+		});
+	 })
+	 .catch(e => {
+	 	console.log(e);
+	 	res.send("Error finding group");
+	 });
+});
+
+
+/* GET specific group photos with group ID
+ * params -> groupId: id of the group
+ * response -> array of photo objects{photoId, owner, votes}
+ */
+router.get('/:groupId/photos', function(req, res){
 	var models = req.app.get('models')
 	var groupPhotos = []
-	var groupid = req.params.id 
+	var groupId = req.params.groupId 
 	models.Photo.findAll()
 		.then(function(photos){
 			photos.forEach(function(photo1){
-				if(photo1.groupId == groupid){
+				if(photo1.groupId == groupId){
 					var photo =JSON.parse(JSON.stringify(photo1))
 					photo.votes = 0
 					models.Vote.findAll()
@@ -65,12 +87,17 @@ router.get('/:id/photos', function(req, res){
 		})
 })
 
-router.post('/:id/changeName', function(req, res){
-	console.log('changing name of group with id '+ req.params.id)
+/* POST change name of group with group ID
+ * params -> groupId: id of the group
+ * body -> {name: name of the group}
+ * response -> success/error
+ */
+router.post('/:groupId/changeName', function(req, res){
+	console.log('changing name of group with id '+ req.params.groupId)
 	var models = req.app.get('models')
-	var groupid = req.params.id
+	var groupId = req.params.groupId
 	var group = models.Group
-	.findById(groupid)
+	.findById(groupId)
 	.then(group => {
 		group.updateAttributes({
 			name: req.body.name
@@ -83,21 +110,29 @@ router.post('/:id/changeName', function(req, res){
 	})
 })
 
+/* POST create new group
+ * body -> {name: name of the group}
+ * response -> success/error
+ */
 router.post('/', function(req, res){
 	console.log('new group')
 	var models = req.app.get('models')
-	var owner;
+	var session = req.app.get('session')
 	models.User.findOne({
 	    where: {
-	      facebookId: req.body.owner
+	      facebookId: session.facebookId
 	    }
 	}).then(user => {
-    	owner = user.id
+    	var owner = user.id
 		models.Group.create({
 			name: req.body.name,
-			owner: owner
+			owner: owner,
+			hash: get_unique_groupName(session.facebookId)
 		}).then(group =>{
 			console.log("success adding new group")
+			models.User.findById(owner).then(user => {
+				user.addGroup(group)
+			});
 			res.send(group)
 		},function(error){
 			console.log(error)
@@ -106,10 +141,16 @@ router.post('/', function(req, res){
 	})
 })
 
-router.post('/addUser', function(req, res){
+/* POST add user to existing group
+ * params -> groupId: id of the group
+ * body -> {name: name of the group,
+ 			facebookId: facebookId of the user}
+ * response -> success/error
+ */
+router.post('/:groupId/addUser', function(req, res){
 	console.log('add user')
-	var groupId = req.body.groupId
-	var userId = req.body.userId
+	var groupId = req.params.groupId
+	var userId = req.body.facebookId
 	var models = req.app.get('models')
 	models.User.findOne({
 	    where: {
@@ -122,7 +163,7 @@ router.post('/addUser', function(req, res){
 	    	 if(user == null || group == null)
 	    	 	res.send('error adding user to group')
 	    	 else{
-	    	 	user.setGroups([group]).
+	    	 	user.addGroup(group).
 	    	 	then(function(){
 	    	 		res.send('user added to group')	
 	    	 	})
@@ -132,55 +173,15 @@ router.post('/addUser', function(req, res){
 	})
 })
 
-
+/* POST publish photos to facebook
+ * params -> groupId: id of the group
+ * body -> {name: name of the group,
+ 			facebookId: facebookId of the creator}
+ * response -> success/error
+ */
 router.post('/:id/publish', function(req, res){
 	res.send('publish photos of group with id '+ req.params.id)
 })
 
-router.get('/:id/users', function(req, res) {
-	var models = req.app.get('models');
-	var groupId = req.params.id;
-	models.User.findAll({
-		include: [{
-			model: models.Group,
-			required: true, // inner join
-			attributes: [],
-			through: {
-				where: {
-					groupId: groupId,
-				},
-				attributes: [],
-			}
-		}]
-	})
-	.then(info => {
-		res.send(info)
-	})
-	.catch(e => {
-		console.log(e);
-		res.send("Error finding users of group");
-	});
-
-	// // This works too:
-	// models.Group.find({
-	// 	where: {
-	// 		id: groupId,
-	// 	}
-	// })
-	// .then(group => {
-	// 	group.getUsers()
-	// 	.then(users => {
-	// 		res.send(users);
-	// 	})
-	// 	.catch(e => {
-	// 		console.log(e);
-	// 		res.send("Error finding users of group");
-	// 	});
-	// })
-	// .catch(e => {
-	// 	console.log(e);
-	// 	res.send("Error finding group");
-	// });
-});
 
 module.exports = router
