@@ -40,10 +40,19 @@ import Dropzone from '@/components/Dropzone'
 export default {
   mounted: function() {
     store.dispatch(FETCH_GROUP, this.groupId)
+
+    const payload = { facebookId: this.facebookId }
+    fetch(`/groups/${this.groupId}/addUser`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify(payload),
+    })
   },
   beforeUpdate: function() {
     if (this.name === '') {
-      this.name = store.state.name
+      this.name = store.state.groupName
     }
   },
   data() {
@@ -55,12 +64,13 @@ export default {
   props: ['groupId'],
   computed: {
     ...mapState({
+      facebookId: state => state.facebookId,
       photos: state => state.photos,
       users: state => state.users,
       preview: state => state.preview,
       link: function(state) {
         return `${window.location.origin}/#/group/${this
-          .groupId}/${state.name.toLowerCase().replace(/ /g, '-')}`
+          .groupId}/${state.groupName.toLowerCase().replace(/ /g, '-')}`
       },
     }),
   },

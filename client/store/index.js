@@ -5,23 +5,23 @@ Vue.use(Vuex)
 
 const state = {
   groupId: '',
-  name: '',
+  groupName: '',
   photos: {},
   users: [],
   preview: null,
   isLoggedIn: null,
-  username: '',
-  fbId: '',
+  userName: '',
+  facebookId: null,
 }
 
 const mutations = {
   initialiseGroup(state, { name, photos, users }) {
-    state.name = name
+    state.groupName = name
     state.photos = photos
     state.users = users
   },
   updateGroupName(state, name) {
-    state.name = name
+    state.groupName = name
   },
   vote(state, { photoId, isUnvote }) {
     const photo = state.photos[photoId]
@@ -34,14 +34,9 @@ const mutations = {
   preview(state, photoId) {
     state.preview = state.photos[photoId]
   },
-  setLoginState(state, newLoginState) {
-    state.isLoggedIn = newLoginState
-  },
-  setUsername(state, username) {
-    state.username = username
-  },
-  setFbId(state, fbId) {
-    state.fbId = fbId
+  login(state, { facebookId, name }) {
+    state.facebookId = facebookId
+    state.userName = name
   },
 }
 
@@ -55,11 +50,19 @@ const actions = {
       .then(responses =>
         Promise.all(responses.map(response => response.json()))
       )
-      .then(jsons => ({
-        ...jsons[0],
-        photos: jsons[1],
-        users: jsons[2],
-      }))
+      .then(jsons => {
+        console.log(jsons[1])
+        const photos = jsons[1].reduce((acc, val) => {
+          acc[val.id] = { ...val, photoId: val.id }
+          return acc
+        }, {})
+        console.log(photos)
+        return {
+          ...jsons[0],
+          photos,
+          users: jsons[2],
+        }
+      })
       .then(json => commit(INITIALISE_GROUP, json))
   },
   updateGroupName({ commit }, { groupId, name }) {
@@ -77,8 +80,8 @@ const actions = {
 
     commit(UPDATE_GROUP_NAME, name)
   },
-  vote({ commit }, { fbId, photoId, isUnvote }) {
-    const payload = { facebookId: fbId, photoId }
+  vote({ commit }, { photoId, isUnvote }) {
+    const payload = { photoId }
 
     fetch(`/votes/`, {
       method: 'POST',
@@ -93,14 +96,8 @@ const actions = {
   preview({ commit }, photoId) {
     commit(PREVIEW, photoId)
   },
-  setLoginState({ commit }, newLoginState) {
-    commit(SET_LOGIN_STATE, newLoginState)
-  },
-  setUsername({ commit }, username) {
-    commit(SET_USERNAME, username)
-  },
-  setFbId({ commit }, fbId) {
-    commit(SET_FB_ID, fbId)
+  login({ commit }, { facebookId, name }) {
+    commit(LOGIN, { facebookId, name })
   },
 }
 
@@ -118,6 +115,4 @@ export const FETCH_GROUP = 'fetchGroup'
 export const UPDATE_GROUP_NAME = 'updateGroupName'
 export const VOTE = 'vote'
 export const PREVIEW = 'preview'
-export const SET_LOGIN_STATE = 'setLoginState'
-export const SET_USERNAME = 'setUsername'
-export const SET_FB_ID = 'setFbId'
+export const LOGIN = 'login'

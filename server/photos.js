@@ -15,7 +15,8 @@ function get_unique_filename(id) {
 router.post('/create', upload.single('file'), function(req, res, next) {
   var s3 = req.app.get('s3')
   var file = req.file.buffer
-  var filename = get_unique_filename(req.body['facebookId'])
+  var session = req.app.get('session')
+  var filename = get_unique_filename(session.facebookId)
   s3.putObject(
     'pixelectstaging',
     filename,
@@ -25,7 +26,7 @@ router.post('/create', upload.single('file'), function(req, res, next) {
       if (error) {
         return console.log(error)
       } else {
-        storePhoto(req.app.get('models'), req.body['facebookId'], filename)
+        storePhoto(req.app.get('models'), session.facebookId, filename)
         console.log('File uploaded successfully.')
         res.send('success!')
       }
@@ -53,5 +54,41 @@ function storePhoto(models, facebookId, filename) {
       console.log('Cannot find User with facebookId')
     })
 }
+
+/* POST delete specific photo with photoId
+ * params -> photoId
+ * response -> success/error
+ */
+router.post('/:photoId/delete', function(req, res) {
+  var models = req.app.get('models')
+  var session = req.app.get('session')
+  models.User
+    .findOne({
+      where: {
+        facebookId: session.facebookId,
+      },
+    })
+    .then(user => {
+      models.Photo
+        .findById(req.params.photoId)
+        .then(function(photo) {
+          if (photo.userId == user.id) {
+            photo
+              .destroy()
+              .then(() => {
+                res.send('photo deleted')
+              })
+              .catch(e => {
+                console.log(e)
+                res.send('Error deleting photo')
+              })
+          } else res.send('Error deleting photo')
+        })
+        .catch(e => {
+          console.log(e)
+          res.send('photo does not exist')
+        })
+    })
+})
 
 module.exports = router

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import store, { SET_LOGIN_STATE, SET_USERNAME, SET_FB_ID } from '@/store'
+import store, { LOGIN } from '@/store'
 
 export default {
   data() {
@@ -38,10 +38,9 @@ export default {
   },
   methods: {
     onSignInSuccess(response) {
-      FB.api('/me', response => {
-        store.dispatch(SET_LOGIN_STATE, true)
-        store.dispatch(SET_USERNAME, response.name)
-        store.dispatch(SET_FB_ID, response.id)
+      FB.api('/me', dude => {
+        console.log(`Good to see you, ${dude.name}.`)
+        store.dispatch(LOGIN, { facebookId: dude.id, name: dude.name })
         fetch('/users', {
           headers: {
             Accept: 'application/json',

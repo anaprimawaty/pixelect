@@ -4,17 +4,18 @@ var router = express.Router();
 // TODO: Check User can vote for Photo
 
 /* POST vote on a photo
- * body -> {url, facebookId of uploader, groupId}
+ * body -> {url, groupId}
  * response -> success/error
  */
 router.post('/', function(req,res) {
   var models = req.app.get('models');
+  var session = req.app.get('session');
   var photoId = req.body['photoId'];
 
   // Find User
   models.User.findOne({
     where: {
-      facebookId: req.body.facebookId
+      facebookId: session.facebookId
     }
   })
   .then(user => {

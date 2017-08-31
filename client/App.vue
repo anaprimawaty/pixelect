@@ -12,16 +12,16 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Navigation from '@/components/Navigation'
 import Login from '@/views/Login'
 import store from '@/store'
 
 export default {
-  computed: {
-    isLoggedIn() {
-      return store.state.isLoggedIn
-    },
-  },
+  computed: mapState({
+    isLoggedIn: state =>
+      state.facebookId == null ? null : state.facebookId !== 0,
+  }),
   components: {
     navigation: Navigation,
     login: Login,
