@@ -12,6 +12,7 @@ import 'babel-polyfill'
 import 'whatwg-fetch'
 
 import 'buefy/lib/buefy.css'
+import '../static/assets/facebook'
 
 Vue.use(Buefy)
 Vue.use(Toasted)
@@ -37,28 +38,17 @@ new Vue({
       // eslint-disable-next-line
       FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
-          store.dispatch(SET_LOGIN_STATE, true)
           // eslint-disable-next-line
           FB.api('/me', function(response) {
             store.dispatch(SET_USERNAME, response.name)
             store.dispatch(SET_FB_ID, response.id)
+            store.dispatch(SET_LOGIN_STATE, true)
           })
         } else {
           store.dispatch(SET_LOGIN_STATE, false)
         }
       })
     }
-    ;(function(d, s, id) {
-      var js
-      var fjs = d.getElementsByTagName(s)[0]
-      if (d.getElementById(id)) {
-        return
-      }
-      js = d.createElement(s)
-      js.id = id
-      js.src = '//connect.facebook.net/en_US/sdk.js'
-      fjs.parentNode.insertBefore(js, fjs)
-    })(document, 'script', 'facebook-jssdk')
   },
   router,
   store,

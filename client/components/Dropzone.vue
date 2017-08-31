@@ -12,8 +12,6 @@ export default {
     return {
       customOptionsObject: {
         acceptedFileTypes: 'image/jpeg,image/png',
-        // autoProcessQueue: false,
-        // autoQueue: false,
       },
       url: '/photos/create',
     }
@@ -25,8 +23,8 @@ export default {
     sending(file, xhr, formData) {
       formData.append('facebookId', store.state.fbId)
     },
-    showSuccess() {
-      console.log('uploaded!')
+    showSuccess(file, response) {
+      this.$refs.imageDropzone.dropzone.removeFile(file)
     },
   },
 }

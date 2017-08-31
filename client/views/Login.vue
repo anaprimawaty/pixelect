@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import store, { SET_LOGIN_STATE } from '@/store'
+import store, { SET_LOGIN_STATE, SET_USERNAME, SET_FB_ID } from '@/store'
 
 export default {
   data() {
@@ -38,26 +38,18 @@ export default {
   },
   methods: {
     onSignInSuccess(response) {
-      FB.api('/me', dude => {
-        console.log(`Good to see you, ${dude.name}.`)
+      FB.api('/me', response => {
         store.dispatch(SET_LOGIN_STATE, true)
+        store.dispatch(SET_USERNAME, response.name)
+        store.dispatch(SET_FB_ID, response.id)
         fetch('/users', {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
           method: 'POST',
-          body: JSON.stringify({ userId: dude.id, name: dude.name }),
+          body: JSON.stringify({ userId: response.id, name: response.name }),
         })
-      })
-      FB.getLoginStatus(response => {
-        if (response.status === 'connected') {
-          // this.accessToken = response.authResponse.accessToken
-          console.log('successfully connected!')
-          console.log(response)
-        } else {
-          console.log('failed to connect')
-        }
       })
     },
     onSignInError(error) {

@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar">
+  <nav class="navbar is-transparent">
     <div class="navbar-brand">
       <router-link class="navbar-item" @click="menu = false" to="/"><strong>Pixelect</strong></router-link>
 
@@ -17,8 +17,17 @@
       </div>
 
       <div class="navbar-end">
-        <div class="navbar-item field">
+        <div class="navbar-item">
           Welcome Back, {{username}} !
+        </div>
+        <div class="navbar-item has-dropdown">
+          <a class="navbar-link">
+          </a>
+          <div class="navbar-dropdown is-right">
+            <a class="navbar-item">
+              Logout
+            </a>
+          </div>
         </div>
       </div>
     </div>
