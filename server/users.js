@@ -1,15 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-/* POST set userId to session
- * body -> {facebookId}
- * response -> success/error
- */
-router.post('/loggedIn', function(req, res){
-	var session = req.app.get('session')
-	session.facebookId = req.body.facebookId
-	res.send('success')
-})
 
 /* GET user groups with user ID
  * params -> groupId: id of the group
@@ -39,24 +30,35 @@ router.get('/groups', function(req, res) {
 	 });
 });
 
-/* POST add new user to database
+/* POST add user to database, set userId to session
  * body -> {name, facebookId}
- * response -> {groups}
+ * response -> success/error
  */
 router.post('/', function(req, res){
 	var models = req.app.get('models')
 	var session = req.app.get('session')
-	models.User.create({
-		firstName: req.body.name,
-		lastName: "null",
-		facebookId: req.body.facebookId
-	}).then(function(){
-		res.send('success')
+	models.User.findOne({
+	    where: {
+	      facebookId: session.facebookId
+	    }
+	}).then(function(user){
 		session.facebookId = req.body.facebookId
-	}, function(error){
-		console.log(error)
-		res.send('error setting user')
+		res.send('logged in')
 	})
+	.catch(e => {
+	 	console.log('new user')
+	 	models.User.create({
+			firstName: req.body.name,
+			lastName: "null",
+			facebookId: req.body.facebookId
+		}).then(function(){
+			res.send('signed up')
+			session.facebookId = req.body.facebookId
+		}, function(error){
+			console.log(error)
+			res.send('error setting user')
+		})
+	 })
 })
 
 module.exports = router;
