@@ -30,9 +30,45 @@ router.get('/:groupId', function(req, res){
 		})
 })
 
-/* GET group users with group ID
+/* POST delete specific group with group ID
  * params -> groupId: id of the group
- * response -> {users}
+ * response -> success/error
+ */
+router.post('/:groupId/delete', function(req, res){
+	var session = req.app.get('session')
+	console.log('delete group with id '+ req.params.groupId)
+	var models = req.app.get('models')
+	var groupId = req.params.groupId
+	models.User.findOne({
+	    where: {
+	      facebookId: session.facebookId
+	    }
+	})
+	.then(function(user){
+		var group = models.Group
+		.findById(groupId)
+		.then(group => {
+			if(group.owner == user.id){
+				if(group == null)
+					res.send('group does not exist')
+				else {
+						group.destroy().then(()=>{
+							res.send('group deleted')
+						})
+				}
+			}
+			else
+				res.send('Error deleting group')
+		}, function(error){
+			console.log(error)
+			res.send("Error deleting group")
+		})
+	})
+})
+
+/* GET group members with group ID
+ * params -> groupId: id of the group
+ * response -> {[users]}
  */
 router.get('/:groupId/users', function(req, res) {
 	var models = req.app.get('models');
@@ -61,7 +97,7 @@ router.get('/:groupId/users', function(req, res) {
 
 /* GET specific group photos with group ID
  * params -> groupId: id of the group
- * response -> array of photo objects{photoId, owner, votes}
+ * response -> {[{photoId, owner, votes}]}
  */
 router.get('/:groupId/photos', function(req, res){
 	var models = req.app.get('models')
@@ -175,8 +211,7 @@ router.post('/:groupId/addUser', function(req, res){
 
 /* POST publish photos to facebook
  * params -> groupId: id of the group
- * body -> {name: name of the group,
- 			facebookId: facebookId of the creator}
+ * body -> {name: name of the group}
  * response -> success/error
  */
 router.post('/:id/publish', function(req, res){

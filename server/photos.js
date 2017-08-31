@@ -12,12 +12,12 @@ function get_unique_filename(id) {
 // TODO: Fix req.body
 
 /* POST get presigned url
- * body -> {facebookId of uploader}
  * response -> url/error
  */
 router.post('/create', function(req,res) {
   var s3 = req.app.get('s3');
-  var filename = get_unique_filename(req.body['facebookId']);
+  var session = req.app.get('session')
+  var filename = get_unique_filename(session.facebookId);
   s3.presignedPutObject('pixelectstaging', filename, 1000, function(e, presignedUrl) {
     if (e) {
       console.log(e);
@@ -32,14 +32,15 @@ router.post('/create', function(req,res) {
 // TODO: Fix req.body
 
 /* POST add photo to database
- * body -> {url, facebookId of uploader, groupId}
+ * body -> {url, groupId}
  * response -> success/error
  */
 router.post('/confirm', function(req, res) {
   var models = req.app.get('models');
+  var session = req.app.get('session')
   models.User.findOne({
     where: {
-      facebookId: req.body.facebookId
+      facebookId: session.facebookId
     }
   })
   .then(user => {
@@ -61,5 +62,39 @@ router.post('/confirm', function(req, res) {
     res.send("Cannot find User with facebookId");
   });
 });
+
+/* POST delete specific photo with photoId
+ * params -> photoId
+ * response -> success/error
+ */
+router.post('/:photoId/delete', function(req, res){
+  var models = req.app.get('models');
+  var session = req.app.get('session');
+  models.User.findOne({
+      where: {
+        facebookId: session.facebookId
+      }
+  }).then(user => {
+      models.Photo.findById(req.params.photoId)
+      .then(function(photo) {
+        if(photo.userId == user.id){
+          photo.destroy()
+          .then(()=>{
+            res.send('photo deleted')
+          })
+          .catch((e) => {
+            console.log(e);
+            res.send("Error deleting photo");
+          })
+        }
+        else
+          res.send("Error deleting photo");
+      })
+      .catch((e) => {
+        console.log(e);
+        res.send("photo does not exist");
+      });
+    })
+})
 
 module.exports = router;
