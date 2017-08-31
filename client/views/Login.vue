@@ -41,13 +41,19 @@ export default {
       FB.api('/me', dude => {
         console.log(`Good to see you, ${dude.name}.`)
         store.dispatch(LOGIN, { facebookId: dude.id, name: dude.name })
-        fetch('/users', {
+        fetch('/users/loggedIn', {
+          method: 'POST',
           headers: {
-            Accept: 'application/json',
             'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ facebookId: dude.id }),
+        })
+        fetch('/users', {
           method: 'POST',
-          body: JSON.stringify({ userId: response.id, name: response.name }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ facebookId: dude.id, name: dude.name }),
         })
       })
     },
