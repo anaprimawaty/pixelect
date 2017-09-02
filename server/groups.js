@@ -149,7 +149,7 @@ router.post('/', function(req, res) {
     .then(group => {
       user.addGroup(group)
       helper.log(source, 'Success: Created groupId:' + group.id)
-      res.send(helper.success())
+      res.send(JSON.stringify({'Success': group.hash}))
     })
     .catch(e => {
       helper.log(source, e)
