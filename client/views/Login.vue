@@ -41,13 +41,6 @@ export default {
       FB.api('/me', dude => {
         console.log(`Good to see you, ${dude.name}.`)
         store.dispatch(LOGIN, { facebookId: dude.id, name: dude.name })
-        fetch('/users/loggedIn', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ facebookId: dude.id }),
-        })
         fetch('/users', {
           method: 'POST',
           headers: {

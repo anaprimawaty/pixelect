@@ -44,13 +44,6 @@ new Vue({
               facebookId: response.id,
               name: response.name,
             })
-            fetch('/users/loggedIn', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ facebookId: response.id }),
-            })
             fetch('/users', {
               method: 'POST',
               headers: {
