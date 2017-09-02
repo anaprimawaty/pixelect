@@ -11,6 +11,7 @@ router.get('/:groupHash', function(req, res) {
   var source = '[GET /groups/:groupHash]'
   var models = req.app.get('models')
   var groupHash = req.params.groupHash
+
   helper.getGroup(models, groupHash)
   .then(group => {
     helper.log(source, 'Success: Got group with groupId:' + group.id)
@@ -30,6 +31,7 @@ router.get('/:groupHash/users', function(req, res) {
   var source = '[GET /groups/:groupHash/users]'
   var models = req.app.get('models')
   var groupHash = req.params.groupHash
+
   helper.getGroup(models, groupHash)
   .then(group => {
     group.getUsers()
@@ -84,14 +86,14 @@ router.get('/:groupId/photos', function(req, res) {
 })
 
 /* POST change name of group with groupHash
- * params -> groupHash
- * body -> {name: name of the group}
+ * body -> {groupHash, name: name of the group}
  * response -> success/error
  */
-router.post('/:groupHash/changeName', function(req, res) {
+router.post('/changeName', function(req, res) {
   var source = '[POST /groups/:groupHash/changeName]'
   var models = req.app.get('models')
-  var groupHash = req.params.groupHash
+  var groupHash = req.body.groupHash
+
   helper.getGroup(models, groupHash)
   .then(group => {
     group.updateAttributes({
@@ -113,13 +115,14 @@ router.post('/:groupHash/changeName', function(req, res) {
 })
 
 /* POST create new group
- * body -> {session.facebookId, name: name of the group (optional)}
+ * body -> {name: name of the group (optional)}
  * response -> success/error
  */
 router.post('/', function(req, res) {
   var source = '[POST /groups/]'
   var models = req.app.get('models')
   var session = req.app.get('session')
+
   helper.getUser(models, session.facebookId)
   .then(user => {
     models.Group.create({
@@ -144,14 +147,13 @@ router.post('/', function(req, res) {
 })
 
 /* POST add user to existing group
- * params -> groupHash
- * body -> {facebookId: facebookId of user}
+ * body -> {groupHash, facebookId: facebookId of user}
  * response -> success/error
  */
-router.post('/:groupHash/addUser', function(req, res) {
+router.post('/addUser', function(req, res) {
   var source = '[POST /:groupHash/addUser]'
   var models = req.app.get('models')
-  var groupHash = req.params.groupHash
+  var groupHash = req.body.groupHash
   var facebookId = req.body.facebookId
 
   helper.getUser(models, facebookId)
@@ -174,15 +176,14 @@ router.post('/:groupHash/addUser', function(req, res) {
 })
 
 /* POST delete group with groupHash
- * params -> groupHash
- * body -> {session.facebookId}
+ * body -> {groupHash}
  * response -> success/error
  */
-router.post('/:groupHash/delete', function(req, res){
+router.post('/delete', function(req, res){
   var source = '[POST /:groupHash/delete]'
   var models = req.app.get('models')
   var session = req.app.get('session')
-  var groupHash = req.params.groupHash
+  var groupHash = req.body.groupHash
 
   helper.getUser(models, session.facebookId)
   .then(user => {

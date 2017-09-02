@@ -5,10 +5,10 @@ var uploader = multer()
 var helper = require('./helper')
 
  /* POST upload photo and create photo object in db
-  * body -> {facebookId, groupHash, ext}
+  * body -> {groupHash, ext}
   * response -> success/error
   */
-router.post('/:groupHash/create', uploader.single('file'), function(req, res, next) {
+router.post('/create', uploader.single('file'), function(req, res, next) {
   var source = '[POST /create]'
   var models = req.app.get('models')
   var session = req.app.get('session')
@@ -66,15 +66,14 @@ function storePhoto(models, facebookId, groupHash, filename, source) {
 }
 
 /* POST delete specific photo with photoId
- * params -> photoId
- * body -> {session.facebookId}
+ * body -> {photoId}
  * response -> success/error
  */
-router.post('/:photoId/delete', function(req, res) {
+router.post('/delete', function(req, res) {
   var source = '[POST /photos/:photoId/delete]'
   var models = req.app.get('models')
   var session = req.app.get('session')
-  var photoId = req.params.photoId
+  var photoId = req.body.photoId
 
   helper.getUser(models, session.facebookId)
   .then(user => {

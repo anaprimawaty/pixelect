@@ -25,7 +25,7 @@ router.get('/groups', function(req, res) {
 })
 
 /* POST set session.facebookId. create user if user does not exist
- * body -> {facebookId, name}
+ * body -> {name}
  * response -> success/error
  */
 router.post('/', function(req, res) {
