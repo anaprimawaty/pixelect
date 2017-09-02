@@ -3,57 +3,46 @@ var express = require('express')
 var router = express.Router()
 var helper = require('./helper')
 
-/* GET specific group details with group ID
- * params -> groupId: id of the group
- * response -> {groupId, owner of the group}
+/* GET get group with groupHash
+ * params -> groupHash
+ * response -> {group}/error
  */
-router.get('/:groupId', function(req, res){
-	console.log('get group with id '+ req.params.groupId)
-	var models = req.app.get('models')
-	var groupId = req.params.groupId
-	var group = models.Group
-		.findById(groupId)
-		.then(group => {
-			if(group == null)
-				res.send('group does not exist')
-			else {
-					res.send(group)
-			}
-		}, function(error){
-			console.log(error)
-			res.send("Error getting group");
-		})
+router.get('/:groupHash', function(req, res) {
+  var source = '[GET /groups/:groupHash]'
+  var models = req.app.get('models')
+  var groupHash = req.params.groupHash
+  helper.getGroup(models, groupHash)
+  .then(group => {
+    helper.log(source, 'Success: groupId:' + group.id)
+    res.send(group)
+  })
+  .catch(e => {
+    helper.log(source, e)
+    res.status(500).send(helper.error(e))
+  })
 })
 
-
-/* GET group members with group ID
- * params -> groupId: id of the group
- * response -> {[users]}
+/* GET get users of group with groupHash
+ * params -> groupHash
+ * response -> [users]/error
  */
-router.get('/:groupId/users', function(req, res) {
-	var models = req.app.get('models');
-	var groupId = req.params.groupId;
-	 models.Group.find({
-	 	where: {
-	 		id: groupId,
-	 	}
-	 })
-	.then(group => {
-	 	group.getUsers()
-	 	.then(users => {
-	 		res.send(users);
-	 	})
-	 	.catch(e => {
-	 		console.log(e);
-	 		res.send("Error finding users of group");
-		});
-	 })
-	 .catch(e => {
-	 	console.log(e);
-	 	res.send("Error finding group");
-	 });
-});
-
+router.get('/:groupHash/users', function(req, res) {
+  var source = '[GET /groups/:groupHash/users]'
+  var models = req.app.get('models')
+  var groupHash = req.params.groupHash
+  helper.getGroup(models, groupHash)
+  .then(group => {
+    group.getUsers()
+    .then(users => {
+      helper.log(source, 'Success: groupId:' + group.id)
+      res.send(users)
+    })
+  })
+  .catch(e => {
+    helper.log(source, e)
+    res.status(500).send(helper.error(e))
+  })
+})
 
 /* GET specific group photos with group ID
  * params -> groupId: id of the group

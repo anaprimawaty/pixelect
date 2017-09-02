@@ -4,7 +4,7 @@ var helper = require('./helper')
 
 /* GET get groups of user
  * body -> session.facebookId
- * response -> groups/error
+ * response -> [groups]/error
  */
 router.get('/groups', function(req, res) {
   var source = '[GET /users/groups]'

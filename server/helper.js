@@ -34,15 +34,17 @@ module.exports = {
   },
 
   getGroup: function(models, groupHash) {
-    models.Group.findOne({
-      where: { hash: groupHash }
+    return new Promise(function(resolve, reject) {
+      models.Group.findOne({
+        where: { hash: groupHash }
+      })
+      .then(group => {
+        if (group) {
+          resolve(group)
+        } else {
+          reject('Error: No Group with hash:' + groupHash)
+        }
+      })
     })
-    .then(group => {
-      return group;
-    })
-    .catch(e => {
-      console.log("Error finding group with groupHash=" + groupHash + ": " + e);
-      throw "Error finding group with groupHash=" + groupHash;
-    });
   },
 }
