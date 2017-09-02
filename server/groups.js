@@ -1,3 +1,4 @@
+var sequelize = require('sequelize')
 var express = require('express')
 var router = express.Router()
 var helper = require('./helper')
@@ -58,28 +59,39 @@ router.get('/:groupId/users', function(req, res) {
  * params -> groupId: id of the group
  * response -> {[{photoId, owner, votes}]}
  */
-router.get('/:groupId/photos', function(req, res){
-	var models = req.app.get('models')
-	var groupPhotos = []
-	var groupId = req.params.groupId 
-	models.Photo.findAll()
-		.then(function(photos){
-			photos.forEach(function(photo1){
-				if(photo1.groupId == groupId){
-					var photo =JSON.parse(JSON.stringify(photo1))
-					photo.votes = 0
-					models.Vote.findAll()
-					.then(function(votes){
-						votes.forEach(function(vote){
-							if(vote.photoId == photo.id && vote.isValid)
-								photo.votes++ 
-						})
-						groupPhotos.push(photo)
-					})
-				}
-			})
-			res.send(groupPhotos)
-		})
+router.get('/:groupId/photos', function(req, res) {
+  var models = req.app.get('models')
+  var session = req.app.get('session')
+  var groupId = req.params.groupId
+
+  var userId = models.User
+    .findOne({ where: { facebookId: session.facebookId } })
+    .then(user => user.id)
+
+  var photos = models.Photo.findAll({
+    where: { groupId },
+    raw: true,
+  })
+
+  Promise.all([userId, photos]).then(([userId, photos]) =>
+    Promise.all(
+      photos.map(photo => {
+        return models.Vote
+          .findAll({
+            attributes: ['userId'],
+            where: {
+              photoId: photo.id,
+              isValid: true,
+            },
+            raw: true,
+          })
+          .then(votes => {
+            photo.voted = votes.some(v => v.userId === userId)
+            photo.votes = votes.length
+          })
+      })
+    ).then(() => res.send(photos))
+  )
 })
 
 /* POST change name of group with group ID
