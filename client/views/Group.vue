@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div v-if="isGroupValid" class="container">
     <user-list :users="users" />
     <div class="group-title">
       <span class="title" contenteditable="true" @keydown="nameKeydown" @input="nameUpdate">{{ name }}</span>
@@ -27,11 +27,15 @@
     <dropzone :group-id="groupId"></dropzone>
     <photo-list :photos="photos" />
   </div>
+  <div v-else>
+    <not-found />
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import store, { FETCH_GROUP, UPDATE_GROUP_NAME } from '@/store'
+import NotFound from '@/views/NotFound'
 import PhotoList from '@/components/PhotoList'
 import UserList from '@/components/UserList'
 import Preview from '@/components/Preview'
@@ -65,6 +69,7 @@ export default {
   computed: {
     ...mapState({
       facebookId: state => state.facebookId,
+      isGroupValid: state => state.isGroupValid,
       photos: state => state.photos,
       users: state => state.users,
       preview: state => state.preview,
@@ -75,6 +80,7 @@ export default {
     }),
   },
   components: {
+    NotFound,
     PhotoList,
     Preview,
     Dropzone,

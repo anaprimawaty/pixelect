@@ -25,7 +25,7 @@ new Vue({
   el: '#app',
   created: function() {
     window.fbAsyncInit = function() {
-      // eslint-disable-next-line
+      /* global FB */
       FB.init({
         appId: '2034722683480772',
         autoLogAppEvents: true,
@@ -33,27 +33,26 @@ new Vue({
         version: 'v2.10',
         status: 'true',
       })
-      // eslint-disable-next-line
       FB.AppEvents.logPageView()
-      // eslint-disable-next-line
       FB.getLoginStatus(function(response) {
-        if (response.status === 'connected') {
-          // eslint-disable-next-line
-          FB.api('/me', function(response) {
-            store.dispatch(LOGIN, {
-              facebookId: response.id,
-              name: response.name,
-            })
+        console.log(response)
+        if (response.status === 'connected' && response.authResponse != null) {
+          FB.api('/me', function(dude) {
             fetch('/users', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                facebookId: response.id,
-                name: response.name,
+                facebookId: dude.id,
+                name: dude.name,
               }),
-            })
+            }).then(() =>
+              store.dispatch(LOGIN, {
+                facebookId: dude.id,
+                name: dude.name,
+              })
+            )
           })
         } else {
           store.dispatch(LOGIN, { facebookId: 0, name: '' })

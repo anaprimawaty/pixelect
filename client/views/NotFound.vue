@@ -1,10 +1,12 @@
 <template>
-  <span>User {{ userId }}</span>
+	<span>
+		Page not found
+	</span>
 </template>
 
 <script>
 export default {
-  props: ['userId'],
+  name: 'NotFound',
 }
 </script>
 
