@@ -24,7 +24,7 @@ function canVote(models, photoId, user) {
 }
 
 /* POST vote on a photo
- * body -> {url, groupId}
+ * body -> {photoId}
  * response -> success/error
  */
 router.post('/', function(req,res) {
@@ -40,15 +40,13 @@ router.post('/', function(req,res) {
     })
     .then(vote => {
       if (vote) {
-        vote.update({
-          isValid: !vote.get('isValid')
-        })
+        vote.update({ isValid: !vote.get('isValid') })
         .then(vote => {
           helper.log(source, 'Success: Toggled vote for userId:' + vote.userId + ' and photoId:' + vote.photoId)
           res.send(helper.success())
         })
       } else {
-        canVote(models, photoId, user)
+        canVote(models, photoId, user) // check if user can vote for photo
         .then(() => {
           models.Vote.create({ userId: user.id, photoId: photoId })
           .then(vote => {
