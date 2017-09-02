@@ -1,6 +1,6 @@
 <template>
   <main v-if="isLoggedIn === null">
-    <b-loading :active="true" :canCancel="false" :style="{marginBottom: '150px'}"></b-loading>
+    <loading />
   </main>
   <main v-else-if="isLoggedIn">
     <navigation/>
@@ -15,6 +15,7 @@
 import { mapState } from 'vuex'
 import Navigation from '@/components/Navigation'
 import Login from '@/views/Login'
+import Loading from '@/views/Loading'
 import store from '@/store'
 
 export default {
@@ -24,7 +25,8 @@ export default {
   }),
   components: {
     navigation: Navigation,
-    login: Login,
+    Login,
+    Loading,
   },
 }
 </script>
@@ -37,4 +39,9 @@ export default {
   text-align: center;
   color: #404040;
 }
+
+html, .loading-overlay {
+  background: #f4f4f4;
+}
+
 </style>

@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
+  isGroupValid: null,
   groupId: '',
   groupName: '',
   photos: {},
@@ -16,8 +17,8 @@ const state = {
 }
 
 const mutations = {
-  initialiseGroup(state, { name, photos, users }) {
-    state.isGroupValid = true
+  initialiseGroup(state, { valid, name, photos, users }) {
+    state.isGroupValid = valid || null
     state.groupName = name
     state.photos = photos
     state.users = users
@@ -45,7 +46,7 @@ const mutations = {
     state.groups = groups
   },
   invalidateGroup(state) {
-    state.isGroupValid = false
+    state.isGroupValid = null
   },
 }
 
@@ -72,10 +73,14 @@ const actions = {
           ...jsons[0],
           photos,
           users: jsons[2],
+          valid: true,
         }
       })
       .then(json => commit(INITIALISE_GROUP, json))
-      .catch(err => console.log(err))
+      .catch(err => {
+        commit(INITIALISE_GROUP, { valid: false })
+        console.log(err)
+      })
   },
   fetchGroupList({ commit }, groupId) {
     fetch('/users/groups', { method: 'GET' })

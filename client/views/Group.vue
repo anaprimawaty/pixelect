@@ -36,6 +36,7 @@
 import { mapState } from 'vuex'
 import store, { FETCH_GROUP, UPDATE_GROUP_NAME } from '@/store'
 import NotFound from '@/views/NotFound'
+import Loading from '@/views/Loading'
 import PhotoList from '@/components/PhotoList'
 import UserList from '@/components/UserList'
 import Preview from '@/components/Preview'
@@ -85,6 +86,7 @@ export default {
     Preview,
     Dropzone,
     UserList,
+    Loading,
   },
   methods: {
     nameKeydown(e) {

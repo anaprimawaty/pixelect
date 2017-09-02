@@ -1,7 +1,7 @@
 <template>
   <div class="box is-paddingless is-clipped">
     <figure :class="{ image: true, animate }" :style="imageStyle" @dblclick="vote">
-      <div class="loader" :src="url" />
+      <div class="loader" />
       <progressive-background :src="url" />
       <svg class="heart" viewBox="0 0 24 24">
         <path
