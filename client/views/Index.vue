@@ -1,19 +1,23 @@
 <template>
-	<div class="container">
-		<div class="card" v-for="group in groups">
-			<router-link :to="`/group/${group.id}`">
-				<div class="card-image" style="background-image: url(https://s3-ap-southeast-1.amazonaws.com/pixelectstaging/c23eef979bff27aa896f49095c99bfa1)" />
-				<div class="card-content">
-					<router-link :to="`/group/${group.id}`">{{ group.name }}</router-link>
-				</div>
-		</router-link>
+	<div>
+		<navigation :buttons="[{ text: 'Create Group', class: 'button is-primary', action: 'createGroup'}]" @createGroup="createGroup" />
+		<div class="container">
+			<div class="card" v-for="group in groups">
+				<router-link :to="`/group/${group.hash}`">
+					<div class="card-image" style="background-image: url(https://s3-ap-southeast-1.amazonaws.com/pixelectstaging/c23eef979bff27aa896f49095c99bfa1)" />
+					<div class="card-content">
+						<router-link :to="`/group/${group.hash}`">{{ group.name }}</router-link>
+					</div>
+				</router-link>
 			</div>
+		</div>
 	</div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import store, { FETCH_GROUP_LIST } from '@/store'
+import Navigation from '@/components/Navigation'
 
 export default {
   mounted() {
@@ -22,6 +26,14 @@ export default {
   computed: mapState({
     groups: state => state.groups,
   }),
+  methods: {
+    createGroup() {
+      fetch('/groups', { method: 'POST' })
+    },
+  },
+  components: {
+    Navigation,
+  },
 }
 </script>
 

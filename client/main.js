@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Buefy from 'buefy'
-import Toasted from 'vue-toasted'
 import VueProgressiveImage from 'vue-progressive-image'
 import VueResize from 'vue-resize'
 import FBSignInButton from 'vue-facebook-signin-button'
@@ -15,7 +14,6 @@ import 'buefy/lib/buefy.css'
 import '../static/assets/facebook'
 
 Vue.use(Buefy)
-Vue.use(Toasted)
 Vue.use(VueProgressiveImage)
 Vue.use(VueResize)
 Vue.use(FBSignInButton)
@@ -35,7 +33,6 @@ new Vue({
       })
       FB.AppEvents.logPageView()
       FB.getLoginStatus(function(response) {
-        console.log(response)
         if (response.status === 'connected' && response.authResponse != null) {
           FB.api('/me', function(dude) {
             fetch('/users', {

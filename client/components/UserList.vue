@@ -3,7 +3,7 @@
 	<li v-for="user in users.slice(0, 4)">
 		<a :href="`//www.facebook.com/${user.facebookId}`">
 			<img :src="`//graph.facebook.com/v2.10/${user.facebookId}/picture`" />
-			<span class="label">{{ user.firstName }} {{ user.lastName }}</span>
+			<span class="label">{{ user.firstName }}</span>
 		</a>
 	</li>
 </ul>
