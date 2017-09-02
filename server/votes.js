@@ -1,63 +1,72 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+var router = express.Router()
+var helper = require('./helper')
 
-// TODO: Check User can vote for Photo
+function canVote(models, photoId, user) {
+  return new Promise(function(resolve, reject) {
+    models.Photo.findById(photoId)
+    .then(photo => {
+      if (!photo) {
+        reject('Error: No Photo with photoId:' + photoId)
+      }
+      models.UserGroup.findOne({
+        where: { groupId: photo.groupId, userId: user.id }
+      })
+      .then(ug => {
+        if (ug) {
+          resolve()
+        } else {
+          reject('Error: facebookId:' + user.facebookId + ' cannot vote for photoId:' + photoId)
+        }
+      })
+    })
+  })
+}
 
 /* POST vote on a photo
  * body -> {url, groupId}
  * response -> success/error
  */
 router.post('/', function(req,res) {
-  var models = req.app.get('models');
-  var session = req.app.get('session');
-  var photoId = req.body['photoId'];
+  var source = '[POST /votes/]'
+  var models = req.app.get('models')
+  var session = req.app.get('session')
+  var photoId = req.body.photoId
 
-  // Find User
-  models.User.findOne({
-    where: {
-      facebookId: session.facebookId
-    }
-  })
+  helper.getUser(models, session.facebookId)
   .then(user => {
-    // Create or update Vote
     models.Vote.findOne({
-      where: {
-        userId: user.get('id'),
-        photoId: photoId
-      }
+      where: { userId: user.id, photoId: photoId }
     })
     .then(vote => {
-      // Vote exists
-      vote.update({
-        isValid: !vote.get('isValid')
-      })
-      .then(() => {
-        res.send("Success");
-      })
-      .catch(e => {
-        console.log(e);
-        res.send("Error");
-      });
+      if (vote) {
+        vote.update({
+          isValid: !vote.get('isValid')
+        })
+        .then(vote => {
+          helper.log(source, 'Success: Toggled vote for userId:' + vote.userId + ' and photoId:' + vote.photoId)
+          res.send(helper.success())
+        })
+      } else {
+        canVote(models, photoId, user)
+        .then(() => {
+          models.Vote.create({ userId: user.id, photoId: photoId })
+          .then(vote => {
+            helper.log(source, 'Success: Created vote for userId:' + vote.userId + ' and photoId:' + vote.photoId)
+            res.send(helper.success())
+          })
+        })
+        .catch(e => {
+          helper.log(source, e)
+          res.status(500).send(e)
+        })
+      }
     })
-    .catch(e => {
-      // Vote does not exist
-      models.Vote.create({
-        userId: user.id,
-        photoId: photoId
-      })
-      .then(() => {
-        res.send("Success");
-      })
-      .catch(e => {
-        console.log(e);
-        res.send("Error");
-      });
-    });
   })
   .catch(e => {
-    console.log(e);
-    res.send("Cannot find User with facebookId");
-  });
-});
+    helper.log(source, e)
+    res.status(500).send(e)
+  })
+})
 
-module.exports = router;
+module.exports = router
