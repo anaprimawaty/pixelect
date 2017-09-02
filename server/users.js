@@ -14,7 +14,7 @@ router.get('/groups', function(req, res) {
   .then(user => {
     user.getGroups()
     .then(groups => {
-      helper.log(source, 'Success: userId:' + user.id)
+      helper.log(source, 'Success: Got groups of user with userId:' + user.id)
       res.send(groups)
     })
   })

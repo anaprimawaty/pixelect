@@ -76,7 +76,7 @@ router.post('/:photoId/delete', function(req, res) {
   var session = req.app.get('session')
   var photoId = req.params.photoId
 
-  helper.getUser(models, 123)
+  helper.getUser(models, session.facebookId)
   .then(user => {
     return new Promise(function(resolve, reject) {
       models.Photo.findById(photoId)
@@ -84,7 +84,7 @@ router.post('/:photoId/delete', function(req, res) {
         if (photo.userId === user.id) {
           resolve(photo)
         } else {
-          reject('Error: facebookId:' + 123 + ' cannot delete photoId:' + photoId)
+          reject('Error: facebookId:' + session.facebookId + ' cannot delete photoId:' + photoId)
         }
       })
       .catch(e => {

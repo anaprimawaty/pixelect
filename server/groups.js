@@ -13,7 +13,7 @@ router.get('/:groupHash', function(req, res) {
   var groupHash = req.params.groupHash
   helper.getGroup(models, groupHash)
   .then(group => {
-    helper.log(source, 'Success: groupId:' + group.id)
+    helper.log(source, 'Success: Got group with groupId:' + group.id)
     res.send(group)
   })
   .catch(e => {
@@ -34,7 +34,7 @@ router.get('/:groupHash/users', function(req, res) {
   .then(group => {
     group.getUsers()
     .then(users => {
-      helper.log(source, 'Success: groupId:' + group.id)
+      helper.log(source, 'Success: Got users of group with groupId:' + group.id)
       res.send(users)
     })
   })
@@ -98,7 +98,7 @@ router.post('/:groupHash/changeName', function(req, res) {
       name: req.body.name
     })
     .then(group => {
-      helper.log(source, 'Success: groupId:' + group.id)
+      helper.log(source, 'Success: Changed name of group with groupId:' + group.id)
       res.send(helper.success())
     })
     .catch(e => {
