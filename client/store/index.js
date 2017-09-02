@@ -12,6 +12,7 @@ const state = {
   isLoggedIn: null,
   userName: '',
   facebookId: null,
+  groups: [],
 }
 
 const mutations = {
@@ -38,6 +39,9 @@ const mutations = {
     state.facebookId = facebookId
     state.userName = name
   },
+  initialiseGroupList(state, groups) {
+    state.groups = groups
+  },
 }
 
 const actions = {
@@ -63,6 +67,11 @@ const actions = {
         }
       })
       .then(json => commit(INITIALISE_GROUP, json))
+  },
+  fetchGroupList({ commit }, groupId) {
+    fetch('/users/groups', { method: 'GET' })
+      .then(response => response.json())
+      .then(json => commit(INITIALISE_GROUP_LIST, json))
   },
   updateGroupName({ commit }, { groupId, name }) {
     const payload = { name }
@@ -98,6 +107,9 @@ const actions = {
   login({ commit }, { facebookId, name }) {
     commit(LOGIN, { facebookId, name })
   },
+  initialiseGroupList({ commit }, groups) {
+    commit(INITIALISE_GROUP_LIST, groups)
+  },
 }
 
 export default new Vuex.Store({
@@ -108,6 +120,7 @@ export default new Vuex.Store({
 
 // Mutations
 export const INITIALISE_GROUP = 'initialiseGroup'
+export const INITIALISE_GROUP_LIST = 'initialiseGroupList'
 
 // Actions
 export const FETCH_GROUP = 'fetchGroup'
@@ -115,3 +128,4 @@ export const UPDATE_GROUP_NAME = 'updateGroupName'
 export const VOTE = 'vote'
 export const PREVIEW = 'preview'
 export const LOGIN = 'login'
+export const FETCH_GROUP_LIST = 'fetchGroupList'
