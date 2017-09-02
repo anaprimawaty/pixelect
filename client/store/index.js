@@ -88,9 +88,12 @@ const actions = {
       .then(json => commit(INITIALISE_GROUP_LIST, json))
   },
   updateGroupName({ commit }, { groupId, name }) {
-    const payload = { name }
+    const payload = {
+      groupHash: groupId,
+      name,
+    }
 
-    fetch(`/groups/${groupId}/changeName`, {
+    fetch(`/groups/changeName`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',

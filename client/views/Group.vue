@@ -63,13 +63,13 @@ export default {
     })
   },
   beforeUpdate: function() {
-    if (this.name === '') {
+    if (this.name === null) {
       this.name = store.state.groupName
     }
   },
   data() {
     return {
-      name: '',
+      name: null,
       selected: null,
     }
   },

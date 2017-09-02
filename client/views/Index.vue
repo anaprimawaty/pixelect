@@ -6,7 +6,7 @@
 				<router-link :to="`/group/${group.hash}`">
 					<div class="card-image" style="background-image: url(https://s3-ap-southeast-1.amazonaws.com/pixelectstaging/c23eef979bff27aa896f49095c99bfa1)" />
 					<div class="card-content">
-						<router-link :to="`/group/${group.hash}`">{{ group.name }}</router-link>
+						{{ group.name }}
 					</div>
 				</router-link>
 			</div>
