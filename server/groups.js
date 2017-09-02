@@ -113,7 +113,7 @@ router.post('/:groupHash/changeName', function(req, res) {
 })
 
 /* POST create new group
- * body -> {name: name of the group} (optional)
+ * body -> {session.facebookId, name: name of the group (optional)}
  * response -> success/error
  */
 router.post('/', function(req, res) {
@@ -175,6 +175,7 @@ router.post('/:groupHash/addUser', function(req, res) {
 
 /* POST delete group with groupHash
  * params -> groupHash
+ * body -> {session.facebookId}
  * response -> success/error
  */
 router.post('/:groupHash/delete', function(req, res){
@@ -183,7 +184,7 @@ router.post('/:groupHash/delete', function(req, res){
   var session = req.app.get('session')
   var groupHash = req.params.groupHash
 
-  helper.getUser(models, 4564)
+  helper.getUser(models, session.facebookId)
   .then(user => {
     return new Promise(function(resolve, reject) {
       helper.getGroup(models, groupHash)
@@ -191,7 +192,7 @@ router.post('/:groupHash/delete', function(req, res){
         if (user.id === group.owner) {
           resolve(group)
         } else {
-          reject('Error: facebookId:' + 4564 + ' cannot delete groupHash:' + groupHash)
+          reject('Error: facebookId:' + session.facebookId + ' cannot delete groupHash:' + groupHash)
         }
       })
       .catch(e => {
