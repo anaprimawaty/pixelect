@@ -17,6 +17,7 @@ const state = {
 
 const mutations = {
   initialiseGroup(state, { name, photos, users }) {
+    state.isGroupValid = true
     state.groupName = name
     state.photos = photos
     state.users = users
@@ -40,22 +41,29 @@ const mutations = {
     state.userName = name
   },
   initialiseGroupList(state, groups) {
+    console.log(groups)
     state.groups = groups
+  },
+  invalidateGroup(state) {
+    state.isGroupValid = false
   },
 }
 
 const actions = {
   fetchGroup({ commit }, groupId) {
+    commit(INVALIDATE_GROUP)
     Promise.all([
       fetch(`/groups/${groupId}`),
       fetch(`/groups/${groupId}/photos`),
       fetch(`/groups/${groupId}/users`),
     ])
-      .then(responses =>
-        Promise.all(responses.map(response => response.json()))
-      )
+      .then(responses => {
+        if (!responses.every(v => v.ok)) {
+          throw new Error('Invalid hash')
+        }
+        return Promise.all(responses.map(response => response.json()))
+      })
       .then(jsons => {
-        console.log(jsons[1])
         const photos = jsons[1].reduce((acc, val) => {
           acc[val.id] = { ...val, photoId: val.id }
           return acc
@@ -67,6 +75,7 @@ const actions = {
         }
       })
       .then(json => commit(INITIALISE_GROUP, json))
+      .catch(err => console.log(err))
   },
   fetchGroupList({ commit }, groupId) {
     fetch('/users/groups', { method: 'GET' })
@@ -129,3 +138,4 @@ export const VOTE = 'vote'
 export const PREVIEW = 'preview'
 export const LOGIN = 'login'
 export const FETCH_GROUP_LIST = 'fetchGroupList'
+export const INVALIDATE_GROUP = 'invalidateGroup'
