@@ -3,7 +3,7 @@ var router = express.Router()
 var helper = require('./helper')
 
 /* GET get groups of user
- * body -> session.facebookId
+ * body -> {session.facebookId}
  * response -> [groups]/error
  */
 router.get('/groups', function(req, res) {
@@ -25,7 +25,7 @@ router.get('/groups', function(req, res) {
 })
 
 /* POST set session.facebookId. create user if user does not exist
- * body -> facebookId, name
+ * body -> {facebookId, name}
  * response -> success/error
  */
 router.post('/', function(req, res) {

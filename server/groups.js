@@ -83,142 +83,133 @@ router.get('/:groupId/photos', function(req, res) {
   )
 })
 
-/* POST change name of group with group ID
- * params -> groupId: id of the group
+/* POST change name of group with groupHash
+ * params -> groupHash
  * body -> {name: name of the group}
  * response -> success/error
  */
-router.post('/:groupId/changeName', function(req, res){
-	console.log('changing name of group with id '+ req.params.groupId)
-	var models = req.app.get('models')
-	var groupId = req.params.groupId
-	var group = models.Group
-	.findById(groupId)
-	.then(group => {
-		group.updateAttributes({
-			name: req.body.name
-		}).then(function(){
-			res.send('success changing name')
-		}, function(error){
-			console.log(error)
-			res.send('error changing name')
-		})
-	})
+router.post('/:groupHash/changeName', function(req, res) {
+  var source = '[POST /groups/:groupHash/changeName]'
+  var models = req.app.get('models')
+  var groupHash = req.params.groupHash
+  helper.getGroup(models, groupHash)
+  .then(group => {
+    group.updateAttributes({
+      name: req.body.name
+    })
+    .then(group => {
+      helper.log(source, 'Success: groupId:' + group.id)
+      res.send(helper.success())
+    })
+    .catch(e => {
+      helper.log(source, e)
+      res.status(500).send(helper.error(e))
+    })
+  })
+  .catch(e => {
+    helper.log(source, e)
+    res.status(500).send(helper.error(e))
+  })
 })
 
 /* POST create new group
- * body -> {name: name of the group}
+ * body -> {name: name of the group} (optional)
  * response -> success/error
  */
-router.post('/', function(req, res){
-	console.log('new group')
-	var models = req.app.get('models')
-	var session = req.app.get('session')
-	models.User.findOne({
-	    where: {
-	      facebookId: session.facebookId
-	    }
-	}).then(user => {
-    	var owner = user.id
-		models.Group.create({
-			name: req.body.name,
-			owner: owner,
-			hash: helper.getHash(session.facebookId)
-		}).then(group =>{
-			console.log("success adding new group")
-			models.User.findById(owner).then(user => {
-				user.addGroup(group)
-			});
-			res.send(group)
-		},function(error){
-			console.log(error)
-			res.send('error adding new group')
-		})
-	})
+router.post('/', function(req, res) {
+  var source = '[POST /groups/]'
+  var models = req.app.get('models')
+  var session = req.app.get('session')
+  helper.getUser(models, session.facebookId)
+  .then(user => {
+    models.Group.create({
+      name: req.body.name,
+      owner: user.id,
+      hash: helper.getHash(session.facebookId).substring(0,20)
+    })
+    .then(group => {
+      user.addGroup(group)
+      helper.log(source, 'Success: Created groupId:' + group.id)
+      res.send(helper.success())
+    })
+    .catch(e => {
+      helper.log(source, e)
+      res.status(500).send(helper.error(e))
+    })
+  })
+  .catch(e => {
+    helper.log(source, e)
+    res.status(500).send(helper.error(e))
+  })
 })
 
 /* POST add user to existing group
- * params -> groupId: id of the group
- * body -> {name: name of the group,
- 			facebookId: facebookId of the user}
+ * params -> groupHash
+ * body -> {facebookId: facebookId of user}
  * response -> success/error
  */
-router.post('/:groupId/addUser', function(req, res){
-	console.log('add user')
-	var groupId = req.params.groupId
-	var userId = req.body.facebookId
-	var models = req.app.get('models')
-	models.User.findOne({
-	    where: {
-	      facebookId: userId
-	    }
-	}).then(user => {
-    	userId = user.id
-		models.User.findById(userId)
-		.then(user => {
-		   models.Group.findById(groupId).then(group => {
-	    	 if(user == null || group == null)
-	    	 	res.send('error adding user to group')
-	    	 else{
-	    	 	user.addGroup(group).
-	    	 	then(function(){
-	    	 		res.send('user added to group')	
-	    	 	})
-	    	 }
-	   		})
-	 	})
-	 	.catch(e => {
-	 		console.log(e);
-	 		res.send("Error finding user");
-		});
-	})
+router.post('/:groupHash/addUser', function(req, res) {
+  var source = '[POST /:groupHash/addUser]'
+  var models = req.app.get('models')
+  var groupHash = req.params.groupHash
+  var facebookId = req.body.facebookId
+
+  helper.getUser(models, facebookId)
+  .then(user => {
+    helper.getGroup(models, groupHash)
+    .then(group => {
+      user.addGroup(group)
+      helper.log(source, 'Success: Added userId:' + user.id + ' to groupId:' + group.id)
+      res.send(helper.success())
+    })
+    .catch(e => {
+      helper.log(source, e)
+      res.status(500).send(helper.error(e))
+    })
+  })
+  .catch(e => {
+    helper.log(source, e)
+    res.status(500).send(helper.error(e))
+  })
 })
 
-/* POST delete specific group with group ID
- * params -> groupId: id of the group
+/* POST delete group with groupHash
+ * params -> groupHash
  * response -> success/error
  */
-router.post('/:groupId/delete', function(req, res){
-	var session = req.app.get('session')
-	console.log('delete group with id '+ req.params.groupId)
-	var models = req.app.get('models')
-	var groupId = req.params.groupId
-	models.User.findOne({
-	    where: {
-	      facebookId: session.facebookId
-	    }
-	})
-	.then(function(user){
-		var group = models.Group
-		.findById(groupId)
-		.then(group => {
-			if(group.owner == user.id){
-				if(group == null)
-					res.send('group does not exist')
-				else {
-						group.destroy().then(()=>{
-							res.send('group deleted')
-						})
-				}
-			}
-			else
-				res.send('Error deleting group')
-		}, function(error){
-			console.log(error)
-			res.send("Error deleting group")
-		})
-	})
+router.post('/:groupHash/delete', function(req, res){
+  var source = '[POST /:groupHash/delete]'
+  var models = req.app.get('models')
+  var session = req.app.get('session')
+  var groupHash = req.params.groupHash
+
+  helper.getUser(models, 4564)
+  .then(user => {
+    return new Promise(function(resolve, reject) {
+      helper.getGroup(models, groupHash)
+      .then(group => {
+        if (user.id === group.owner) {
+          resolve(group)
+        } else {
+          reject('Error: facebookId:' + 4564 + ' cannot delete groupHash:' + groupHash)
+        }
+      })
+      .catch(e => {
+        reject(e)
+      })
+    })
+  })
+  .then(group => {
+    return group.destroy()
+  })
+  .then(group => {
+    helper.log(source, 'Success: Deleted groupId:' + group.id)
+    res.send(helper.success())
+  })
+  .catch(e => {
+    helper.log(source, e)
+    res.status(500).send(helper.error(e))
+  })
 })
-
-
-/* POST publish photos to facebook
- * params -> groupId: id of the group
- * body -> {name: name of the group}
- * response -> success/error
- */
-router.post('/:id/publish', function(req, res){
-	res.send('publish photos of group with id '+ req.params.id)
-})
-
 
 module.exports = router
