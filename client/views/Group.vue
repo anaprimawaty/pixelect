@@ -115,10 +115,9 @@ export default {
       if (!successful) {
         prompt('Copy this link', this.$refs.link.value)
       } else {
-        this.$toasted.show('Copied link!', {
-          theme: 'outline',
-          position: 'top-center',
-          duration: 5000,
+        this.$toast.open({
+          message: 'Copied link!',
+          type: 'is-success',
         })
       }
     },
