@@ -24,7 +24,7 @@
       <input ref="link" :value="link" />
     </div>
     <preview :link="preview && preview.link" />
-    <dropzone></dropzone>
+    <dropzone :group-id="groupId"></dropzone>
     <photo-list :photos="photos" />
   </div>
 </template>
