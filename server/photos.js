@@ -9,7 +9,7 @@ var helper = require('./helper')
   * response -> success/error
   */
 router.post('/create', uploader.single('file'), function(req, res, next) {
-  var source = '[POST /create]'
+  var source = '[POST /photos/create]'
   var models = req.app.get('models')
   var session = req.app.get('session')
   var s3 = req.app.get('s3')
@@ -70,7 +70,7 @@ function storePhoto(models, facebookId, groupHash, filename, source) {
  * response -> success/error
  */
 router.post('/delete', function(req, res) {
-  var source = '[POST /photos/:photoId/delete]'
+  var source = '[POST /photos/delete]'
   var models = req.app.get('models')
   var session = req.app.get('session')
   var photoId = req.body.photoId

@@ -50,18 +50,34 @@ router.get('/:groupHash/users', function(req, res) {
  * params -> groupId: id of the group
  * response -> {[{photoId, owner, votes}]}
  */
-router.get('/:groupId/photos', function(req, res) {
+router.get('/:groupHash/photos', function(req, res) {
+  var source = '[GET /groups/:groupHash/photos]'
   var models = req.app.get('models')
   var session = req.app.get('session')
-  var groupId = req.params.groupId
+  var groupHash = req.params.groupHash
 
-  var userId = models.User
-    .findOne({ where: { facebookId: session.facebookId } })
+  var userId = helper.getUser(models, session.facebookId)
     .then(user => user.id)
+    .catch(e => {
+      helper.log(source, e)
+      res.status(500).send(e)
+    })
 
-  var photos = models.Photo.findAll({
-    where: { groupId },
-    raw: true,
+  var photos = new Promise(function(resolve, reject) {
+    helper.getGroup(models, groupHash)
+    .then(group => {
+      models.Photo.findAll({
+        where: { groupId: group.id },
+        raw: true
+      })
+      .then(photos => {
+        resolve(photos)
+      })
+    })
+    .catch(e => {
+      helper.log(source, e)
+      res.status(500).send(e)
+    })
   })
 
   Promise.all([userId, photos]).then(([userId, photos]) =>
@@ -90,7 +106,7 @@ router.get('/:groupId/photos', function(req, res) {
  * response -> success/error
  */
 router.post('/changeName', function(req, res) {
-  var source = '[POST /groups/:groupHash/changeName]'
+  var source = '[POST /groups/changeName]'
   var models = req.app.get('models')
   var groupHash = req.body.groupHash
 
@@ -151,7 +167,7 @@ router.post('/', function(req, res) {
  * response -> success/error
  */
 router.post('/addUser', function(req, res) {
-  var source = '[POST /:groupHash/addUser]'
+  var source = '[POST /groups/addUser]'
   var models = req.app.get('models')
   var groupHash = req.body.groupHash
   var facebookId = req.body.facebookId
@@ -180,7 +196,7 @@ router.post('/addUser', function(req, res) {
  * response -> success/error
  */
 router.post('/delete', function(req, res){
-  var source = '[POST /:groupHash/delete]'
+  var source = '[POST /groups/delete]'
   var models = req.app.get('models')
   var session = req.app.get('session')
   var groupHash = req.body.groupHash
