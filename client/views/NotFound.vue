@@ -1,7 +1,10 @@
 <template>
-	<span>
-		Page not found
-	</span>
+	<div>
+		<navigation />
+		<span>
+			Page not found
+		</span>
+	</div>
 </template>
 
 <script>

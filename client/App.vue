@@ -3,17 +3,13 @@
     <loading />
   </main>
   <main v-else-if="isLoggedIn">
-    <navigation/>
-    <section class="section">
-      <router-view></router-view>
-    </section>
+    <router-view></router-view>
   </main>
   <login v-else/>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import Navigation from '@/components/Navigation'
 import Login from '@/views/Login'
 import Loading from '@/views/Loading'
 import store from '@/store'
@@ -24,7 +20,6 @@ export default {
       state.facebookId == null ? null : state.facebookId !== 0,
   }),
   components: {
-    navigation: Navigation,
     Login,
     Loading,
   },
