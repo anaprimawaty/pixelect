@@ -1,11 +1,10 @@
 <template>
-  <dropzone id="imageDropzone" ref="imageDropzone" :url="url" :dropzone-options="customOptionsObject" :use-custom-dropzone-options="true" @vdropzone-sending="sending" @vdropzone-success="showSuccess">
+  <dropzone id="imageDropzone" ref="imageDropzone" url="https://httpbin.org/post" :dropzone-options="customOptionsObject" :use-custom-dropzone-options="true" @vdropzone-sending="sending" @vdropzone-success="showSuccess">
   </dropzone>
 </template>
 
 <script>
 import Dropzone from 'vue2-dropzone'
-import store from '@/store'
 
 export default {
   data() {
@@ -13,15 +12,16 @@ export default {
       customOptionsObject: {
         acceptedFileTypes: 'image/jpeg,image/png',
       },
-      url: '/photos/create',
     }
   },
+  props: ['groupId'],
   components: {
     Dropzone,
   },
   methods: {
     sending(file, xhr, formData) {
-      formData.append('facebookId', store.state.fbId)
+      formData.append('ext', '.' + file.type.split('/')[1])
+      formData.append('groupHash', this.groupId)
     },
     showSuccess(file, response) {
       this.$refs.imageDropzone.dropzone.removeFile(file)
