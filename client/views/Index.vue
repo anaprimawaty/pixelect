@@ -16,6 +16,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import router from '@/router'
 import store, { FETCH_GROUP_LIST } from '@/store'
 import Navigation from '@/components/Navigation'
 
@@ -29,6 +30,13 @@ export default {
   methods: {
     createGroup() {
       fetch('/groups', { method: 'POST' })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error()
+          }
+          return response.json()
+        })
+        .then(json => router.push(`/group/${json.Success}`))
     },
   },
   components: {
