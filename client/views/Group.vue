@@ -45,8 +45,8 @@ export default {
   mounted: function() {
     store.dispatch(FETCH_GROUP, this.groupId)
 
-    const payload = { facebookId: this.facebookId }
-    fetch(`/groups/${this.groupId}/addUser`, {
+    const payload = { facebookId: this.facebookId, groupHash: this.groupId }
+    fetch(`/groups/addUser`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
