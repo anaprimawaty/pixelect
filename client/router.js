@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/views/Index'
 import Group from '@/views/Group'
+import NotFound from '@/views/NotFound'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       component: Group,
       alias: '/group/:groupId',
       props: true,
+    },
+    {
+      path: '/*',
+      name: 'not-found',
+      component: NotFound,
     },
   ],
 })
