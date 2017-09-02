@@ -1,5 +1,5 @@
 <template>
-  <dropzone id="imageDropzone" ref="imageDropzone" url="https://httpbin.org/post" :dropzone-options="customOptionsObject" :use-custom-dropzone-options="true" @vdropzone-sending="sending" @vdropzone-success="showSuccess">
+  <dropzone id="imageDropzone" ref="imageDropzone" url="/photos/create" :dropzone-options="customOptionsObject" :use-custom-dropzone-options="true" @vdropzone-sending="sending" @vdropzone-success="showSuccess">
   </dropzone>
 </template>
 
