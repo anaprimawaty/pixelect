@@ -56,7 +56,6 @@ const actions = {
           acc[val.id] = { ...val, photoId: val.id }
           return acc
         }, {})
-        console.log(photos)
         return {
           ...jsons[0],
           photos,

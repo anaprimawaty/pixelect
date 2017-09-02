@@ -99,7 +99,6 @@ export default {
         method: 'send',
         link: this.$refs.link.value,
       })
-      console.log(this.$refs.link.value)
     },
     copyLink(e) {
       this.$refs.link.select()

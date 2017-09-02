@@ -15,7 +15,6 @@ export default {
   props: ['link'],
   methods: {
     close(e) {
-      console.log(e)
       store.commit(PREVIEW, null)
     },
   },
