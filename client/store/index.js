@@ -82,7 +82,7 @@ const actions = {
         console.log(err)
       })
   },
-  fetchGroupList({ commit }, groupId) {
+  fetchGroupList({ commit }) {
     fetch('/users/groups', { method: 'GET' })
       .then(response => response.json())
       .then(json => commit(INITIALISE_GROUP_LIST, json))
