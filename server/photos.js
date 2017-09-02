@@ -26,14 +26,13 @@ router.post('/create', uploader.single('file'), function(req, res, next) {
         res.status(500).send(helper.error('Failed to upload file'))
       } else {
         helper.log(source, 'Success: File uploaded successfully')
-        var status = storePhoto(models, session.facebookId, req.body.groupHash, filename, source)
-        res.send(status)
+        storePhoto(models, session.facebookId, req.body.groupHash, filename, source, res)
       }
     }
   )
 })
 
-function storePhoto(models, facebookId, groupHash, filename, source) {
+function storePhoto(models, facebookId, groupHash, filename, source, res) {
   helper.getUser(models, facebookId)
   .then(user => {
     return new Promise(function(resolve, reject) {
@@ -57,11 +56,11 @@ function storePhoto(models, facebookId, groupHash, filename, source) {
   })
   .then(photo => {
     helper.log(source, 'Success: Photo object created successfully')
-    return helper.success()
+    res.send(helper.success())
   })
   .catch(e => {
     helper.log(source, e)
-    return helper.error(e)
+    res.status(500).send(helper.error(e))
   })
 }
 
