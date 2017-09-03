@@ -10,7 +10,6 @@ const state = {
   photos: {},
   users: [],
   preview: null,
-  isLoggedIn: null,
   userName: '',
   facebookId: null,
   groups: [],

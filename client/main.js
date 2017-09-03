@@ -28,6 +28,7 @@ new Vue({
         appId: '2034722683480772',
         autoLogAppEvents: true,
         xfbml: true,
+        cookie: true,
         version: 'v2.10',
         status: 'true',
       })
