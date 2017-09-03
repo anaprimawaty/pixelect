@@ -39,7 +39,6 @@ export default {
   methods: {
     onSignInSuccess(response) {
       FB.api('/me', dude => {
-        console.log(`Good to see you, ${dude.name}.`)
         store.dispatch(LOGIN, { facebookId: dude.id, name: dude.name })
         fetch('/users', {
           method: 'POST',
