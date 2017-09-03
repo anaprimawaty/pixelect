@@ -1,8 +1,8 @@
 <template>
   <div class="box is-paddingless is-clipped">
     <figure :class="{ image: true, animate }" :style="imageStyle" @dblclick="vote">
-      <div class="loader" />
-      <progressive-background :src="url" />
+      <div class="loader" v-if="!loaded" />
+      <progressive-background :src="url" @onLoad="loaded = true" />
       <svg class="heart" viewBox="0 0 24 24">
         <path
           fill="#f95d55"
@@ -53,6 +53,7 @@ export default {
   data() {
     return {
       animate: false,
+      loaded: false,
     }
   },
   computed: {
