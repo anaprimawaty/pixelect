@@ -7,7 +7,7 @@ var helper = require('./helper')
  * params -> groupHash
  * response -> {group}/error
  */
-router.get('/:groupHash', helper.isAuthenticated, function(req, res) {
+router.get('/:groupHash', helper.hasAccess, function(req, res) {
   var source = '[GET /groups/:groupHash]'
   var models = req.app.get('models')
   var groupHash = req.params.groupHash
@@ -27,7 +27,7 @@ router.get('/:groupHash', helper.isAuthenticated, function(req, res) {
  * params -> groupHash
  * response -> [users]/error
  */
-router.get('/:groupHash/users', helper.isAuthenticated, function(req, res) {
+router.get('/:groupHash/users', helper.hasAccess, function(req, res) {
   var source = '[GET /groups/:groupHash/users]'
   var models = req.app.get('models')
   var groupHash = req.params.groupHash
@@ -50,7 +50,7 @@ router.get('/:groupHash/users', helper.isAuthenticated, function(req, res) {
  * params -> groupHash
  * response -> [photo and votes]/error
  */
-router.get('/:groupHash/photos', helper.isAuthenticated, function(req, res) {
+router.get('/:groupHash/photos', helper.hasAccess, function(req, res) {
   var source = '[GET /groups/:groupHash/photos]'
   var models = req.app.get('models')
   var session = req.app.get('session')
@@ -105,7 +105,7 @@ router.get('/:groupHash/photos', helper.isAuthenticated, function(req, res) {
  * body -> {groupHash, name: name of the group}
  * response -> success/error
  */
-router.post('/changeName', helper.isAuthenticated, function(req, res) {
+router.post('/changeName', helper.hasAccess, function(req, res) {
   var source = '[POST /groups/changeName]'
   var models = req.app.get('models')
   var groupHash = req.body.groupHash
@@ -166,7 +166,7 @@ router.post('/', helper.isAuthenticated, function(req, res) {
  * body -> {groupHash, facebookId: facebookId of user}
  * response -> success/error
  */
-router.post('/addUser', helper.isAuthenticated, function(req, res) {
+router.post('/addUser', helper.hasAccess, function(req, res) {
   var source = '[POST /groups/addUser]'
   var models = req.app.get('models')
   var groupHash = req.body.groupHash
@@ -195,7 +195,7 @@ router.post('/addUser', helper.isAuthenticated, function(req, res) {
  * body -> {groupHash}
  * response -> success/error
  */
-router.post('/delete', helper.isAuthenticated, function(req, res){
+router.post('/delete', helper.hasAccess, function(req, res){
   var source = '[POST /groups/delete]'
   var models = req.app.get('models')
   var session = req.app.get('session')

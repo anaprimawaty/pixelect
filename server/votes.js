@@ -23,8 +23,8 @@ function canVote(models, photoId, user) {
   })
 }
 
-/* POST vote on a photo
- * body -> {photoId}
+/* POST vote on a photo with photoId
+ * body -> {photoId: photoId}
  * response -> success/error
  */
 router.post('/', helper.isAuthenticated, function(req,res) {
