@@ -46,6 +46,7 @@
 <script>
 import { mapState } from 'vuex'
 import store, { FETCH_GROUP, UPDATE_GROUP_NAME } from '@/store'
+import bus from '@/bus'
 import NotFound from '@/views/NotFound'
 import Loading from '@/views/Loading'
 import PhotoList from '@/components/PhotoList'
@@ -54,7 +55,7 @@ import Preview from '@/components/Preview'
 import Dropzone from '@/components/Dropzone'
 
 export default {
-  mounted: function() {
+  mounted() {
     store.dispatch(FETCH_GROUP, this.groupId)
 
     const payload = { facebookId: this.facebookId, groupHash: this.groupId }
@@ -65,6 +66,18 @@ export default {
       },
       body: JSON.stringify(payload),
     })
+  },
+  created() {
+    bus.$on('publish', function() {
+      console.log('Publish')
+    })
+    bus.$on('invite', function() {
+      console.log('Invite')
+    })
+  },
+  destroyed() {
+    bus.$off('publish')
+    bus.$off('invite')
   },
   beforeUpdate: function() {
     if (this.name === null) {

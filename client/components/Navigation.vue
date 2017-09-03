@@ -18,7 +18,7 @@
           <div class="navbar-item">
             <div class="field is-grouped">
               <p v-for="button in buttons" class="control">
-                <button :class="button.class" @click="$emit(button.action)">{{ button.text }}</button>
+                <button :class="button.class" @click="bus.$emit(button.action)">{{ button.text }}</button>
               </p>
             </div>
           </div>
@@ -60,11 +60,13 @@
 <script>
 import { mapState } from 'vuex'
 import store from '@/store'
+import bus from '@/bus'
 
 export default {
   data() {
     return {
       menu: false,
+      bus,
     }
   },
   computed: {

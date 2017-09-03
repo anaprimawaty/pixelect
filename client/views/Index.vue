@@ -19,16 +19,14 @@
 import { mapState } from 'vuex'
 import router from '@/router'
 import store, { FETCH_GROUP_LIST } from '@/store'
+import bus from '@/bus'
 
 export default {
   mounted() {
     store.dispatch(FETCH_GROUP_LIST)
   },
-  computed: mapState({
-    groups: state => state.groups,
-  }),
-  methods: {
-    createGroup() {
+  created() {
+    bus.$on('createGroup', function() {
       fetch('/groups', { method: 'POST' })
         .then(response => {
           if (!response.ok) {
@@ -37,8 +35,14 @@ export default {
           return response.json()
         })
         .then(json => router.push(`/group/${json.Success}`))
-    },
+    })
   },
+  destroyed() {
+    bus.$off('createGroup')
+  },
+  computed: mapState({
+    groups: state => state.groups,
+  }),
 }
 </script>
 

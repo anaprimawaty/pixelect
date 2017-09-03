@@ -42,7 +42,6 @@ const mutations = {
     state.userName = name
   },
   initialiseGroupList(state, groups) {
-    console.log(groups)
     state.groups = groups
   },
   invalidateGroup(state) {
