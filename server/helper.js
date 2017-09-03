@@ -53,4 +53,18 @@ module.exports = {
       })
     })
   },
+
+  isAuthenticated: function(req, res, next) {
+    //console.log(req.app.get('session').facebookId)
+    req.app.get('models').User.findOne({
+      where: { facebookId: req.app.get('session').facebookId }
+    })
+    .then(user => {
+      if (user) {
+        return next()
+      } else {
+        res.status(403).send({'Forbidden':''})
+      }
+    })
+  }
 }

@@ -27,7 +27,7 @@ function canVote(models, photoId, user) {
  * body -> {photoId}
  * response -> success/error
  */
-router.post('/', function(req,res) {
+router.post('/', helper.isAuthenticated, function(req,res) {
   var source = '[POST /votes/]'
   var models = req.app.get('models')
   var session = req.app.get('session')
