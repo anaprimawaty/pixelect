@@ -77,7 +77,6 @@ export default {
 <style scoped>
 nav {
   box-shadow: rgba(0, 0, 0, 0.5) 0 0 5px;
-  margin-bottom: 2em;
   z-index: 1000; /* loader has z-index: 999; */
 }
 

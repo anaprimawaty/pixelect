@@ -35,8 +35,13 @@ export default {
   color: #404040;
 }
 
-html, .loading-overlay {
+html {
   background: #f4f4f4;
+  overflow-x: hidden;
+}
+
+.loading-overlay, .loading-background {
+  background: #f4f4f4 !important;
 }
 
 </style>
