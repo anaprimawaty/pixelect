@@ -46,9 +46,9 @@ router.get('/:groupHash/users', function(req, res) {
   })
 })
 
-/* GET specific group photos with group ID
- * params -> groupId: id of the group
- * response -> {[{photoId, owner, votes}]}
+/* GET get photos and votes of group with groupHash
+ * params -> groupHash
+ * response -> [photo and votes]/error
  */
 router.get('/:groupHash/photos', function(req, res) {
   var source = '[GET /groups/:groupHash/photos]'
@@ -105,7 +105,7 @@ router.get('/:groupHash/photos', function(req, res) {
  * body -> {groupHash, name: name of the group}
  * response -> success/error
  */
-router.post('/changeName', function(req, res) {
+router.post('/changeName', helper.hasAccess, function(req, res) {
   var source = '[POST /groups/changeName]'
   var models = req.app.get('models')
   var groupHash = req.body.groupHash
@@ -134,7 +134,7 @@ router.post('/changeName', function(req, res) {
  * body -> {name: name of the group (optional)}
  * response -> success/error
  */
-router.post('/', function(req, res) {
+router.post('/', helper.isAuthenticated, function(req, res) {
   var source = '[POST /groups/]'
   var models = req.app.get('models')
   var session = req.app.get('session')
@@ -166,7 +166,7 @@ router.post('/', function(req, res) {
  * body -> {groupHash, facebookId: facebookId of user}
  * response -> success/error
  */
-router.post('/addUser', function(req, res) {
+router.post('/addUser', helper.hasAccess, function(req, res) {
   var source = '[POST /groups/addUser]'
   var models = req.app.get('models')
   var groupHash = req.body.groupHash
@@ -195,7 +195,7 @@ router.post('/addUser', function(req, res) {
  * body -> {groupHash}
  * response -> success/error
  */
-router.post('/delete', function(req, res){
+router.post('/delete', helper.hasAccess, function(req, res){
   var source = '[POST /groups/delete]'
   var models = req.app.get('models')
   var session = req.app.get('session')

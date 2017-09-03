@@ -8,7 +8,7 @@ var helper = require('./helper')
   * body -> {groupHash, ext}
   * response -> success/error
   */
-router.post('/create', uploader.single('file'), function(req, res, next) {
+router.post('/create', uploader.single('file'), helper.hasAccess, function(req, res, next) {
   var source = '[POST /photos/create]'
   var models = req.app.get('models')
   var session = req.app.get('session')
@@ -65,10 +65,10 @@ function storePhoto(models, facebookId, groupHash, filename, source, res) {
 }
 
 /* POST delete specific photo with photoId
- * body -> {photoId}
+ * body -> {photoId: photoId}
  * response -> success/error
  */
-router.post('/delete', function(req, res) {
+router.post('/delete', helper.isAuthenticated, function(req, res) {
   var source = '[POST /photos/delete]'
   var models = req.app.get('models')
   var session = req.app.get('session')

@@ -53,4 +53,62 @@ module.exports = {
       })
     })
   },
+
+  isAuthenticated: function(req, res, next) {
+    var facebookId = req.app.get('session').facebookId
+
+    req.app.get('models').User.findOne({
+      where: { facebookId: facebookId }
+    })
+    .then(user => {
+      if (user) {
+        return next()
+      } else {
+        require('./helper').log('[isAuthenticated]['+req.originalUrl+']', 'Forbidden: Invalid facebookId:' + facebookId)
+        res.status(403).send({'Forbidden':''})
+      }
+    })
+  },
+
+  hasAccess: function(req, res, next) {
+    var models = req.app.get('models')
+    var session = req.app.get('session')
+    var helper = require('./helper')
+    var source = '[hasAccess]['+req.originalUrl+']'
+
+    var userId = models.User
+      .findOne({where: {facebookId: session.facebookId} })
+      .then(user => {
+        if (user) {
+          return user.id
+        } else {
+          helper.log(source, 'Error: Invalid facebookId:' + session.facebookId)
+          return 'NULL'
+        }
+      })
+
+    var groupId = models.Group
+      .findOne({ where: {$or: [{hash: req.body.groupHash}, {hash: req.params.groupHash}]} })
+      .then(group => {
+        if (group) {
+          return group.id
+        } else {
+          helper.log(source, 'Error: Invalid groupHash:' + req.body.groupHash + ' OR ' + req.params.groupHash)
+          return 'NULL'
+        }
+      })
+
+    Promise.all([userId, groupId]).then(([userId, groupId]) => {
+      models.UserGroup
+      .findOne({where: {userId: userId, groupId: groupId} })
+      .then(ug => {
+        if (ug) {
+          return next()
+        } else {
+          helper.log(source, 'Forbidden: userId:' + userId + ' cannot access groupId:' + groupId)
+          res.status(403).send({'Forbidden':''})
+        }
+      })
+    })
+  },
 }
