@@ -21,7 +21,7 @@ var s3Client = new Minio.Client({
   endPoint: process.env.PIXELECT_AWS_ENDPOINT,
   accessKey: process.env.PIXELECT_AWS_ACCESSKEY,
   secretKey: process.env.PIXELECT_AWS_SECRETKEY,
-  secure: true
+  secure: true,
 })
 app.set('s3', s3Client)
 
@@ -29,15 +29,17 @@ app.set('s3', s3Client)
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-//session
-app.set('session', require('express-session'))
-app.use(session({
-  secret: 'pixels',
-  saveUninitialized: false
-}))
-app.use(function (req, res, next) {
+// session
+app.use(
+  session({
+    secret: process.env.PIXELECT_SESSION_SECRETKEY,
+    saveUninitialized: false,
+  })
+)
+app.set('session', session)
+app.use(function(req, res, next) {
   if (!req.session.facebookId) {
-    req.session.facebookId = ""
+    req.session.facebookId = ''
   }
   next()
 })
