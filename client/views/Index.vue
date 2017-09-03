@@ -1,18 +1,22 @@
 <template>
-  <div class="container">
-    <section class="section">
-    <transition-group name="slide-fade">
-      <div class="card" v-for="group in groups" :key="group.hash">
-        <router-link :to="`/group/${group.hash}`">
-          <div class="card-image" style="background-image: url(https://s3-ap-southeast-1.amazonaws.com/pixelectstaging/c23eef979bff27aa896f49095c99bfa1)" />
-          <div class="card-content">
-            {{ group.name }}
-          </div>
-        </router-link>
-      </div>
-    </transition-group>
-    </section>
+  <div>
+    <div class="container">
+      <section class="section">
+      <transition-group name="slide-fade">
+        <div class="card" v-for="group in groups" :key="group.hash">
+          <router-link :to="`/group/${group.hash}`">
+            <div class="card-image" style="background-image: url(https://s3-ap-southeast-1.amazonaws.com/pixelectstaging/c23eef979bff27aa896f49095c99bfa1)"></div>
+            <div class="card-content">
+              {{ group.name }}
+            </div>
+          </router-link>
+        </div>
+      </transition-group>
+      </section>
+    </div>
+    <custom-footer/>
   </div>
+
 </template>
 
 <script>
@@ -20,6 +24,7 @@ import { mapState } from 'vuex'
 import router from '@/router'
 import store, { FETCH_GROUP_LIST } from '@/store'
 import bus from '@/bus'
+import CustomFooter from '@/components/CustomFooter'
 
 export default {
   mounted() {
@@ -43,6 +48,9 @@ export default {
   computed: mapState({
     groups: state => state.groups,
   }),
+  components: {
+    CustomFooter,
+  },
 }
 </script>
 

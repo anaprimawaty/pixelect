@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Index from '@/views/Index'
 import Group from '@/views/Group'
 import NotFound from '@/views/NotFound'
+import TOS from '@/views/TOS'
+import Privacy from '@/views/Privacy'
 
 Vue.use(Router)
 
@@ -24,6 +26,16 @@ export default new Router({
       component: Group,
       alias: '/group/:groupId',
       props: true,
+    },
+    {
+      path: '/terms',
+      name: 'terms',
+      component: TOS,
+    },
+    {
+      path: '/privacy',
+      name: 'privacy',
+      component: Privacy,
     },
     {
       path: '/*',

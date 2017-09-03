@@ -5,10 +5,7 @@
   <main v-else-if="isLoggedIn">
     <navigation />
     <transition name="slide-fade" mode="out-in">
-      <div>
-        <router-view></router-view>
-        <custom-footer/>
-      </div>
+      <router-view></router-view>
     </transition>
   </main>
   <login v-else/>
@@ -20,7 +17,6 @@ import Login from '@/views/Login'
 import Loading from '@/views/Loading'
 import Navigation from '@/components/Navigation'
 import store from '@/store'
-import CustomFooter from '@/components/CustomFooter'
 
 export default {
   computed: mapState({
@@ -31,7 +27,6 @@ export default {
     Login,
     Loading,
     Navigation,
-    CustomFooter,
   },
 }
 </script>

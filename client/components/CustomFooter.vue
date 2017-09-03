@@ -1,18 +1,29 @@
 <template>
   <footer class="footer">
     <div class="container">
-      <div class="content has-text-centered">
-        <p>
-          <strong>Bulma</strong> by <a href="http://jgthms.com">Jeremy Thomas</a>. The source code is licensed
-          <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
-          is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC ANS 4.0</a>.
-        </p>
-        <p>
-          <a class="icon" href="https://github.com/jgthms/bulma">
-            <i class="fa fa-github"></i>
-          </a>
-        </p>
-      </div>
+      <section class="section">
+        <div class="level">
+          <div class="level-left bottom-nav">
+            <div class="level-item">
+              <router-link :to="`/terms`"><strong>Terms</strong></router-link>
+            </div>
+            <div class="level-item">
+                <router-link :to="`/privacy`"><strong>Privacy</strong></router-link>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <p>© 2017 Pixelect</p>
+            </div>
+            <div class="level-item">
+              <!-- <iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fpixelect.me&width=250&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId=2034722683480772" width="250" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe> -->
+              <iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fpixelect.me&width=106&layout=button_count&action=like&size=small&show_faces=false&share=true&height=46&appId=2034722683480772" width="106" height="21" style="border:none;overflow:hidden;margin-top:0.2rem;" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+            </div>
+
+
+          </div>
+        </div>
+      </section>
     </div>
   </footer>
 </template>
@@ -22,4 +33,17 @@ export default {}
 </script>
 
 <style scoped>
+.footer {
+  /*background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.5) 0 0 5px;*/
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+.section {
+  padding-top: 0rem;
+  padding-bottom: 0rem;
+}
+.bottom-nav .level-item {
+  margin-right: 1.5rem;
+}
 </style>
