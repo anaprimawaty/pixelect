@@ -62,15 +62,33 @@ import { mapState } from 'vuex'
 import store from '@/store'
 
 export default {
-  props: ['buttons'],
   data() {
     return {
       menu: false,
     }
   },
-  computed: mapState({
-    userName: state => state.userName,
-  }),
+  computed: {
+    ...mapState({
+      userName: state => state.userName,
+    }),
+    buttons: function() {
+      switch (this.$route.name) {
+        case 'index':
+          return [
+            {
+              text: 'Create Group',
+              class: 'button is-primary',
+              action: 'createGroup',
+            },
+          ]
+        case 'group':
+          return [
+            { text: 'Publish', class: 'button is-primary', action: 'publish' },
+            { text: 'Invite', class: 'button is-primary', action: 'invite' },
+          ]
+      }
+    },
+  },
 }
 </script>
 

@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<navigation />
 		<span>
 			Page not found
 		</span>

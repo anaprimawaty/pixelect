@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<navigation />
     <b-loading active />
 	</div>
 </template>

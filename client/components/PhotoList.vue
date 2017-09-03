@@ -1,8 +1,10 @@
 <template>
   <ul class="photo-list" ref="photoList">
-    <li class="photo" v-for="photo in Object.values(sortedPhotos)" :key="photo.photoId" :style="photoStyle(photo.index)">
-      <photo :photoId="photo.photoId" :url="photo.link" :voted="photo.voted" :votes="photo.votes" :width="width" />
-    </li>
+    <transition-group name="slide-fade">
+      <li class="photo" v-for="photo in Object.values(sortedPhotos)" :key="photo.photoId" :style="photoStyle(photo.index)">
+        <photo :photoId="photo.photoId" :url="photo.link" :voted="photo.voted" :votes="photo.votes" :width="width" />
+      </li>
+    </transition-group>
     <resize-observer @notify="handleResize" />
   </ul>
 </template>

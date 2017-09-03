@@ -1,18 +1,17 @@
 <template>
-	<div>
-		<navigation :buttons="[{ text: 'Create Group', class: 'button is-primary', action: 'createGroup'}]" @createGroup="createGroup" />
-		<div class="container">
-      <section class="section">
-        <div class="card" v-for="group in groups">
-          <router-link :to="`/group/${group.hash}`">
-            <div class="card-image" style="background-image: url(https://s3-ap-southeast-1.amazonaws.com/pixelectstaging/c23eef979bff27aa896f49095c99bfa1)" />
-            <div class="card-content">
-              {{ group.name }}
-            </div>
-          </router-link>
-        </div>
-      </section>
-    </div>
+  <div class="container">
+    <section class="section">
+    <transition-group name="slide-fade">
+      <div class="card" v-for="group in groups" :key="group.hash">
+        <router-link :to="`/group/${group.hash}`">
+          <div class="card-image" style="background-image: url(https://s3-ap-southeast-1.amazonaws.com/pixelectstaging/c23eef979bff27aa896f49095c99bfa1)" />
+          <div class="card-content">
+            {{ group.name }}
+          </div>
+        </router-link>
+      </div>
+    </transition-group>
+    </section>
   </div>
 </template>
 
@@ -20,7 +19,6 @@
 import { mapState } from 'vuex'
 import router from '@/router'
 import store, { FETCH_GROUP_LIST } from '@/store'
-import Navigation from '@/components/Navigation'
 
 export default {
   mounted() {
@@ -40,9 +38,6 @@ export default {
         })
         .then(json => router.push(`/group/${json.Success}`))
     },
-  },
-  components: {
-    Navigation,
   },
 }
 </script>

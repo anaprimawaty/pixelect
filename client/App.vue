@@ -3,8 +3,11 @@
     <loading />
   </main>
   <main v-else-if="isLoggedIn">
-    <router-view></router-view>
-  </main>
+    <navigation />
+      <transition name="slide-fade" mode="out-in">
+        <router-view></router-view>
+      </transition>
+    </main>
   <login v-else/>
 </template>
 
@@ -12,6 +15,7 @@
 import { mapState } from 'vuex'
 import Login from '@/views/Login'
 import Loading from '@/views/Loading'
+import Navigation from '@/components/Navigation'
 import store from '@/store'
 
 export default {
@@ -22,6 +26,7 @@ export default {
   components: {
     Login,
     Loading,
+    Navigation,
   },
 }
 </script>
@@ -43,5 +48,15 @@ html {
 .loading-overlay, .loading-background {
   background: #f4f4f4 !important;
 }
-
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .3s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateY(10px);
+  opacity: 0;
+}
 </style>
