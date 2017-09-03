@@ -7,7 +7,7 @@ var helper = require('./helper')
  * params -> groupHash
  * response -> {group}/error
  */
-router.get('/:groupHash', helper.hasAccess, function(req, res) {
+router.get('/:groupHash', function(req, res) {
   var source = '[GET /groups/:groupHash]'
   var models = req.app.get('models')
   var groupHash = req.params.groupHash
@@ -27,7 +27,7 @@ router.get('/:groupHash', helper.hasAccess, function(req, res) {
  * params -> groupHash
  * response -> [users]/error
  */
-router.get('/:groupHash/users', helper.hasAccess, function(req, res) {
+router.get('/:groupHash/users', function(req, res) {
   var source = '[GET /groups/:groupHash/users]'
   var models = req.app.get('models')
   var groupHash = req.params.groupHash
@@ -50,7 +50,7 @@ router.get('/:groupHash/users', helper.hasAccess, function(req, res) {
  * params -> groupHash
  * response -> [photo and votes]/error
  */
-router.get('/:groupHash/photos', helper.hasAccess, function(req, res) {
+router.get('/:groupHash/photos', function(req, res) {
   var source = '[GET /groups/:groupHash/photos]'
   var models = req.app.get('models')
   var session = req.app.get('session')
