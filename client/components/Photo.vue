@@ -108,7 +108,7 @@ export default {
   height: 34%;
 }
 
-.image.animate .heart { 
+.image.animate .heart {
   animation: animation 2000ms linear both;
   opacity: 1;
 }
@@ -143,6 +143,10 @@ export default {
   opacity: 0.5;
 }
 
+svg path {
+  transition: all 0.25s;
+}
+
 .preview {
   position: absolute;
   right: 37px;
@@ -154,7 +158,7 @@ export default {
 }
 
 /* Generated with Bounce.js. Edit at https://goo.gl/EyYgbF */
-@keyframes animation { 
+@keyframes animation {
   0% { transform: matrix3d(0.32, 0, 0, 0, 0, 0.32, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
   1.7% { transform: matrix3d(0.45, 0, 0, 0, 0, 0.421, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
   2.35% { transform: matrix3d(0.512, 0, 0, 0, 0, 0.464, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
@@ -189,6 +193,6 @@ export default {
   62.51% { transform: matrix3d(2.476, 0, 0, 0, 0, 2.476, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
   68.77% { transform: matrix3d(2.544, 0, 0, 0, 0, 2.544, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
   75.03% { transform: matrix3d(2.557, 0, 0, 0, 0, 2.557, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
-  100% { opacity: 0; transform: matrix3d(2.56, 0, 0, 0, 0, 2.56, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); } 
+  100% { opacity: 0; transform: matrix3d(2.56, 0, 0, 0, 0, 2.56, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
 }
 </style>

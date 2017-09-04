@@ -31,8 +31,15 @@
             </span>
             <input ref="link" :value="link" />
           </div>
-          <preview :link="preview && preview.link" />
-          <dropzone :group-id="groupId"></dropzone>
+          <transition name="fade" mode="out-in">
+            <preview
+              v-show="preview != null"
+              :photo-id="preview && preview.photoId"
+              :link="preview && preview.link"
+              :voted="preview && preview.voted"
+            />
+          </transition>
+          <dropzone :group-id="groupId" />
           <photo-list :photos="photos" />
         </section>
       </div>
@@ -59,7 +66,7 @@ export default {
     store.dispatch(FETCH_GROUP, this.groupId)
 
     const payload = { facebookId: this.facebookId, groupHash: this.groupId }
-    fetch(`/groups/addUser`, {
+    fetch('/groups/addUser', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -181,5 +188,13 @@ export default {
 
 .user-list {
   position: relative;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: all .25s ease;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>

@@ -27,11 +27,8 @@ const mutations = {
   },
   vote(state, { photoId, isUnvote }) {
     const photo = state.photos[photoId]
-    state.photos[photoId] = {
-      ...photo,
-      voted: !isUnvote,
-      votes: photo.votes + (isUnvote ? -1 : 1),
-    }
+    photo.voted = !isUnvote
+    photo.votes += isUnvote ? -1 : 1
   },
   preview(state, photoId) {
     state.preview = state.photos[photoId]

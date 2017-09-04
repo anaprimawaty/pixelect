@@ -48,14 +48,12 @@ html {
 .loading-overlay, .loading-background {
   background: #f4f4f4 !important;
 }
-.slide-fade-enter-active {
-  transition: all .3s ease;
+
+.slide-fade-enter-active, .slide-fade-leave-active {
+  transition: all .25s ease;
 }
-.slide-fade-leave-active {
-  transition: all .3s ease;
-}
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
+
+.slide-fade-enter, .slide-fade-leave-to {
   transform: translateY(10px);
   opacity: 0;
 }
