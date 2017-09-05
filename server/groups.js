@@ -164,7 +164,7 @@ router.post('/', helper.isAuthenticated, function(req, res) {
  * body -> {groupHash, facebookId: facebookId of user}
  * response -> success/error
  */
-router.post('/addUser', helper.hasAccess, function(req, res) {
+router.post('/addUser', function(req, res) {
   var source = '[POST /groups/addUser]'
   var models = req.app.get('models')
   var groupHash = req.body.groupHash
