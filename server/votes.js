@@ -10,7 +10,7 @@ function canVote(models, photoId, user) {
         reject('Error: No Photo with photoId:' + photoId)
       }
       models.UserGroup.findOne({
-        where: { groupId: photo.photoGroupId, userId: user.id }
+        where: { groupId: photo.groupId, userId: user.id }
       })
       .then(ug => {
         if (ug) {

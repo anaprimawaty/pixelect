@@ -77,14 +77,12 @@ Photo.belongsTo(User, {
   foreignKey: {
     allowNull: false
   },
-  as: 'photoOwner',
   onDelete: 'RESTRICT'
 });
 Photo.belongsTo(Group, {
   foreignKey: {
     allowNull: false
   },
-  as: 'photoGroup',
   onDelete: 'RESTRICT'
 });
 
@@ -96,8 +94,8 @@ const Vote = sequelize.define('vote', {
     defaultValue: true
   }
 });
-Photo.belongsToMany(User, {as: 'voters', through: 'vote'});
-User.belongsToMany(Photo, {as: 'votePhotos', through: 'vote'});
+Photo.belongsToMany(User, {through: 'vote'});
+User.belongsToMany(Photo, {through: 'vote'});
 
 // Exports
 module.exports.User = User;
