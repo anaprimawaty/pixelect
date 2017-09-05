@@ -43,6 +43,7 @@
           <photo-list :photos="photos" />
         </section>
       </div>
+      <custom-footer />
     </div>
     <div v-else>
       <not-found />
@@ -60,6 +61,7 @@ import PhotoList from '@/components/PhotoList'
 import UserList from '@/components/UserList'
 import Preview from '@/components/Preview'
 import Dropzone from '@/components/Dropzone'
+import CustomFooter from '@/components/CustomFooter'
 
 export default {
   mounted() {
@@ -118,6 +120,7 @@ export default {
     Dropzone,
     UserList,
     Loading,
+    CustomFooter,
   },
   methods: {
     nameKeydown(e) {

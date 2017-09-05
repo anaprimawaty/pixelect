@@ -1,5 +1,5 @@
 <template>
-  <ul class="photo-list" ref="photoList">
+  <ul class="photo-list" ref="photoList" :style="{ height: `${height}px` }">
     <transition-group name="slide-fade">
       <li class="photo" v-for="photo in Object.values(sortedPhotos)" :key="photo.photoId" :style="photoStyle(photo.index)">
         <photo :photo-id="photo.photoId" :url="photo.link" :voted="photo.voted" :votes="photo.votes" :width="width" />
@@ -12,7 +12,8 @@
 <script>
 import Photo from '@/components/Photo'
 
-const padding = 20
+const PADDING = 20
+const PANE_HEIGHT = 40
 
 export default {
   mounted() {
@@ -24,6 +25,7 @@ export default {
     return {
       photoStyle: i => {},
       width: 0,
+      height: 0,
     }
   },
   computed: {
@@ -45,14 +47,17 @@ export default {
     handleResize() {
       const width = this.$refs.photoList.clientWidth
       const columns = width < 600 ? 1 : width < 900 ? 2 : width < 1200 ? 3 : 4
-      const columnWidth = (width - (columns - 1) * padding) / columns
+      const columnWidth = (width - (columns - 1) * PADDING) / columns
       this.photoStyle = i => ({
         transform: `translate(${i %
           columns *
-          (columnWidth + padding)}px,${Math.floor(i / columns) *
-          (columnWidth + 40 + padding)}px`,
+          (columnWidth + PADDING)}px,${Math.floor(i / columns) *
+          (columnWidth + PANE_HEIGHT + PADDING)}px`,
       })
       this.width = columnWidth
+      this.height =
+        Math.floor((Object.keys(this.photos).length - 1) / columns + 1) *
+        (columnWidth + PANE_HEIGHT + PADDING)
     },
   },
 }
