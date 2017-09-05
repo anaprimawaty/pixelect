@@ -31,22 +31,28 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import "../node_modules/bulma/sass/utilities/initial-variables";
+
+$family-serif: Helvetica, Arial, sans-serif;
+$primary: #5e9eff;
+$primary-invert: #fff;
+$family-primary: $family-serif;
+
+@import "../node_modules/bulma/bulma";
+
 #app {
-  font-family: Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #404040;
 }
 
 html {
-  background: #f4f4f4;
+  background: $white-ter;
   overflow-x: hidden;
 }
 
 .loading-overlay, .loading-background {
-  background: #f4f4f4 !important;
+  background: $white-ter !important;
 }
 
 .slide-fade-enter-active, .slide-fade-leave-active {

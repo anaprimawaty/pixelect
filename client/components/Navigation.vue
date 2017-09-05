@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-transparent">
+  <nav class="navbar">
     <div class="container">
       <div class="navbar-brand">
         <router-link class="navbar-item" @click="menu = false" to="/"><img id="logo-pic" src="/assets/logo.png"><strong id="logo-text">Pixelect</strong></router-link>
