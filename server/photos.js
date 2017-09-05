@@ -39,8 +39,8 @@ function storePhoto(models, facebookId, groupHash, filename, source, res) {
       .then(group => {
         models.Photo.create({
           link: 'https://s3-ap-southeast-1.amazonaws.com/pixelectstaging/' + filename,
-          userId: user.id,
-          groupId: group.id,
+          photoOwnerId: user.id,
+          photoGroupId: group.id,
         })
         .then(photo => {
           resolve(photo)

@@ -66,7 +66,7 @@ router.get('/:groupHash/photos', function(req, res) {
     helper.getGroup(models, groupHash)
     .then(group => {
       models.Photo.findAll({
-        where: { groupId: group.id },
+        where: { photoGroupId: group.id },
         raw: true
       })
       .then(photos => {
