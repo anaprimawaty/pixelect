@@ -62,8 +62,8 @@ Group.belongsTo(User, {
 // User-Group table
 const UserGroup = sequelize.define('userGroup', {
 });
-Group.belongsToMany(User, {through: 'userGroup'});
-User.belongsToMany(Group, {through: 'userGroup'});
+Group.belongsToMany(User, {as: 'Members', through: 'userGroup'});
+User.belongsToMany(Group, {as: 'Groupings', through: 'userGroup'});
 
 // Photo table
 const Photo = sequelize.define('photo', {
@@ -129,12 +129,12 @@ module.exports.sequelize = sequelize;
 // // To add User to Group
 // User.findById(1).then(user => {
 //   Group.findById(1).then(group => {
-//     user.addGroup(group);
+//     user.addGroupings(group);
 //   });
 // });
 // User.findById(2).then(user => {
 //   Group.findById(1).then(group => {
-//     user.addGroup(group);
+//     user.addGroupings(group);
 //   });
 // });
 

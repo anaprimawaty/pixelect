@@ -34,7 +34,7 @@ router.get('/:groupHash/users', function(req, res) {
 
   helper.getGroup(models, groupHash)
   .then(group => {
-    group.getUsers()
+    group.getMembers()
     .then(users => {
       helper.log(source, 'Success: Got users of group with groupId:' + group.id)
       res.send(users)
@@ -145,7 +145,7 @@ router.post('/', helper.isAuthenticated, function(req, res) {
       hash: helper.getHash(req.session.facebookId).substring(0,20)
     })
     .then(group => {
-      user.addGroup(group)
+      user.addGroupings(group)
       helper.log(source, 'Success: Created groupId:' + group.id)
       res.send(JSON.stringify({'Success': group.hash}))
     })
@@ -174,7 +174,7 @@ router.post('/addUser', helper.hasAccess, function(req, res) {
   .then(user => {
     helper.getGroup(models, groupHash)
     .then(group => {
-      user.addGroup(group)
+      user.addGroupings(group)
       helper.log(source, 'Success: Added userId:' + user.id + ' to groupId:' + group.id)
       res.send(helper.success())
     })

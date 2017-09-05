@@ -11,7 +11,7 @@ router.get('/groups', helper.isAuthenticated, function(req, res) {
 
   helper.getUser(models, req.session.facebookId)
   .then(user => {
-    user.getGroups()
+    user.getGroupings()
     .then(groups => {
       helper.log(source, 'Success: Got groups of user with userId:' + user.id)
       res.send(groups)
