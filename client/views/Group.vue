@@ -162,6 +162,10 @@ export default {
 </script>
 
 <style scoped>
+[contenteditable]:focus {
+  outline: none;
+}
+
 .group-title .title {
   padding: 3px;
   display: inline-block;
