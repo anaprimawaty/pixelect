@@ -45,6 +45,7 @@ new Vue({
                 facebookId: dude.id,
                 name: dude.name,
               }),
+              credentials: 'same-origin',
             }).then(() =>
               store.dispatch(LOGIN, {
                 facebookId: dude.id,

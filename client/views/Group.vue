@@ -74,6 +74,7 @@ export default {
         'Content-type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify(payload),
+      credentials: 'same-origin',
     })
   },
   created() {

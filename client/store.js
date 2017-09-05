@@ -52,9 +52,9 @@ const actions = {
   fetchGroup({ commit }, groupId) {
     commit(INVALIDATE_GROUP)
     Promise.all([
-      fetch(`/groups/${groupId}`),
-      fetch(`/groups/${groupId}/photos`),
-      fetch(`/groups/${groupId}/users`),
+      fetch(`/groups/${groupId}`, { credentials: 'same-origin' }),
+      fetch(`/groups/${groupId}/photos`, { credentials: 'same-origin' }),
+      fetch(`/groups/${groupId}/users`, { credentials: 'same-origin' }),
     ])
       .then(responses => {
         if (!responses.every(v => v.ok)) {
@@ -81,7 +81,7 @@ const actions = {
       })
   },
   fetchGroupList({ commit }) {
-    fetch('/users/groups', { method: 'GET' })
+    fetch('/users/groups', { method: 'GET', credentials: 'same-origin' })
       .then(response => response.json())
       .then(json => commit(INITIALISE_GROUP_LIST, json))
   },
@@ -97,6 +97,7 @@ const actions = {
         'Content-type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify(payload),
+      credentials: 'same-origin',
     })
       .then(res => res.text())
       .then(console.log)
@@ -112,6 +113,7 @@ const actions = {
         'Content-type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify(payload),
+      credentials: 'same-origin',
     })
 
     commit(VOTE, { photoId, isUnvote })

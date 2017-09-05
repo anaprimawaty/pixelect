@@ -32,7 +32,7 @@ export default {
   },
   created() {
     bus.$on('createGroup', function() {
-      fetch('/groups', { method: 'POST' })
+      fetch('/groups', { method: 'POST', credentials: 'same-origin' })
         .then(response => {
           if (!response.ok) {
             throw new Error()

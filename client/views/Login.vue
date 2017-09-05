@@ -46,6 +46,7 @@ export default {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ facebookId: dude.id, name: dude.name }),
+          credentials: 'same-origin',
         })
       })
     },
