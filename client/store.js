@@ -21,6 +21,9 @@ const mutations = {
     state.groupName = name
     state.photos = photos
     state.users = users
+    if (!users.some(user => user.facebookId === state.facebookId)) {
+      users.push({ facebookId: state.facebookId, firstName: state.username })
+    }
   },
   updateGroupName(state, name) {
     state.groupName = name
