@@ -1,5 +1,5 @@
 <template>
-  <ul class="photo-list" ref="photoList" :style="{ height: `${height}px` }">
+  <ul v-if="Object.keys(photos).length !== 0" class="photo-list" ref="photoList" :style="{ height: `${height}px` }">
     <transition-group name="slide-fade">
       <li class="photo" v-for="photo in Object.values(sortedPhotos)" :key="photo.photoId" :style="photoStyle(photo.index)">
         <photo :photo-id="photo.photoId" :url="photo.link" :voted="photo.voted" :votes="photo.votes" :width="width" />
@@ -7,6 +7,7 @@
     </transition-group>
     <resize-observer @notify="handleResize" />
   </ul>
+  <div v-else class="onboard" />
 </template>
 
 <script>
@@ -75,5 +76,13 @@ export default {
   left: 0;
   display: block;
   transition: all 0.5s ease-in-out;
+}
+
+.onboard {
+  background-image: url(/assets/onboard.png);
+  background-size: contain;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  height: 644px;
 }
 </style>
