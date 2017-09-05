@@ -20,14 +20,34 @@ router.get('/groups', helper.isAuthenticated, function(req, res) {
       include: [{
         model: models.User,
         as: 'Members',
-        attributes: {exclude: ['createdAt','updatedAt']},
+        attributes: {exclude: ['lastName','createdAt','updatedAt']},
         through: {attributes:[]}
       }]
     }]
   })
-  .then(groups => {
-    helper.log(source, 'Success: Got groups of user with facebookId:' + req.session.facebookId)
-    res.send(groups)
+  .then(info => {
+    info = info.toJSON()['Groupings']
+    Promise.all(
+      info.map(grouping => {
+        return models.Photo
+        .findOne({
+          attributes: ['link'],
+          where: {
+            groupId: grouping.id
+          }
+        })
+        .then(photo => {
+          if (photo) {
+            grouping.link = photo.link
+          } else {
+            grouping.link = ""
+          }
+        })
+      })
+    ).then(() => {
+      helper.log(source, 'Success: Got groups of user with facebookId:' + req.session.facebookId)
+      res.send(info)
+    })
   })
 })
 
