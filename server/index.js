@@ -36,13 +36,6 @@ app.use(
     saveUninitialized: false,
   })
 )
-app.set('session', session)
-app.use(function(req, res, next) {
-  if (!req.session.facebookId) {
-    req.session.facebookId = ''
-  }
-  next()
-})
 
 app.use('/users', users)
 app.use('/photos', photos)

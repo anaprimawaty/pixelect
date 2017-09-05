@@ -53,10 +53,9 @@ router.get('/:groupHash/users', function(req, res) {
 router.get('/:groupHash/photos', function(req, res) {
   var source = '[GET /groups/:groupHash/photos]'
   var models = req.app.get('models')
-  var session = req.app.get('session')
   var groupHash = req.params.groupHash
 
-  var userId = helper.getUser(models, session.facebookId)
+  var userId = helper.getUser(models, req.session.facebookId)
     .then(user => user.id)
     .catch(e => {
       helper.log(source, e)
@@ -137,14 +136,13 @@ router.post('/changeName', helper.hasAccess, function(req, res) {
 router.post('/', helper.isAuthenticated, function(req, res) {
   var source = '[POST /groups/]'
   var models = req.app.get('models')
-  var session = req.app.get('session')
 
-  helper.getUser(models, session.facebookId)
+  helper.getUser(models, req.session.facebookId)
   .then(user => {
     models.Group.create({
       name: req.body.name,
       owner: user.id,
-      hash: helper.getHash(session.facebookId).substring(0,20)
+      hash: helper.getHash(req.session.facebookId).substring(0,20)
     })
     .then(group => {
       user.addGroup(group)
@@ -198,10 +196,9 @@ router.post('/addUser', helper.hasAccess, function(req, res) {
 router.post('/delete', helper.hasAccess, function(req, res){
   var source = '[POST /groups/delete]'
   var models = req.app.get('models')
-  var session = req.app.get('session')
   var groupHash = req.body.groupHash
 
-  helper.getUser(models, session.facebookId)
+  helper.getUser(models, req.session.facebookId)
   .then(user => {
     return new Promise(function(resolve, reject) {
       helper.getGroup(models, groupHash)
@@ -209,7 +206,7 @@ router.post('/delete', helper.hasAccess, function(req, res){
         if (user.id === group.owner) {
           resolve(group)
         } else {
-          reject('Error: facebookId:' + session.facebookId + ' cannot delete groupHash:' + groupHash)
+          reject('Error: facebookId:' + req.session.facebookId + ' cannot delete groupHash:' + groupHash)
         }
       })
       .catch(e => {

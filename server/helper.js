@@ -55,7 +55,7 @@ module.exports = {
   },
 
   isAuthenticated: function(req, res, next) {
-    var facebookId = req.app.get('session').facebookId
+    var facebookId = req.session.facebookId
 
     req.app.get('models').User.findOne({
       where: { facebookId: facebookId }
@@ -72,17 +72,16 @@ module.exports = {
 
   hasAccess: function(req, res, next) {
     var models = req.app.get('models')
-    var session = req.app.get('session')
     var helper = require('./helper')
     var source = '[hasAccess]['+req.originalUrl+']'
 
     var userId = models.User
-      .findOne({where: {facebookId: session.facebookId} })
+      .findOne({where: {facebookId: req.session.facebookId} })
       .then(user => {
         if (user) {
           return user.id
         } else {
-          helper.log(source, 'Error: Invalid facebookId:' + session.facebookId)
+          helper.log(source, 'Error: Invalid facebookId:' + req.session.facebookId)
           return 'NULL'
         }
       })
