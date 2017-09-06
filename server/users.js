@@ -89,11 +89,12 @@ router.post('/', function(req, res) {
  * body -> {facebookId: facebookId of user, name: firstName of user}
  * response -> success/error
  */
-router.get('/delete', function(req, res) {
+router.post('/delete', function(req, res) {
   var source = '[POST /users/delete]'
   var models = req.app.get('models')
-
-  helper.getUser(models, req.session.facebookId)
+  var signedRequest = req.params.signed_request
+  helper.log(signed_request)
+  /*  helper.getUser(models, req.session.facebookId)
   .then(user => {
     var userId = user.id
     user.destroy()
@@ -145,7 +146,7 @@ router.get('/delete', function(req, res) {
   .catch(e => {
     helper.log(source, e)
     res.status(500).send(helper.error(e))
-  })
+  })*/
 })
 
 
