@@ -38,6 +38,7 @@ export default {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          name: `${store.state.userName}'s Group`,
           _csrf: store.state._csrf,
         }),
         credentials: 'same-origin',
