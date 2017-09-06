@@ -181,9 +181,11 @@ module.exports = {
       if (data.algorithm.toUpperCase() != 'HMAC-SHA256') {
         return 'Unknown algorithm. Expected HMAC-SHA256';
       }
-      
-      // TODO: Check signature!
-      
+      else{ 
+        var expectedSig = require("crypto-js").HmacSHA256(payload, secret);
+        if(sig != expectedSig)
+            return null;            
+      }
       return data;
     }
 }
