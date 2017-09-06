@@ -93,7 +93,7 @@ router.post('/delete', function(req, res) {
   var source = '[POST /users/delete]'
   var models = req.app.get('models')
   var signedRequest = req.params.signed_request
-  helper.log(signed_request)
+  helper.log(signedRequest)
   /*  helper.getUser(models, req.session.facebookId)
   .then(user => {
     var userId = user.id
