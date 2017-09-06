@@ -1,19 +1,20 @@
 <template>
-  <div>
-    <ul class="photo-list" ref="photoList" :style="{ height: `${height}px` }">
-      <transition-group name="slide-fade">
-        <li class="photo" v-for="photo in Object.values(sortedPhotos)" :key="photo.photoId" :style="photoStyle(photo.index)">
-          <photo :photo-id="photo.photoId" :url="photo.link" :voted="photo.voted" :votes="photo.votes" :width="width" />
-        </li>
-      </transition-group>
-      <resize-observer @notify="handleResize" />
-    </ul>
-    <div v-if="Object.keys(photos).length === 0" class="onboard" />
-  </div>
+  <ul class="photo-list" ref="photoList" :style="{ height: `${height}px` }">
+    <transition-group name="slide-fade">
+      <li class="photo" :style="photoStyle(0)" key="dropzone">
+        <dropzone :group-id="groupId" :width="width" :columns="columns" />
+      </li>
+      <li class="photo" v-for="photo in Object.values(sortedPhotos)" :key="photo.photoId" :style="photoStyle(photo.index + 1)">
+        <photo :photo-id="photo.photoId" :url="photo.link" :voted="photo.voted" :votes="photo.votes" :width="width" />
+      </li>
+    </transition-group>
+    <resize-observer @notify="handleResize" />
+  </ul>
 </template>
 
 <script>
 import Photo from '@/components/Photo'
+import Dropzone from '@/components/Dropzone'
 
 const PADDING = 20
 const PANE_HEIGHT = 40
@@ -22,13 +23,14 @@ export default {
   mounted() {
     this.handleResize()
   },
-  props: ['photos'],
-  components: { Photo },
+  props: ['photos', 'groupId'],
+  components: { Photo, Dropzone },
   data() {
     return {
       photoStyle: i => {},
       width: 0,
       height: 0,
+      columns: 0,
     }
   },
   computed: {
@@ -51,15 +53,34 @@ export default {
       const width = this.$refs.photoList.clientWidth
       const columns = width < 600 ? 1 : width < 900 ? 2 : width < 1200 ? 3 : 4
       const columnWidth = (width - (columns - 1) * PADDING) / columns
-      this.photoStyle = i => ({
-        transform: `translate(${i %
-          columns *
-          (columnWidth + PADDING)}px,${Math.floor(i / columns) *
-          (columnWidth + PANE_HEIGHT + PADDING)}px`,
-      })
+      this.columns = columns
+      this.photoStyle = i => {
+        if (columns == 1) {
+          let yTranslation =
+            i == 0
+              ? i
+              : Math.floor(i / columns) *
+                  (columnWidth + PANE_HEIGHT + PADDING) -
+                columnWidth +
+                110
+          return {
+            transform: `translate(${i %
+              columns *
+              (columnWidth + PADDING)}px,${yTranslation}px`,
+          }
+        } else {
+          return {
+            transform: `translate(${i %
+              columns *
+              (columnWidth + PADDING)}px,${Math.floor(i / columns) *
+              (columnWidth + PANE_HEIGHT + PADDING)}px`,
+          }
+        }
+      }
+      ;({})
       this.width = columnWidth
       this.height =
-        Math.floor((Object.keys(this.photos).length - 1) / columns + 1) *
+        Math.floor(Object.keys(this.photos).length / columns + 1) *
         (columnWidth + PANE_HEIGHT + PADDING)
     },
   },

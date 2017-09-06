@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon --exec babel-node server/index.js",
     "dev": "ssh -N pixelect | nodemon --exec babel-node server/index.js",
-    "production": "NODE_ENV=production babel-node server/index.js",
+    "production": "NODE_ENV=production nodemon --exec babel-node server/index.js",
     "tunnel": "ssh -N pixelect",
     "build": "NODE_ENV=production webpack --progress --color",
     "lint": "eslint --ext .js,.vue .",
@@ -27,8 +27,8 @@
     "babel-cli": "^6.26.0",
     "body-parser": "^1.17.2",
     "buefy": "^0.5.0",
-    "csurf": "^1.9.0",
     "crypto-js": "^3.1.9-1",
+    "csurf": "^1.9.0",
     "express": "^4.15.4",
     "express-session": "^1.15.5",
     "minio": "^3.1.3",

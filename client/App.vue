@@ -159,6 +159,10 @@ html {
   opacity: 0;
 }
 
+.modal-background {
+  background-color: rgba(10, 10, 10, 0.70);
+}
+
 .fade-enter-active, .fade-leave-active {
   transition: all .25s ease;
 }

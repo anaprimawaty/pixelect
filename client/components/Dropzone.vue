@@ -1,6 +1,8 @@
 <template>
-  <dropzone id="imageDropzone" ref="imageDropzone" :url="`/photos/create?_csrf=${_csrf}`" :dropzone-options="customOptionsObject" :use-custom-dropzone-options="true" @vdropzone-sending="sending" @vdropzone-success="showSuccess">
-  </dropzone>
+  <div>
+    <dropzone id="imageDropzone" ref="imageDropzone" url="/photos/create" :style="dropzoneStyle" :dropzone-options="customOptionsObject" :use-custom-dropzone-options="true" @vdropzone-sending="sending" @vdropzone-success="showSuccess">
+    </dropzone>
+  </div>
 </template>
 
 <script>
@@ -13,13 +15,26 @@ export default {
     return {
       customOptionsObject: {
         acceptedFileTypes: 'image/jpeg,image/png',
+        maxFileSizeInMB: '5',
+      },
+      styleObject: {
+        width: this.width,
       },
     }
   },
-  computed: mapState({
-    _csrf: state => state._csrf,
-  }),
-  props: ['groupId'],
+  computed: {
+    dropzoneStyle() {
+      if (this.columns == 1) {
+        return { height: '50px', width: `${this.width}px` }
+      } else {
+        return { height: `${this.width + 40}px`, width: `${this.width}px` }
+      }
+    },
+    ...mapState({
+      _csrf: state => state._csrf,
+    }),
+  },
+  props: ['groupId', 'width', 'columns'],
   components: {
     Dropzone,
   },
@@ -40,8 +55,10 @@ export default {
 }
 </script>
 
-<style>
-#imageDropzone {
-  margin-bottom: 1.5em;
+<style scoped>
+@media screen and (max-width: 500px) {
+  #imageDropzone {
+    height: 30px
+  }
 }
 </style>
