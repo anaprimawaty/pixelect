@@ -18,7 +18,10 @@
           <div class="navbar-item">
             <div class="field is-grouped">
               <p v-for="button in buttons" class="control">
-                <button :class="button.class" @click="bus.$emit(button.action)">{{ button.text }}</button>
+                <button :class="button.class" @click="bus.$emit(button.action)">
+                  <img :src="button.imgUrl"/>
+                  {{ button.text }}
+                </button>
               </p>
             </div>
           </div>
@@ -77,8 +80,8 @@ export default {
           ]
         case 'group':
           return [
-            { text: 'Publish', class: 'button is-primary', action: 'publish' },
-            { text: 'Invite', class: 'button is-primary', action: 'invite' },
+            { text: 'Publish', class: 'button is-primary publish', action: 'publish', imgUrl: '/assets/FB_logo.png', },
+            { text: 'Invite', class: 'button is-primary', action: 'invite', imgUrl: '', },
           ]
       }
     },
@@ -115,5 +118,10 @@ nav {
   .plain-navbar-dropdown::after {
     right: 1.40rem;
   }
+}
+
+.publish img {
+  height: 1.2rem;
+  margin-right: 0.6rem;
 }
 </style>
