@@ -28,13 +28,7 @@
             </a>
             <div class="navbar-dropdown is-right">
               <div class="navbar-item">
-                <div class="level">
-                  <div class="level-left">
-                    <div class="level-item">
-                      <strong>Welcome Back, {{userName}}! 🎉</strong>
-                    </div>
-                  </div>
-                </div>
+                <strong>Welcome Back, {{userName}}! 🎉</strong>
               </div>
               <div class="navbar-divider">
               </div>
