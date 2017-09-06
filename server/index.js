@@ -39,7 +39,7 @@ app.use(
 )
 
 // CSRF
-app.use(require('csurf')())
+//app.use(require('csurf')())
 
 app.use('/token', token)
 app.use('/users', users)
