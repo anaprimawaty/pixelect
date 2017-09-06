@@ -16,10 +16,10 @@ function parseSignedRequest(signedRequest, secret) {
     // decode the data
     var sig = encodedData[0];
     var json = atob(encodedData[1]);
-    var data = JSON.parse(JSON.stringify(json)); // ERROR Occurs Here!
+    var data = JSON.parse(json); // ERROR Occurs Here!
 
     // check algorithm - not relevant to error
-    if (!data.algorithm || data.algorithm.toUpperCase() != 'HMAC-SHA256') {
+    if (!data.algorithm || data.algorithm.toUpperCase() != "HMAC-SHA256") {
         throw Error('Unknown algorithm: ' + data.algorithm + '. Expected HMAC-SHA256');
     }
 
