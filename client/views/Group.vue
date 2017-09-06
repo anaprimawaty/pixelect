@@ -67,6 +67,7 @@ import CustomFooter from '@/components/CustomFooter'
 export default {
   mounted() {
     store.dispatch(FETCH_GROUP, this.groupId)
+    this.name = this.groupName
 
     const payload = { facebookId: this.facebookId, groupHash: this.groupId }
     fetch('/groups/addUser', {
@@ -123,7 +124,7 @@ export default {
     bus.$off('invite')
   },
   beforeUpdate: function() {
-    if (this.name === null) {
+    if (this.name == null && this.isGroupValid) {
       this.name = store.state.groupName
     }
   },
