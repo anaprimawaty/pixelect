@@ -17,6 +17,17 @@
               </svg>
             </span>
           </div>
+          <transition name="fade" mode="out-in">
+            <preview
+              v-show="preview != null"
+              :photo-id="preview && preview.photoId"
+              :link="preview && preview.link"
+              :voted="preview && preview.voted"
+            />
+          </transition>
+          <photo-list :photos="photos" :group-id="groupId" />
+        </section>
+        <card-modal :visible="inviteModalOpened" :title="'Invite friends to Pixelect!'" transition="zoom" @close="closeModal">
           <div class="group-link">
             <a :href="link" @click="copyLink">{{ link }}</a>
             <span class="icon action" @click="copyLink">
@@ -31,17 +42,7 @@
             </span>
             <input ref="link" :value="link" />
           </div>
-          <transition name="fade" mode="out-in">
-            <preview
-              v-show="preview != null"
-              :photo-id="preview && preview.photoId"
-              :link="preview && preview.link"
-              :voted="preview && preview.voted"
-            />
-          </transition>
-          <dropzone :group-id="groupId" />
-          <photo-list :photos="photos" />
-        </section>
+        </card-modal>
       </div>
       <custom-footer />
     </div>
@@ -60,8 +61,8 @@ import Loading from '@/views/Loading'
 import PhotoList from '@/components/PhotoList'
 import UserList from '@/components/UserList'
 import Preview from '@/components/Preview'
-import Dropzone from '@/components/Dropzone'
 import CustomFooter from '@/components/CustomFooter'
+import { Modal, CardModal } from 'vue-bulma-modal'
 
 export default {
   mounted() {
@@ -81,8 +82,8 @@ export default {
     bus.$on('publish', function() {
       console.log('Publish')
     })
-    bus.$on('invite', function() {
-      console.log('Invite')
+    bus.$on('invite', () => {
+      this.inviteModalOpened = true
     })
   },
   destroyed() {
@@ -98,6 +99,7 @@ export default {
     return {
       name: null,
       selected: null,
+      inviteModalOpened: false,
     }
   },
   props: ['groupId'],
@@ -118,10 +120,11 @@ export default {
     NotFound,
     PhotoList,
     Preview,
-    Dropzone,
     UserList,
     Loading,
     CustomFooter,
+    Modal,
+    CardModal,
   },
   methods: {
     nameKeydown(e) {
@@ -157,6 +160,9 @@ export default {
           type: 'is-success',
         })
       }
+    },
+    closeModal() {
+      this.inviteModalOpened = false
     },
   },
 }

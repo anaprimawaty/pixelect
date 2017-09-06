@@ -1,6 +1,9 @@
 <template>
-  <dropzone id="imageDropzone" ref="imageDropzone" url="/photos/create" :dropzone-options="customOptionsObject" :use-custom-dropzone-options="true" @vdropzone-sending="sending" @vdropzone-success="showSuccess">
-  </dropzone>
+  <div>
+    <dropzone id="imageDropzone" ref="imageDropzone" url="/photos/create" :style="dropzoneStyle" :dropzone-options="customOptionsObject" :use-custom-dropzone-options="true" @vdropzone-sending="sending" @vdropzone-success="showSuccess">
+    </dropzone>
+    <resize-observer @notify="handleResize" />
+  </div>
 </template>
 
 <script>
@@ -11,10 +14,24 @@ export default {
     return {
       customOptionsObject: {
         acceptedFileTypes: 'image/jpeg,image/png',
+        maxFileSizeInMB: '5',
+      },
+      styleObject: {
+        width: this.width,
       },
     }
   },
-  props: ['groupId'],
+  computed: {
+    dropzoneStyle() {
+      console.log(window.innerWidth)
+      if (this.columns == 1) {
+        return { height: '50px', width: `${this.width}px` }
+      } else {
+        return { height: `${this.width + 40}px`, width: `${this.width}px` }
+      }
+    },
+  },
+  props: ['groupId', 'width', 'columns'],
   components: {
     Dropzone,
   },
@@ -26,12 +43,17 @@ export default {
     showSuccess(file, response) {
       this.$refs.imageDropzone.dropzone.removeFile(file)
     },
+    handleResize() {
+      console.log(document)
+    },
   },
 }
 </script>
 
-<style>
-#imageDropzone {
-  margin-bottom: 1.5em;
+<style scoped>
+@media screen and (max-width: 500px) {
+  #imageDropzone {
+    height: 30px
+  }
 }
 </style>
