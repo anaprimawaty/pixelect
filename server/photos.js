@@ -55,7 +55,10 @@ function storePhoto(models, facebookId, groupHash, filename, source, res) {
   })
   .then(photo => {
     helper.log(source, 'Success: Photo object created successfully')
-    res.send(helper.success())
+    res.send(helper.success({
+      link:'https://s3-ap-southeast-1.amazonaws.com/pixelectstaging/' + filename,
+      id:photo.id
+    }))
   })
   .catch(e => {
     helper.log(source, e)

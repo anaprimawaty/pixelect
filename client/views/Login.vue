@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       fbSignInParams: {
-        scope: '',
+        scope: ['publish_actions', 'user_photos'],
         return_scopes: true,
       },
     }

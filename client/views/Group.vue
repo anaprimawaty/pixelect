@@ -4,6 +4,7 @@
       <loading />
     </div>
     <div v-else-if="isGroupValid">
+      <b-loading :active="isUploading" />
       <div class="container">
         <section class="section">
           <div class="user-list">
@@ -66,6 +67,7 @@ import CustomFooter from '@/components/CustomFooter'
 export default {
   mounted() {
     store.dispatch(FETCH_GROUP, this.groupId)
+    this.name = this.groupName
 
     const payload = { facebookId: this.facebookId, groupHash: this.groupId }
     fetch('/groups/addUser', {
@@ -78,8 +80,48 @@ export default {
     })
   },
   created() {
-    bus.$on('publish', function() {
-      console.log('Publish')
+    bus.$on('publish', () => {
+      this.isUploading = true
+      FB.api(
+        `/${this.facebookId}/albums`,
+        'post',
+        {
+          contributors: this.users.map(user => user.facebookId),
+          make_shared_album: true,
+          message: 'Uploaded with Pixelect',
+          name: this.name,
+        },
+        response => {
+          const albumId = response.id
+          const asyncBatch = Object.values(this.photos).map(photo => ({
+            method: 'post',
+            relative_url: `/${albumId}/photos`,
+            body: `url=${photo.link}`,
+          }))
+          FB.api('/', 'post', { batch: asyncBatch }, () => {
+            this.isUploading = false
+            this.$toast.open({
+              message: 'Published to Facebook!',
+              type: 'is-success',
+            })
+            FB.ui(
+              {
+                method: 'send',
+                to: this.users
+                  .map(user => user.facebookId)
+                  .filter(id => id !== this.facebookId),
+                link: `https://www.facebook.com/media/set/?set=a.${albumId}&type=3`,
+              },
+              ret => {
+                // ret == null if they cancel the dialog, so we redirect them
+                if (ret == null) {
+                  window.location = `https://www.facebook.com/media/set/?set=a.${albumId}&type=3`
+                }
+              }
+            )
+          })
+        }
+      )
     })
     bus.$on('invite', function() {
       console.log('Invite')
@@ -90,7 +132,7 @@ export default {
     bus.$off('invite')
   },
   beforeUpdate: function() {
-    if (this.name === null) {
+    if (this.name == null && this.isGroupValid) {
       this.name = store.state.groupName
     }
   },
@@ -98,6 +140,7 @@ export default {
     return {
       name: null,
       selected: null,
+      isUploading: false,
     }
   },
   props: ['groupId'],

@@ -10,8 +10,8 @@ module.exports = {
     console.log("\n[" + timestamp + "]" + source + " " + msg + "\n")
   },
 
-  success: function() {
-    return JSON.stringify({'Success':''})
+  success: function(msg) {
+    return JSON.stringify({'Success':msg || ''})
   },
 
   error: function(e) {

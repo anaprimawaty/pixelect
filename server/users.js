@@ -5,23 +5,50 @@ var helper = require('./helper')
 /* GET get groups of user
  * response -> [groups]/error
  */
+//order: [['updatedAt', 'DESC']]
 router.get('/groups', helper.isAuthenticated, function(req, res) {
   var source = '[GET /users/groups]'
   var models = req.app.get('models')
 
-  helper.getUser(models, req.session.facebookId)
-  .then(user => {
-    user.getGroups({
-      order:  [['updatedAt', 'DESC']]
-    })
-    .then(groups => {
-      helper.log(source, 'Success: Got groups of user with userId:' + user.id)
-      res.send(groups)
-    })
+  models.User.findOne({
+    where: {facebookId: req.session.facebookId},
+    attributes: {exclude: ['lastName','createdAt','updatedAt']},
+    include: [{
+      model: models.Group,
+      as: 'Groupings',
+      attributes: {exclude: ['createdAt','updatedAt']},
+      through: {attributes:[]},
+      include: [{
+        model: models.User,
+        as: 'Members',
+        attributes: {exclude: ['lastName','createdAt','updatedAt']},
+        through: {attributes:[]}
+      }]
+    }]
   })
-  .catch(e => {
-    helper.log(source, e)
-    res.status(500).send(helper.error(e))
+  .then(info => {
+    info = info.toJSON()['Groupings']
+    Promise.all(
+      info.map(grouping => {
+        return models.Photo
+        .findOne({
+          attributes: ['link'],
+          where: {
+            groupId: grouping.id
+          }
+        })
+        .then(photo => {
+          if (photo) {
+            grouping.link = photo.link
+          } else {
+            grouping.link = ""
+          }
+        })
+      })
+    ).then(() => {
+      helper.log(source, 'Success: Got groups of user with facebookId:' + req.session.facebookId)
+      res.send(info)
+    })
   })
 })
 

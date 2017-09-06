@@ -5,6 +5,7 @@
 
 <script>
 import Dropzone from 'vue2-dropzone'
+import store, { ADD_PHOTO } from '@/store'
 
 export default {
   data() {
@@ -25,6 +26,11 @@ export default {
     },
     showSuccess(file, response) {
       this.$refs.imageDropzone.dropzone.removeFile(file)
+      const json = JSON.parse(response)
+      store.dispatch(ADD_PHOTO, {
+        photoId: json.Success.id,
+        link: json.Success.link,
+      })
     },
   },
 }
