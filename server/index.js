@@ -77,8 +77,16 @@ if (process.env.NODE_ENV === 'production') {
 // Static content
 app.use(express.static('static'))
 
-const server = app.listen(8081, '127.0.0.1', function() {
-  const host = server.address().address
-  const port = server.address().port
-  console.log(`pixelect listening at http://${host}:${port}`)
-})
+if (process.env.NODE_ENV === 'production') {
+	const server = app.listen(3000, function() {
+	  const host = server.address().address
+	  const port = server.address().port
+	  console.log(`pixelect listening at http://${host}:${port}`)
+	})
+} else{
+	const server = app.listen(8081, '127.0.0.1', function() {
+	  const host = server.address().address
+	  const port = server.address().port
+	  console.log(`pixelect listening at http://${host}:${port}`)
+	})
+}
