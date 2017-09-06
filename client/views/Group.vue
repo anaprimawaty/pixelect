@@ -240,12 +240,4 @@ export default {
 .user-list {
   position: relative;
 }
-
-.fade-enter-active, .fade-leave-active {
-  transition: all .25s ease;
-}
-
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
 </style>
