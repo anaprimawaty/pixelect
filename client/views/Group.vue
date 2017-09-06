@@ -104,13 +104,21 @@ export default {
               message: 'Published to Facebook!',
               type: 'is-success',
             })
-            FB.ui({
-              method: 'send',
-              to: this.users
-                .map(user => user.facebookId)
-                .filter(id => id !== this.facebookId),
-              link: `https://www.facebook.com/media/set/?set=a.${albumId}&type=3`,
-            })
+            FB.ui(
+              {
+                method: 'send',
+                to: this.users
+                  .map(user => user.facebookId)
+                  .filter(id => id !== this.facebookId),
+                link: `https://www.facebook.com/media/set/?set=a.${albumId}&type=3`,
+              },
+              ret => {
+                // ret == null if they cancel the dialog, so we redirect them
+                if (ret == null) {
+                  window.location = `https://www.facebook.com/media/set/?set=a.${albumId}&type=3`
+                }
+              }
+            )
           })
         }
       )
