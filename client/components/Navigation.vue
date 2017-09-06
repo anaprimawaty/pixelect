@@ -31,14 +31,7 @@
                 <div class="level">
                   <div class="level-left">
                     <div class="level-item">
-                      <strong>Welcome Back, {{userName}}! </strong>
-                    </div>
-                  </div>
-                  <div class="level-right">
-                    <div class="level-item">
-                      <span class="icon has-text-info" style="margin-left:0.3rem">
-                        <img src="/assets/partyPopper.png">
-                      </span>
+                      <strong>Welcome Back, {{userName}}! 🎉</strong>
                     </div>
                   </div>
                 </div>
