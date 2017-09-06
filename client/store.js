@@ -46,6 +46,16 @@ const mutations = {
   invalidateGroup(state) {
     state.isGroupValid = null
   },
+  addPhoto(state, { link, photoId }) {
+    Vue.set(state.photos, photoId, {
+      id: photoId,
+      photoId,
+      link,
+      userId: state.facebookId,
+      votes: 0,
+      voted: false,
+    })
+  },
 }
 
 const actions = {
@@ -127,6 +137,9 @@ const actions = {
   initialiseGroupList({ commit }, groups) {
     commit(INITIALISE_GROUP_LIST, groups)
   },
+  addPhoto({ commit }, { link, photoId }) {
+    commit(ADD_PHOTO, { link, photoId })
+  },
 }
 
 export default new Vuex.Store({
@@ -147,3 +160,4 @@ export const PREVIEW = 'preview'
 export const LOGIN = 'login'
 export const FETCH_GROUP_LIST = 'fetchGroupList'
 export const INVALIDATE_GROUP = 'invalidateGroup'
+export const ADD_PHOTO = 'addPhoto'
