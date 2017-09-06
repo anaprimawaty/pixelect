@@ -1,10 +1,12 @@
 var express = require('express')
 var router = express.Router()
 var helper = require('./helper')
+var parser = require('./parser')
 
 /* GET get groups of user
  * response -> [groups]/error
  */
+//order: [['updatedAt', 'DESC']]
 router.get('/groups', helper.isAuthenticated, function(req, res) {
   var source = '[GET /users/groups]'
   var models = req.app.get('models')
@@ -88,26 +90,67 @@ router.post('/', function(req, res) {
  * body -> {facebookId: facebookId of user, name: firstName of user}
  * response -> success/error
  */
-/*router.post('/delete', function(req, res) {
+router.post('/delete', function(req, res) {
   var source = '[POST /users/delete]'
   var models = req.app.get('models')
+  helper.log(req.body.signed_request.substring(0,req.body.signed_request.indexOf(' ')))
+  //var data = parser.parse_signed_request(req.params.signed_request, process.env.PIXELECT_APP_SECRET)
+  //helper.log(data)
 
-  helper.getUser(models, req.session.facebookId)
+  /*  helper.getUser(models, req.session.facebookId)
   .then(user => {
-    models.Group.findAll({
+    var userId = user.id
+    user.destroy()
+    .then(function(){
+      helper.log(source, 'Success: userId:' + user.id + '\'s account deleted')
+      res.send(helper.success())
+    })
+    .catch(e => {
+      helper.log(source, e)
+      res.send('Error deleting user account')
+    })
+    models.Group.destroy({
       where:{
-        owner: user.id
+        owner: userId
       }
     })
-    .then(function(groups){
-      user.destroy();
+    .then(function(){
+        helper.log(source, 'Success: userId:' + user.id + '\'s groups deleted')
+      })
+    .catch(e => {
+      helper.log(source, e)
+      res.send('Error deleting user\'s groups')
+    })
+    models.Photo.destroy({
+      where:{
+        userId: userId
+      }
+    })
+    .then(function(){
+        helper.log(source, 'Success: userId:' + user.id + '\'s photos deleted')
+      })
+    .catch(e => {
+      helper.log(source, e)
+      res.send('Error deleting user\'s photos')
+    })
+    models.Vote.destroy({
+      where:{
+        userId: userId
+      }
+    })
+    .then(function(){
+        helper.log(source, 'Success: userId:' + user.id + '\'s votes deleted')
+      })
+    .catch(e => {
+      helper.log(source, e)
+      res.send('Error deleting user\'s votes')
     })
   })
   .catch(e => {
     helper.log(source, e)
     res.status(500).send(helper.error(e))
-  })
-})*/
+  })*/
+})
 
 
 module.exports = router

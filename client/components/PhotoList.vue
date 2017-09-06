@@ -1,13 +1,13 @@
 <template>
   <ul class="photo-list" ref="photoList" :style="{ height: `${height}px` }">
-    <!-- <transition-group name="slide-fade"> -->
-      <li class="photo" :style="photoStyle(0)">
+    <transition-group name="slide-fade">
+      <li class="photo" :style="photoStyle(0)" key="dropzone">
         <dropzone :group-id="groupId" :width="width" :columns="columns" />
       </li>
       <li class="photo" v-for="photo in Object.values(sortedPhotos)" :key="photo.photoId" :style="photoStyle(photo.index + 1)">
         <photo :photo-id="photo.photoId" :url="photo.link" :voted="photo.voted" :votes="photo.votes" :width="width" />
       </li>
-    <!-- </transition-group> -->
+    </transition-group>
     <resize-observer @notify="handleResize" />
   </ul>
 </template>
@@ -56,8 +56,13 @@ export default {
       this.columns = columns
       this.photoStyle = i => {
         if (columns == 1) {
-          let yTranslation = i == 0 ? i : (Math.floor(i / columns) *
-          (columnWidth + PANE_HEIGHT + PADDING)) - columnWidth + 110
+          let yTranslation =
+            i == 0
+              ? i
+              : Math.floor(i / columns) *
+                  (columnWidth + PANE_HEIGHT + PADDING) -
+                columnWidth +
+                110
           return {
             transform: `translate(${i %
               columns *
@@ -72,11 +77,7 @@ export default {
           }
         }
       }
-
-
-      ({
-
-      })
+      ;({})
       this.width = columnWidth
       this.height =
         Math.floor(Object.keys(this.photos).length / columns + 1) *

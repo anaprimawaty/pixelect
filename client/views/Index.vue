@@ -3,11 +3,11 @@
     <div class="container">
       <section class="section">
       <transition-group name="slide-fade">
-        <div class="card" v-for="group in groups" :key="group.hash">
+        <div class="box is-paddingless" v-for="group in groups" :key="group.hash">
           <router-link :to="`/group/${group.hash}`">
-            <div class="card-image" style="background-image: url(https://s3-ap-southeast-1.amazonaws.com/pixelectstaging/c23eef979bff27aa896f49095c99bfa1)"></div>
-            <div class="card-content">
-              {{ group.name }}
+            <div class="cover-image" :style="{ 'background-image': `url(${group.link})` }" />
+            <div class="group-details">
+              <span class="group-name">{{ group.name }}</span>
             </div>
           </router-link>
         </div>
@@ -32,7 +32,17 @@ export default {
   },
   created() {
     bus.$on('createGroup', function() {
-      fetch('/groups', { method: 'POST', credentials: 'same-origin' })
+      fetch('/groups', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: `${store.state.userName}'s Group`,
+          _csrf: store.state._csrf,
+        }),
+        credentials: 'same-origin',
+      })
         .then(response => {
           if (!response.ok) {
             throw new Error()
@@ -55,14 +65,44 @@ export default {
 </script>
 
 <style scoped>
-.card {
-	margin-bottom: 2em;
+.box {
+  position: relative;
+  overflow: hidden;
 }
 
-.card-image {
+.cover-image {
 	width: 100%;
 	height: 400px;
 	background-position: 50% 50%;
 	background-size: cover;
+  filter: blur(10px);
+}
+
+.box:hover .cover-image {
+}
+
+.group-details {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.3);
+  transition: all 0.3s;
+}
+
+.box:hover .group-details {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.group-name {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
 }
 </style>

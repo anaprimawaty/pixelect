@@ -147,7 +147,7 @@ router.post('/', helper.isAuthenticated, function(req, res) {
     .then(group => {
       user.addGroupings(group)
       helper.log(source, 'Success: Created groupId:' + group.id)
-      res.send(JSON.stringify({'Success': group.hash}))
+      res.send(helper.success(group.hash))
     })
     .catch(e => {
       helper.log(source, e)
