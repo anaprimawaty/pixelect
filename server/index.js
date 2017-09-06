@@ -9,6 +9,7 @@ import users from './users'
 import photos from './photos'
 import groups from './groups'
 import votes from './votes'
+import token from './token'
 
 const app = express()
 
@@ -29,7 +30,7 @@ app.set('s3', s3Client)
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-// session
+// Session
 app.use(
   session({
     secret: process.env.PIXELECT_SESSION_SECRETKEY,
@@ -37,6 +38,10 @@ app.use(
   })
 )
 
+// CSRF
+app.use(require('csurf')())
+
+app.use('/token', token)
 app.use('/users', users)
 app.use('/photos', photos)
 app.use('/groups', groups)
