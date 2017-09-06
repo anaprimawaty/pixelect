@@ -93,8 +93,9 @@ router.post('/', function(req, res) {
 router.post('/delete', function(req, res) {
   var source = '[POST /users/delete]'
   var models = req.app.get('models')
-  var data = parser.parse_signed_request(req.body.signed_request, process.env.PIXELECT_APP_SECRET)
-  helper.log(data)
+  helper.log(req.body.signed_request)
+  //var data = parser.parse_signed_request(req.params.signed_request, process.env.PIXELECT_APP_SECRET)
+  //helper.log(data)
 
   /*  helper.getUser(models, req.session.facebookId)
   .then(user => {
