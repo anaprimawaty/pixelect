@@ -53,6 +53,10 @@ svg path {
   transition: all 0.25s;
 }
 
+.modal {
+  z-index: 1001;
+}
+
 .modal-content {
   width: calc(100vw - 120px);
   height: calc(100vh - 40px);
