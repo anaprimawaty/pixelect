@@ -28,12 +28,44 @@
           </transition>
           <photo-list :photos="photos" :group-id="groupId" />
         </section>
-        <div class="modal" :class="{'is-active': inviteModalOpened }">
-          <div class="modal-background" @click="closeModal"></div>
+        <div class="modal is-active" v-if="modal === 'publish'">
+          <div class="modal-background" @click="modal = null"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Publish to Facebook?</p>
+              <button class="delete" aria-label="close" @click="modal = null"></button>
+            </header>
+            <section class="modal-card-body">
+              <p>Pixelect uploads the best photos to Facebook for you.</p>
+            </section>
+            <footer class="modal-card-foot">
+              <button class="button is-primary" @click="publishGroup">Publish</button>
+              <button class="button" @click="modal = null">Cancel</button>
+            </footer>
+          </div>
+        </div>
+        <div class="modal is-active" v-if="modal === 'delete'">
+          <div class="modal-background" @click="modal = null"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Delete Group?</p>
+              <button class="delete" aria-label="close" @click="modal = null"></button>
+            </header>
+            <section class="modal-card-body">
+              <p>This will delete all photos in this group.</p>
+            </section>
+            <footer class="modal-card-foot">
+              <button class="button is-danger" @click="deleteGroup">Delete</button>
+              <button class="button" @click="modal = null">Cancel</button>
+            </footer>
+          </div>
+        </div>
+        <div class="modal is-active" v-if="modal === 'invite'">
+          <div class="modal-background" @click="modal = null"></div>
           <div class="modal-card">
             <header class="modal-card-head">
               <p class="modal-card-title">Invite friends to Pixelect!</p>
-              <button class="delete" aria-label="close" @click="closeModal"></button>
+              <button class="delete" aria-label="close" @click="modal = null"></button>
             </header>
             <section class="modal-card-body">
               <div class="group-link">
@@ -82,54 +114,18 @@ export default {
   },
   created() {
     bus.$on('publish', () => {
-      this.isUploading = true
-      FB.api(
-        `/${this.facebookId}/albums`,
-        'post',
-        {
-          contributors: this.users.map(user => user.facebookId),
-          make_shared_album: true,
-          message: 'Uploaded with Pixelect',
-          name: this.name,
-        },
-        response => {
-          const albumId = response.id
-          const asyncBatch = Object.values(this.photos).map(photo => ({
-            method: 'post',
-            relative_url: `/${albumId}/photos`,
-            body: `url=${photo.link}`,
-          }))
-          FB.api('/', 'post', { batch: asyncBatch }, () => {
-            this.isUploading = false
-            this.$toast.open({
-              message: 'Published to Facebook!',
-              type: 'is-success',
-            })
-            FB.ui(
-              {
-                method: 'send',
-                to: this.users
-                  .map(user => user.facebookId)
-                  .filter(id => id !== this.facebookId),
-                link: `https://www.facebook.com/media/set/?set=a.${albumId}&type=3`,
-              },
-              ret => {
-                // ret == null if they cancel the dialog, so we redirect them
-                if (ret == null) {
-                  window.location = `https://www.facebook.com/media/set/?set=a.${albumId}&type=3`
-                }
-              }
-            )
-          })
-        }
-      )
+      this.modal = 'publish'
+    })
+    bus.$on('delete', () => {
+      this.modal = 'delete'
     })
     bus.$on('invite', () => {
-      this.inviteModalOpened = true
+      this.modal = 'invite'
     })
   },
   destroyed() {
     bus.$off('publish')
+    bus.$off('delete')
     bus.$off('invite')
   },
   beforeUpdate: function() {
@@ -155,7 +151,7 @@ export default {
     return {
       name: null,
       selected: null,
-      inviteModalOpened: false,
+      modal: null,
       isUploading: false,
     }
   },
@@ -216,8 +212,72 @@ export default {
         })
       }
     },
-    closeModal() {
-      this.inviteModalOpened = false
+    publishGroup() {
+      this.isUploading = true
+      this.modal = null
+
+      FB.api(
+        `/${this.facebookId}/albums`,
+        'post',
+        {
+          contributors: this.users.map(user => user.facebookId),
+          make_shared_album: true,
+          message: 'Uploaded with Pixelect',
+          name: this.name,
+        },
+        response => {
+          const albumId = response.id
+          const asyncBatch = Object.values(this.photos).map(photo => ({
+            method: 'post',
+            relative_url: `/${albumId}/photos`,
+            body: `url=${photo.link}`,
+          }))
+          FB.api('/', 'post', { batch: asyncBatch }, () => {
+            this.isUploading = false
+            this.$toast.open({
+              message: 'Published to Facebook!',
+              type: 'is-success',
+            })
+            FB.ui(
+              {
+                method: 'send',
+                to: this.users
+                  .map(user => user.facebookId)
+                  .filter(id => id !== this.facebookId),
+                link: `https://www.facebook.com/media/set/?set=a.${albumId}&type=3`,
+              },
+              ret => {
+                // ret == null if they cancel the dialog, so we redirect them
+                if (ret == null) {
+                  window.open(
+                    `https://www.facebook.com/media/set/?set=a.${albumId}&type=3`
+                  )
+                }
+              }
+            )
+          })
+        }
+      )
+    },
+    deleteGroup() {
+      this.modal = null
+
+      const payload = {
+        groupHash: this.groupId,
+        _csrf: store.state._csrf,
+      }
+
+      fetch('/groups/delete', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(payload),
+        credentials: 'same-origin',
+      }).then(() => {
+        console.log('done')
+        this.$router.push('/')
+      })
     },
   },
 }

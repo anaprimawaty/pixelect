@@ -107,7 +107,7 @@ const actions = {
       _csrf: store.state._csrf,
     }
 
-    fetch(`/groups/changeName`, {
+    fetch('/groups/changeName', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
