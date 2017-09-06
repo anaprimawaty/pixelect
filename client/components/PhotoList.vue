@@ -1,13 +1,15 @@
 <template>
-  <ul v-if="Object.keys(photos).length !== 0" class="photo-list" ref="photoList" :style="{ height: `${height}px` }">
-    <transition-group name="slide-fade">
-      <li class="photo" v-for="photo in Object.values(sortedPhotos)" :key="photo.photoId" :style="photoStyle(photo.index)">
-        <photo :photo-id="photo.photoId" :url="photo.link" :voted="photo.voted" :votes="photo.votes" :width="width" />
-      </li>
-    </transition-group>
-    <resize-observer @notify="handleResize" />
-  </ul>
-  <div v-else class="onboard" />
+  <div>
+    <ul class="photo-list" ref="photoList" :style="{ height: `${height}px` }">
+      <transition-group name="slide-fade">
+        <li class="photo" v-for="photo in Object.values(sortedPhotos)" :key="photo.photoId" :style="photoStyle(photo.index)">
+          <photo :photo-id="photo.photoId" :url="photo.link" :voted="photo.voted" :votes="photo.votes" :width="width" />
+        </li>
+      </transition-group>
+      <resize-observer @notify="handleResize" />
+    </ul>
+    <div v-if="Object.keys(photos).length === 0" class="onboard" />
+  </div>
 </template>
 
 <script>
