@@ -45,6 +45,11 @@ const Group = sequelize.define('group', {
     allowNull: false,
     defaultValue: ''
   },
+  hash: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true
+  }
 });
 Group.belongsTo(User, {
   foreignKey: {
@@ -57,14 +62,15 @@ Group.belongsTo(User, {
 // User-Group table
 const UserGroup = sequelize.define('userGroup', {
 });
-Group.belongsToMany(User, {through: 'userGroup'});
-User.belongsToMany(Group, {through: 'userGroup'});
+Group.belongsToMany(User, {as: 'Members', through: 'userGroup'});
+User.belongsToMany(Group, {as: 'Groupings', through: 'userGroup'});
 
 // Photo table
 const Photo = sequelize.define('photo', {
   link: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   }
 });
 Photo.belongsTo(User, {
@@ -116,18 +122,19 @@ module.exports.sequelize = sequelize;
 
 // // To create Group
 // Group.create({
-//   owner: 1
+//   owner: 1,
+//   hash: "testhash123"
 // });
 
 // // To add User to Group
 // User.findById(1).then(user => {
 //   Group.findById(1).then(group => {
-//     user.setGroups([group]);
+//     user.addGroupings(group);
 //   });
 // });
 // User.findById(2).then(user => {
 //   Group.findById(1).then(group => {
-//     user.setGroups([group]);
+//     user.addGroupings(group);
 //   });
 // });
 

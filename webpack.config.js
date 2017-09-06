@@ -3,7 +3,7 @@ var path = require('path')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 var isProduction = process.env.NODE_ENV === 'production'
 
@@ -12,9 +12,13 @@ function resolve(dir) {
 }
 
 module.exports = {
-  entry: {
-    app: './client/main.js',
-    hot: './client/hot-reload.js',
+  entry: isProduction
+    ? {
+      'assets/app': './client/main.js',
+    }
+  : {
+    'assets/app': './client/main.js',
+    'assets/hot': './client/hot-reload.js',
   },
   output: {
     path: resolve('/dist'),
@@ -30,36 +34,42 @@ module.exports = {
   },
   plugins: isProduction
     ? [
-        new webpack.optimize.UglifyJsPlugin({
-          compress: { warnings: false },
-          sourceMap: true,
-        }),
-        new OptimizeCSSPlugin({
-          cssProcessorOptions: {
-            safe: true,
-          },
-        }),
-        new HtmlWebpackPlugin({
-          template: 'client/index.html',
-          minify: {
-            removeComments: true,
-            collapseWhitespace: true,
-            removeAttributeQuotes: true,
-          },
-          inject: true,
-        }),
-        new FriendlyErrorsPlugin(),
-      ]
-    : [
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new HtmlWebpackPlugin({
-          filename: 'index.html',
-          template: 'client/index.html',
-          inject: true,
-        }),
-        new FriendlyErrorsPlugin(),
-      ],
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: '"production"',
+        },
+      }),
+      new ExtractTextPlugin('assets/index.css'),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: { warnings: false },
+        sourceMap: true,
+      }),
+      new OptimizeCSSPlugin({
+        cssProcessorOptions: {
+          safe: true,
+        },
+      }),
+      new HtmlWebpackPlugin({
+        template: 'client/index.html',
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeAttributeQuotes: true,
+        },
+        inject: true,
+      }),
+      new FriendlyErrorsPlugin(),
+    ]
+  : [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'client/index.html',
+      inject: true,
+    }),
+    new FriendlyErrorsPlugin(),
+  ],
   module: {
     rules: [
       {
@@ -77,7 +87,7 @@ module.exports = {
         options: {
           loaders: isProduction
             ? ExtractTextPlugin.extract({
-              use: loaders,
+              use: ['vue-style-loader', 'css-loader'],
               fallback: 'vue-style-loader',
             })
           : [

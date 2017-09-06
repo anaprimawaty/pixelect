@@ -2,7 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/views/Index'
 import Group from '@/views/Group'
-import User from '@/views/User'
+import NotFound from '@/views/NotFound'
+import TOS from '@/views/TOS'
+import Privacy from '@/views/Privacy'
 
 Vue.use(Router)
 
@@ -26,16 +28,19 @@ export default new Router({
       props: true,
     },
     {
-      path: '/user/:userId',
-      name: 'user',
-      component: User,
-      props: true,
+      path: '/terms',
+      name: 'terms',
+      component: TOS,
     },
     {
-      path: '/user/:userId/:userName',
-      component: User,
-      alias: '/user/:userId',
-      props: true,
+      path: '/privacy',
+      name: 'privacy',
+      component: Privacy,
+    },
+    {
+      path: '/*',
+      name: 'not-found',
+      component: NotFound,
     },
   ],
 })

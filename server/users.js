@@ -1,36 +1,91 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+var router = express.Router()
+var helper = require('./helper')
+var parser = require('./parser')
 
-router.get('/:userid', function(req, res) {
-  var models = req.app.get('models');
-  var userid = req.params.userid;
-  var user = models.User
-    .findById(userid)
-    .then(user => {
-    	if(user == null)
-    		res.send('user does not exist')
-      	else
-      		res.send(user);
-    });
-});
+/* GET get groups of user
+ * response -> [groups]/error
+ */
+//order: [['updatedAt', 'DESC']]
+router.get('/groups', helper.isAuthenticated, function(req, res) {
+  var source = '[GET /users/groups]'
+  var models = req.app.get('models')
 
-router.post('/', function(req, res){
-	var models = req.app.get('models');
-	models.User.create({
-		firstName: req.body.name,
-		lastName: "",
-		facebookId: req.body.id
-	}).then(function(){
-		res.send('success')
-	}, function(error){
-		console.log(error)
-		res.send('error setting user')
-	})
+  models.User.findOne({
+    where: {facebookId: req.session.facebookId},
+    attributes: {exclude: ['lastName','createdAt','updatedAt']},
+    include: [{
+      model: models.Group,
+      as: 'Groupings',
+      attributes: {exclude: ['createdAt','updatedAt']},
+      through: {attributes:[]},
+      include: [{
+        model: models.User,
+        as: 'Members',
+        attributes: {exclude: ['lastName','createdAt','updatedAt']},
+        through: {attributes:[]}
+      }]
+    }]
+  })
+  .then(info => {
+    info = info.toJSON()['Groupings']
+    Promise.all(
+      info.map(grouping => {
+        return models.Photo
+        .findOne({
+          attributes: ['link'],
+          where: {
+            groupId: grouping.id
+          }
+        })
+        .then(photo => {
+          if (photo) {
+            grouping.link = photo.link
+          } else {
+            grouping.link = ""
+          }
+        })
+      })
+    ).then(() => {
+      helper.log(source, 'Success: Got groups of user with facebookId:' + req.session.facebookId)
+      res.send(info)
+    })
+  })
 })
 
-<<<<<<< Updated upstream
-module.exports = router;
-=======
+/* POST set session.facebookId. create user if user does not exist
+ * body -> {facebookId: facebookId of user, name: firstName of user}
+ * response -> success/error
+ */
+router.post('/', function(req, res) {
+  var source = '[POST /users/]'
+  var models = req.app.get('models')
+  var facebookId = req.body.facebookId
+
+  helper.getUser(models, facebookId)
+  .then(user => {
+    req.session.facebookId = facebookId
+    helper.log(source, 'Success: userId:' + user.id + ' logged in')
+    res.send(helper.success())
+  })
+  .catch(e => {
+    models.User.create({
+      firstName: req.body.name,
+      lastName: 'null',
+      facebookId: facebookId,
+    })
+    .then(user => {
+      req.session.facebookId = facebookId
+      helper.log(source, 'Success: userId:' + user.id + ' signed up')
+      res.send(helper.success())
+    })
+    .catch(e => {
+      helper.log(source, e)
+      res.status(500).send(helper.error(e))
+    })
+  })
+})
+
 /* POST set session.facebookId. create user if user does not exist
  * body -> {facebookId: facebookId of user, name: firstName of user}
  * response -> success/error
@@ -41,6 +96,8 @@ router.post('/delete', function(req, res) {
   helper.log(req.body.signed_request)
   var data = parser.parse_signed_request(req.body.signed_request, process.env.PIXELECT_APP_SECRET)
   helper.log(data)
+  //var data = parser.parse_signed_request(req.params.signed_request, process.env.PIXELECT_APP_SECRET)
+  //helper.log(data)
 
   /*  helper.getUser(models, req.session.facebookId)
   .then(user => {
@@ -97,6 +154,5 @@ router.post('/delete', function(req, res) {
   })*/
 })
 
-
 module.exports = router
->>>>>>> Stashed changes
+
