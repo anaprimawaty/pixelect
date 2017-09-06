@@ -63,4 +63,8 @@ html {
   transform: translateY(10px);
   opacity: 0;
 }
+
+.modal-background {
+  background-color: rgba(10, 10, 10, 0.70);
+}
 </style>
