@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var helper = require('./helper')
+var parser = require('./parser')
 
 /* GET get groups of user
  * response -> [groups]/error
@@ -92,13 +93,8 @@ router.post('/', function(req, res) {
 router.post('/delete', function(req, res) {
   var source = '[POST /users/delete]'
   var models = req.app.get('models')
-  var signedRequest = req.params.signed_request
-
-  var splitArr = signedRequest.split(".",2)
-  var sig = atob(splitArr[0])
-  var payload = atob(splitArr[1])
-
-  helper.log(sig, payload)
+  var data = parser.parse_signed_request(req.params.signed_request, process.env.PIXELECT_APP_SECRET)
+  helper.log(data)
 
   /*  helper.getUser(models, req.session.facebookId)
   .then(user => {
