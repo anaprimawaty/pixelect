@@ -11,10 +11,9 @@ var helper = require('./helper')
 router.post('/create', uploader.single('file'), helper.hasAccess, function(req, res, next) {
   var source = '[POST /photos/create]'
   var models = req.app.get('models')
-  var session = req.app.get('session')
   var s3 = req.app.get('s3')
   var file = req.file.buffer
-  var filename = helper.getHash(session.facebookId) + req.body.ext
+  var filename = helper.getHash(req.session.facebookId) + req.body.ext
   s3.putObject(
     'pixelectstaging',
     filename,
@@ -26,7 +25,7 @@ router.post('/create', uploader.single('file'), helper.hasAccess, function(req, 
         res.status(500).send(helper.error('Failed to upload file'))
       } else {
         helper.log(source, 'Success: File uploaded successfully')
-        storePhoto(models, session.facebookId, req.body.groupHash, filename, source, res)
+        storePhoto(models, req.session.facebookId, req.body.groupHash, filename, source, res)
       }
     }
   )
@@ -71,10 +70,9 @@ function storePhoto(models, facebookId, groupHash, filename, source, res) {
 router.post('/delete', helper.isAuthenticated, function(req, res) {
   var source = '[POST /photos/delete]'
   var models = req.app.get('models')
-  var session = req.app.get('session')
   var photoId = req.body.photoId
 
-  helper.getUser(models, session.facebookId)
+  helper.getUser(models, req.session.facebookId)
   .then(user => {
     return new Promise(function(resolve, reject) {
       models.Photo.findById(photoId)
@@ -82,7 +80,7 @@ router.post('/delete', helper.isAuthenticated, function(req, res) {
         if (photo.userId === user.id) {
           resolve(photo)
         } else {
-          reject('Error: facebookId:' + session.facebookId + ' cannot delete photoId:' + photoId)
+          reject('Error: facebookId:' + req.session.facebookId + ' cannot delete photoId:' + photoId)
         }
       })
       .catch(e => {

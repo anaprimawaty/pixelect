@@ -30,10 +30,9 @@ function canVote(models, photoId, user) {
 router.post('/', helper.isAuthenticated, function(req,res) {
   var source = '[POST /votes/]'
   var models = req.app.get('models')
-  var session = req.app.get('session')
   var photoId = req.body.photoId
 
-  helper.getUser(models, session.facebookId)
+  helper.getUser(models, req.session.facebookId)
   .then(user => {
     models.Vote.findOne({
       where: { userId: user.id, photoId: photoId }
