@@ -27,6 +27,19 @@ app.set('s3', s3Client)
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+
+// Session
+app.use(
+  session({
+    secret: process.env.PIXELECT_SESSION_SECRETKEY,
+    saveUninitialized: false,
+  })
+)
+
+// CSRF
+//app.use(require('csurf')())
+
+app.use('/token', token)
 app.use('/users', users)
 app.use('/photos', photos)
 app.use('/groups', groups)
