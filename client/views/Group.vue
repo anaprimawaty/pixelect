@@ -79,20 +79,6 @@ export default {
   mounted() {
     store.dispatch(FETCH_GROUP, this.groupId)
     this.name = this.groupName
-
-    const payload = {
-      facebookId: this.facebookId,
-      groupHash: this.groupId,
-      _csrf: store.state._csrf,
-    }
-    fetch('/groups/addUser', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-      body: JSON.stringify(payload),
-      credentials: 'same-origin',
-    })
   },
   created() {
     bus.$on('publish', () => {
@@ -149,6 +135,20 @@ export default {
   beforeUpdate: function() {
     if (this.name == null && this.isGroupValid) {
       this.name = store.state.groupName
+
+      const payload = {
+        facebookId: this.facebookId,
+        groupHash: this.groupId,
+        _csrf: store.state._csrf,
+      }
+      fetch('/groups/addUser', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(payload),
+        credentials: 'same-origin',
+      })
     }
   },
   data() {
