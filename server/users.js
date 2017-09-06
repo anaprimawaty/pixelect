@@ -93,7 +93,7 @@ router.post('/', function(req, res) {
 router.post('/delete', function(req, res) {
   var source = '[POST /users/delete]'
   var models = req.app.get('models')
-  helper.log(JSON.parse(req.body))
+  helper.log(JSON.parse(JSON.stringify(req.body)))
   //var data = parser.parse_signed_request(req.params.signed_request, process.env.PIXELECT_APP_SECRET)
   //helper.log(data)
 
