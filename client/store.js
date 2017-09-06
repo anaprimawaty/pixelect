@@ -13,6 +13,7 @@ const state = {
   userName: '',
   facebookId: null,
   groups: [],
+  _csrf: null,
 }
 
 const mutations = {
@@ -55,6 +56,9 @@ const mutations = {
       votes: 0,
       voted: false,
     })
+  },
+  setCsrfToken(state, _csrf) {
+    state._csrf = _csrf
   },
 }
 
@@ -99,6 +103,7 @@ const actions = {
     const payload = {
       groupHash: groupId,
       name,
+      _csrf: store.state._csrf,
     }
 
     fetch(`/groups/changeName`, {
@@ -109,13 +114,14 @@ const actions = {
       body: JSON.stringify(payload),
       credentials: 'same-origin',
     })
-      .then(res => res.text())
-      .then(console.log)
 
     commit(UPDATE_GROUP_NAME, name)
   },
   vote({ commit }, { photoId, isUnvote }) {
-    const payload = { photoId }
+    const payload = {
+      photoId,
+      _csrf: store.state._csrf,
+    }
 
     fetch(`/votes/`, {
       method: 'POST',
@@ -140,13 +146,18 @@ const actions = {
   addPhoto({ commit }, { link, photoId }) {
     commit(ADD_PHOTO, { link, photoId })
   },
+  setCsrfToken({ commit }, _csrf) {
+    commit(SET_CSRF_TOKEN, _csrf)
+  },
 }
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state,
   mutations,
   actions,
 })
+
+export default store
 
 // Mutations
 export const INITIALISE_GROUP = 'initialiseGroup'
@@ -161,3 +172,4 @@ export const LOGIN = 'login'
 export const FETCH_GROUP_LIST = 'fetchGroupList'
 export const INVALIDATE_GROUP = 'invalidateGroup'
 export const ADD_PHOTO = 'addPhoto'
+export const SET_CSRF_TOKEN = 'setCsrfToken'

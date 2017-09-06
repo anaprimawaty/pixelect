@@ -15,12 +15,17 @@
 
 <script>
 import { mapState } from 'vuex'
+import store, { SET_CSRF_TOKEN } from '@/store'
 import Login from '@/views/Login'
 import Loading from '@/views/Loading'
 import Navigation from '@/components/Navigation'
-import store from '@/store'
 
 export default {
+  created() {
+    fetch('/token', { credentials: 'same-origin' })
+      .then(res => res.json())
+      .then(json => store.dispatch(SET_CSRF_TOKEN, json.csrfToken))
+  },
   computed: mapState({
     isLoggedIn: state =>
       state.facebookId == null ? null : state.facebookId !== 0,

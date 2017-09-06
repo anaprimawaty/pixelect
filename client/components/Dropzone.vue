@@ -1,10 +1,11 @@
 <template>
-  <dropzone id="imageDropzone" ref="imageDropzone" url="/photos/create" :dropzone-options="customOptionsObject" :use-custom-dropzone-options="true" @vdropzone-sending="sending" @vdropzone-success="showSuccess">
+  <dropzone id="imageDropzone" ref="imageDropzone" :url="`/photos/create?_csrf=${_csrf}`" :dropzone-options="customOptionsObject" :use-custom-dropzone-options="true" @vdropzone-sending="sending" @vdropzone-success="showSuccess">
   </dropzone>
 </template>
 
 <script>
 import Dropzone from 'vue2-dropzone'
+import { mapState } from 'vuex'
 import store, { ADD_PHOTO } from '@/store'
 
 export default {
@@ -15,6 +16,9 @@ export default {
       },
     }
   },
+  computed: mapState({
+    _csrf: state => state._csrf,
+  }),
   props: ['groupId'],
   components: {
     Dropzone,

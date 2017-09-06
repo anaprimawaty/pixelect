@@ -44,6 +44,7 @@ new Vue({
               body: JSON.stringify({
                 facebookId: dude.id,
                 name: dude.name,
+                _csrf: store.state._csrf,
               }),
               credentials: 'same-origin',
             }).then(() =>

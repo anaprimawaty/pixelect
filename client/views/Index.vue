@@ -32,7 +32,16 @@ export default {
   },
   created() {
     bus.$on('createGroup', function() {
-      fetch('/groups', { method: 'POST', credentials: 'same-origin' })
+      fetch('/groups', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          _csrf: store.state._csrf,
+        }),
+        credentials: 'same-origin',
+      })
         .then(response => {
           if (!response.ok) {
             throw new Error()

@@ -69,7 +69,11 @@ export default {
     store.dispatch(FETCH_GROUP, this.groupId)
     this.name = this.groupName
 
-    const payload = { facebookId: this.facebookId, groupHash: this.groupId }
+    const payload = {
+      facebookId: this.facebookId,
+      groupHash: this.groupId,
+      _csrf: store.state._csrf,
+    }
     fetch('/groups/addUser', {
       method: 'POST',
       headers: {

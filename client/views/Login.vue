@@ -46,7 +46,11 @@ export default {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ facebookId: dude.id, name: dude.name }),
+          body: JSON.stringify({
+            facebookId: dude.id,
+            name: dude.name,
+            _csrf: store.state._csrf,
+          }),
           credentials: 'same-origin',
         })
       })
