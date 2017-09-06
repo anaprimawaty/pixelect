@@ -8,6 +8,7 @@
       <div class="container has-text-centered">
           <img class="logo" src="/assets/logo.svg"/>
           <h1 class="title">Pixelect</h1>
+          <h2 class="subtitle">Photo sharing made simple</h2>
           <fb-signin-button
             :params="fbSignInParams"
             @success="onSignInSuccess"
@@ -72,9 +73,16 @@ export default {
   margin: 0 50px 50px 0;
 }
 
+.title, .subtitle, .description {
+  color: #fff;
+}
+
 .title {
   font-size: 50px;
-  color: #fff;
+}
+
+.description {
+  font-weight: bold;
 }
 
 .fb-signin-button {
