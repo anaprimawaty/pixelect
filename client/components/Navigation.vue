@@ -113,8 +113,8 @@ export default {
 </script>
 
 <style scoped>
-nav {
-  box-shadow: rgba(0, 0, 0, 0.5) 0 0 5px;
+.navbar {
+  box-shadow: rgba(10, 10, 10, 0.2) 0 0 10px;
   z-index: 1000; /* loader has z-index: 999; */
 }
 

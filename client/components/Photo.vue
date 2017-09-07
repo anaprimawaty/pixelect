@@ -130,6 +130,10 @@ export default {
   cursor: pointer;
 }
 
+.meta .likes {
+  user-select: none;
+}
+
 .icon {
   margin-top: -2px;
   width: 32px;

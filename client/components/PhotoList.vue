@@ -31,6 +31,7 @@ export default {
       width: 0,
       height: 0,
       columns: 0,
+      photoCount: 0,
     }
   },
   computed: {
@@ -47,6 +48,13 @@ export default {
       }
       return sortedPhotos
     },
+  },
+  updated() {
+    const photoCount = Object.keys(this.photos).length
+    if (photoCount !== this.photoCount) {
+      this.handleResize()
+      this.photoCount = photoCount
+    }
   },
   methods: {
     handleResize() {
