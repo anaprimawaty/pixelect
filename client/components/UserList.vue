@@ -19,7 +19,7 @@ export default {
 <style lang="css" scoped>
 .user-list {
 	position: absolute;
-	right: 0;
+	right: 1em;
 	top: 0;
 }
 
@@ -44,9 +44,9 @@ export default {
 .user-list li .label {
 	position: absolute;
 	font-size: 0.8em;
-	top: 60px;
+	top: -30px;
 	text-align: center;
-	left: -75px;
+	left: -77.5px;
 	width: 200px;
 	opacity: 0;
 	visibility: hidden;
