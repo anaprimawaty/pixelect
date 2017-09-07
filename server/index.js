@@ -10,6 +10,7 @@ import photos from './photos'
 import groups from './groups'
 import votes from './votes'
 import token from './token'
+import deauth from './deauth'
 
 const app = express()
 
@@ -37,6 +38,9 @@ app.use(
     saveUninitialized: false,
   })
 )
+
+//deauth
+app.use('/deauth', deauth)
 
 // CSRF
 app.use(require('csurf')())
