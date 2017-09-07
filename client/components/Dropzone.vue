@@ -1,6 +1,6 @@
 <template>
   <div>
-    <dropzone id="imageDropzone" ref="imageDropzone" url="/photos/create" :style="dropzoneStyle" :dropzone-options="customOptionsObject" :use-custom-dropzone-options="true" @vdropzone-sending="sending" @vdropzone-success="showSuccess">
+    <dropzone id="imageDropzone" ref="imageDropzone" :url="`/photos/create?_csrf=${_csrf}`" :style="dropzoneStyle" :dropzone-options="customOptionsObject" :use-custom-dropzone-options="true" @vdropzone-sending="sending" @vdropzone-success="showSuccess">
     </dropzone>
   </div>
 </template>
