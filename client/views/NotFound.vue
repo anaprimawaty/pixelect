@@ -1,9 +1,11 @@
 <template>
 	<div class="error">
 		<span>
-			<img src="/assets/404.png"/>
-			<span class="text">OH, SNAP! 404</span>
-			<router-link :to="`/`"><span class="redirect">Take me to safety!</span></router-link>
+			<img class="camera" src="/assets/404.png"/>
+			<img class="snap" src="/assets/404-snap.png"/>
+			<h1 class="title">OH, SNAP!</h1>
+			<h2 class="subtitle">This page doesn't exist</h2>
+			<router-link class="button is-primary is-large" :to="`/`">Take me to safety!</router-link>
 		</span>
 	</div>
 </template>
@@ -16,18 +18,38 @@ export default {
 
 <style scoped>
 .error {
-	padding-top: 50px;
+	position: relative;
+	padding-top: 70px;
 	text-align: center;
 }
-.text {
-	font-size: 50px;
-	display:block;
-	padding-bottom: 30px;
+
+.camera {
+	margin-bottom: 1em;
 }
-.redirect {
-	font-size: 20px;
-	border-radius: 5px;
-	border: 1px solid;
-	padding: 6px;
+
+@keyframes blink {
+	0% { opacity: 1; }
+	50% { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+.snap {
+	position: absolute;
+	top: 20px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	pointer-events: none;
+	animation: blink 2s infinite step-start;
+}
+
+.title {
+	font-size: 3em;
+	margin-bottom: 1em;
+}
+
+.subtitle {
+	font-size: 2em;
+	margin-bottom: 1em;
 }
 </style>
