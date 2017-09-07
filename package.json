@@ -37,6 +37,7 @@
     "mysql2": "^1.4.1",
     "sequelize": "^4.6.0",
     "vue": "^2.4.2",
+    "vue-analytics": "^4.4.0",
     "vue-facebook-signin-button": "^1.0.1",
     "vue-progressive-image": "^2.1.2",
     "vue-resize": "^0.1.4",
