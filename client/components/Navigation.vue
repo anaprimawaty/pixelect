@@ -78,6 +78,7 @@ export default {
               action: 'createGroup',
             },
           ]
+        case 'group/groupName':
         case 'group':
           return store.state.isGroupOwner
             ? [
