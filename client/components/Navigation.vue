@@ -79,26 +79,35 @@ export default {
             },
           ]
         case 'group':
-          return [
-            {
-              text: 'Publish',
-              class: 'button is-primary publish',
-              action: 'publish',
-              imgUrl: '/assets/FB_logo.png',
-            },
-            {
-              text: 'Invite',
-              class: 'button is-primary',
-              action: 'invite',
-              imgUrl: '',
-            },
-            {
-              text: 'Delete',
-              class: 'button',
-              action: 'delete',
-              imgUrl: '',
-            },
-          ]
+          return store.state.isGroupOwner
+            ? [
+                {
+                  text: 'Publish',
+                  class: 'button is-primary publish',
+                  action: 'publish',
+                  imgUrl: '/assets/FB_logo.png',
+                },
+                {
+                  text: 'Invite',
+                  class: 'button is-primary',
+                  action: 'invite',
+                  imgUrl: '',
+                },
+                {
+                  text: 'Delete',
+                  class: 'button',
+                  action: 'delete',
+                  imgUrl: '',
+                },
+              ]
+            : [
+                {
+                  text: 'Invite',
+                  class: 'button is-primary',
+                  action: 'invite',
+                  imgUrl: '',
+                },
+              ]
       }
     },
   },

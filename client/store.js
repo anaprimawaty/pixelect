@@ -17,12 +17,13 @@ const state = {
 }
 
 const mutations = {
-  initialiseGroup(state, { valid, name, photos, users }) {
+  initialiseGroup(state, { valid, name, photos, users, owner }) {
     state.isGroupValid = valid
     if (valid) {
       state.groupName = name
       state.photos = photos
       state.users = users
+      state.isGroupOwner = owner === state.facebookId
       if (!users.some(user => user.facebookId === state.facebookId)) {
         users.push({ facebookId: state.facebookId, firstName: state.username })
       }
