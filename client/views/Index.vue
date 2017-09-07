@@ -5,7 +5,10 @@
       <transition-group name="slide-fade">
         <div class="box is-paddingless" v-for="group in groups" :key="group.hash">
           <router-link :to="`/group/${group.hash}`">
-            <div class="cover-image" :style="{ 'background-image': `url(${group.link})` }" />
+            <div
+              class="cover-image"
+              :style="group.link != '' ? { 'background-image': `url(${group.link})` } : { 'background': '#606060' }"
+            />
             <div class="group-details">
               <span class="group-name">{{ group.name }}</span>
             </div>
