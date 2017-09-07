@@ -171,7 +171,7 @@ export default {
       preview: state => state.preview,
       link: function(state) {
         return `${window.location.origin}/#/group/${this
-          .groupId}/${state.groupName.toLowerCase().replace(/ /g, '-')}`
+          .groupId}`
       },
     }),
   },
