@@ -299,19 +299,6 @@ export default {
   border-bottom: 1px dashed #404040;
 }
 
-.group-link a {
-  color: #a0a0a0;
-  text-decoration: none;
-  border-bottom: 1px dashed #a0a0a0;
-}
-
-.group-link input {
-  width: 1em;
-  height: 1em;
-  padding: 0;
-  opacity: 0;
-}
-
 .action {
   cursor: pointer;
 }

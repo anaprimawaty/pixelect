@@ -64,11 +64,9 @@ export default {
       bus,
     }
   },
-  computed: {
-    ...mapState({
-      userName: state => state.userName,
-    }),
-    buttons: function() {
+  computed: mapState({
+    userName: state => state.userName,
+    buttons(state) {
       switch (this.$route.name) {
         case 'index':
           return [
@@ -78,30 +76,34 @@ export default {
               action: 'createGroup',
             },
           ]
+        case 'group/groupName':
         case 'group':
-          return [
-            {
-              text: 'Publish',
-              class: 'button is-primary publish',
-              action: 'publish',
-              imgUrl: '/assets/FB_logo.png',
-            },
-            {
-              text: 'Invite',
-              class: 'button is-primary',
-              action: 'invite',
-              imgUrl: '',
-            },
-            {
-              text: 'Delete',
-              class: 'button',
-              action: 'delete',
-              imgUrl: '',
-            },
-          ]
+          return state.isGroupOwner
+            ? [
+                {
+                  text: 'Publish',
+                  class: 'button is-primary publish',
+                  action: 'publish',
+                  imgUrl: '/assets/FB_logo.png',
+                },
+                {
+                  text: 'Invite',
+                  class: 'button is-primary',
+                  action: 'invite',
+                  imgUrl: '',
+                },
+              ]
+            : [
+                {
+                  text: 'Invite',
+                  class: 'button is-primary',
+                  action: 'invite',
+                  imgUrl: '',
+                },
+              ]
       }
     },
-  },
+  }),
   methods: {
     logout: function() {
       FB.logout(function(response) {

@@ -23,6 +23,7 @@ export default new Router({
     },
     {
       path: '/group/:groupId/:groupName',
+      name: 'group/groupName',
       component: Group,
       alias: '/group/:groupId',
       props: true,
