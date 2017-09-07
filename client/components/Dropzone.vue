@@ -1,7 +1,16 @@
 <template>
-  <div>
-    <dropzone id="imageDropzone" ref="imageDropzone" :url="`/photos/create?_csrf=${_csrf}`" :style="dropzoneStyle" :dropzone-options="customOptionsObject" :use-custom-dropzone-options="true" @vdropzone-sending="sending" @vdropzone-success="showSuccess">
-    </dropzone>
+  <div class="box is-paddingless is-clipped">
+    <dropzone
+      id="imageDropzone"
+      ref="imageDropzone"
+      :url="`/photos/create?_csrf=${_csrf}`"
+      :style="dropzoneStyle"
+      :dropzone-options="customOptionsObject"
+      :use-custom-dropzone-options="true"
+      :language="language"
+      @vdropzone-sending="sending"
+      @vdropzone-success="showSuccess"
+    />
   </div>
 </template>
 
@@ -19,6 +28,9 @@ export default {
       },
       styleObject: {
         width: this.width,
+      },
+      language: {
+        dictDefaultMessage: '<br />Drop image or<br />click here to upload',
       },
     }
   },
@@ -55,10 +67,22 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 @media screen and (max-width: 500px) {
   #imageDropzone {
     height: 30px
   }
+}
+
+#imageDropzone {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}
+
+#imageDropzone .material-icons {
+  font-size: 5rem;
 }
 </style>
