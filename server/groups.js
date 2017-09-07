@@ -12,10 +12,19 @@ router.get('/:groupHash', function(req, res) {
   var models = req.app.get('models')
   var groupHash = req.params.groupHash
 
-  helper.getGroup(models, groupHash)
+  models.Group.findOne({
+    where: { hash: groupHash },
+    raw: true
+  })
   .then(group => {
-    helper.log(source, 'Success: Got group with groupId:' + group.id)
-    res.send(group)
+    models.User.findOne({
+      where: { id: group.owner }
+    })
+    .then(user => {
+      group.owner = user.facebookId
+      helper.log(source, 'Success: Got group with groupId:' + group.id)
+      res.send(group)
+    })
   })
   .catch(e => {
     helper.log(source, e)

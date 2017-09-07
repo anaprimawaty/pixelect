@@ -172,8 +172,7 @@ export default {
       users: state => state.users,
       preview: state => state.preview,
       link: function(state) {
-        return `${window.location.origin}/#/group/${this
-          .groupId}/${state.groupName.toLowerCase().replace(/ /g, '-')}`
+        return `${window.location.origin}/#/group/${this.groupId}`
       },
     }),
   },
@@ -300,19 +299,6 @@ export default {
   padding: 3px;
   display: inline-block;
   border-bottom: 1px dashed #404040;
-}
-
-.group-link a {
-  color: #a0a0a0;
-  text-decoration: none;
-  border-bottom: 1px dashed #a0a0a0;
-}
-
-.group-link input {
-  width: 1em;
-  height: 1em;
-  padding: 0;
-  opacity: 0;
 }
 
 .action {

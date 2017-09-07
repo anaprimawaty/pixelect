@@ -45,6 +45,13 @@ router.get('/groups', helper.isAuthenticated, function(req, res) {
             grouping.link = ""
           }
         })
+        &&
+        models.User.findOne({
+          where: {id: grouping.owner},
+        })
+        .then(user => {
+          grouping.owner = user.facebookId
+        })
       })
     ).then(() => {
       helper.log(source, 'Success: Got groups of user with facebookId:' + req.session.facebookId)

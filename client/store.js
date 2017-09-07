@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 const state = {
   isGroupValid: null,
+  isGroupOwner: false,
   groupId: '',
   groupName: '',
   photos: {},
@@ -17,16 +18,20 @@ const state = {
 }
 
 const mutations = {
-  initialiseGroup(state, { valid, name, photos, users }) {
-    state.isGroupValid = valid
+  initialiseGroup(state, { valid, name, photos, users, owner }) {
     if (valid) {
       state.groupName = name
       state.photos = photos
       state.users = users
+      state.isGroupOwner = owner === state.facebookId
       if (!users.some(user => user.facebookId === state.facebookId)) {
         users.push({ facebookId: state.facebookId, firstName: state.username })
       }
     }
+    state.isGroupValid = valid
+  },
+  deleteGroup(state, groupId) {
+    state.groups = state.groups.filter(group => group.hash !== groupId)
   },
   updateGroupName(state, name) {
     state.groupName = name
@@ -47,6 +52,7 @@ const mutations = {
     state.groups = groups
   },
   invalidateGroup(state) {
+    state.isGroupOwner = false
     state.isGroupValid = null
   },
   addPhoto(state, { link, photoId }) {
@@ -94,6 +100,9 @@ const actions = {
       .catch(() => {
         commit(INITIALISE_GROUP, { valid: false })
       })
+  },
+  deleteGroup({ commit }, groupId) {
+    commit(DELETE_GROUP, groupId)
   },
   fetchGroupList({ commit }) {
     fetch('/users/groups', { method: 'GET', credentials: 'same-origin' })
@@ -174,3 +183,4 @@ export const FETCH_GROUP_LIST = 'fetchGroupList'
 export const INVALIDATE_GROUP = 'invalidateGroup'
 export const ADD_PHOTO = 'addPhoto'
 export const SET_CSRF_TOKEN = 'setCsrfToken'
+export const DELETE_GROUP = 'deleteGroup'

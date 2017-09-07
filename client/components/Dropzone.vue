@@ -82,6 +82,14 @@ export default {
   justify-content: center;
 }
 
+#imageDropzone .dz-message {
+  transition: all 0.3s;
+}
+
+#imageDropzone:hover .dz-message {
+  transform: translateY(-1px);
+}
+
 #imageDropzone .material-icons {
   font-size: 5rem;
 }

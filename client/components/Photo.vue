@@ -22,7 +22,7 @@
               />
           </svg>
         </a>
-        {{ votes }} likes
+        {{ votes }} like{{ votes === 1 ? '' : 's' }}
       </span>
       <a class="icon preview" @click="preview" aria-label="preview">
         <svg viewBox="0 0 24 24">
@@ -144,6 +144,8 @@ export default {
 }
 
 .icon:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 1px 3px rgba(10, 10, 10, 0.1);
   opacity: 0.5;
 }
 
