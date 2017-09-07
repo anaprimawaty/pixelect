@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 const state = {
   isGroupValid: null,
+  isGroupOwner: false,
   groupId: '',
   groupName: '',
   photos: {},
@@ -18,7 +19,6 @@ const state = {
 
 const mutations = {
   initialiseGroup(state, { valid, name, photos, users, owner }) {
-    state.isGroupValid = valid
     if (valid) {
       state.groupName = name
       state.photos = photos
@@ -28,6 +28,7 @@ const mutations = {
         users.push({ facebookId: state.facebookId, firstName: state.username })
       }
     }
+    state.isGroupValid = valid
   },
   deleteGroup(state, groupId) {
     state.groups = state.groups.filter(group => group.hash !== groupId)
@@ -51,6 +52,7 @@ const mutations = {
     state.groups = groups
   },
   invalidateGroup(state) {
+    state.isGroupOwner = false
     state.isGroupValid = null
   },
   addPhoto(state, { link, photoId }) {

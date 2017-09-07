@@ -64,11 +64,9 @@ export default {
       bus,
     }
   },
-  computed: {
-    ...mapState({
-      userName: state => state.userName,
-    }),
-    buttons: function() {
+  computed: mapState({
+    userName: state => state.userName,
+    buttons(state) {
       switch (this.$route.name) {
         case 'index':
           return [
@@ -80,7 +78,7 @@ export default {
           ]
         case 'group/groupName':
         case 'group':
-          return store.state.isGroupOwner
+          return state.isGroupOwner
             ? [
                 {
                   text: 'Publish',
@@ -105,7 +103,7 @@ export default {
               ]
       }
     },
-  },
+  }),
   methods: {
     logout: function() {
       FB.logout(function(response) {
