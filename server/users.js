@@ -6,7 +6,6 @@ var parser = require('./parser')
 /* GET get groups of user
  * response -> [groups]/error
  */
-//order: [['updatedAt', 'DESC']]
 router.get('/groups', helper.isAuthenticated, function(req, res) {
   var source = '[GET /users/groups]'
   var models = req.app.get('models')
@@ -25,7 +24,8 @@ router.get('/groups', helper.isAuthenticated, function(req, res) {
         attributes: {exclude: ['lastName','createdAt','updatedAt']},
         through: {attributes:[]}
       }]
-    }]
+    }],
+    order: [[{model: models.Group, as: 'Groupings'}, 'createdAt', 'DESC']]
   })
   .then(info => {
     info = info.toJSON()['Groupings']

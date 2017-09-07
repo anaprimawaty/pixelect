@@ -1,13 +1,7 @@
 module.exports = {
   log: function(source, msg) {
-    var date = new Date()
-    var timestamp = date.getDay() + "/" +
-                    date.getMonth() + "/" +
-                    date.getFullYear() + " " +
-                    date.getHours() + ":" +
-                    date.getMinutes() + ":" +
-                    date.getSeconds()
-    console.log("\n[" + timestamp + "]" + source + " " + msg + "\n")
+    var date = new Date().toLocaleString("en-US", {timeZone: "Asia/Singapore"})
+    console.log("\n[" + date + "]" + source + " " + msg + "\n")
   },
 
   success: function(msg) {
@@ -18,10 +12,8 @@ module.exports = {
     return JSON.stringify({'Error':e})
   },
 
-  getHash: function(id) {
-    var data = new Date() + id;
-    var hash = require('crypto').createHash('md5').update(data).digest('hex');
-    return hash
+  getHash: function() {
+    return require('crypto').randomBytes(20).toString('hex');
   },
 
   getUser: function(models, facebookId) {
