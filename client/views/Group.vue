@@ -52,22 +52,6 @@
             </footer>
           </div>
         </div>
-        <div class="modal is-active" v-if="modal === 'delete'">
-          <div class="modal-background" @click="modal = null"></div>
-          <div class="modal-card">
-            <header class="modal-card-head">
-              <p class="modal-card-title">Delete Group?</p>
-              <button class="delete" aria-label="close" @click="modal = null"></button>
-            </header>
-            <section class="modal-card-body">
-              <p>This will delete all photos in this group.</p>
-            </section>
-            <footer class="modal-card-foot">
-              <button class="button is-danger" @click="deleteGroup">Delete</button>
-              <button class="button" @click="modal = null">Cancel</button>
-            </footer>
-          </div>
-        </div>
         <div class="modal is-active" v-if="modal === 'invite'">
           <div class="modal-background" @click="modal = null"></div>
           <div class="modal-card">
@@ -124,16 +108,12 @@ export default {
     bus.$on('publish', () => {
       this.modal = 'publish'
     })
-    bus.$on('delete', () => {
-      this.modal = 'delete'
-    })
     bus.$on('invite', () => {
       this.modal = 'invite'
     })
   },
   destroyed() {
     bus.$off('publish')
-    bus.$off('delete')
     bus.$off('invite')
   },
   beforeUpdate: function() {
@@ -172,7 +152,8 @@ export default {
       users: state => state.users,
       preview: state => state.preview,
       link: function(state) {
-        return `${window.location.origin}/#/group/${this.groupId}`
+        return `${window.location.origin}/#/group/${this
+          .groupId}/${state.groupName.toLowerCase().replace(/ /g, '-')}`
       },
     }),
   },
@@ -252,39 +233,19 @@ export default {
                   .map(user => user.facebookId)
                   .filter(id => id !== this.facebookId),
                 link: `https://www.facebook.com/media/set/?set=a.${albumId}&type=3`,
-              },
-              ret => {
-                // ret == null if they cancel the dialog, so we redirect them
-                if (ret == null) {
-                  window.open(
-                    `https://www.facebook.com/media/set/?set=a.${albumId}&type=3`
-                  )
-                }
               }
+              // ret => {
+              //   // ret == null if they cancel the dialog, so we redirect them
+              //   if (ret == null) {
+              //     window.open(
+              //       `https://www.facebook.com/media/set/?set=a.${albumId}&type=3`
+              //     )
+              //   }
+              // }
             )
           })
         }
       )
-    },
-    deleteGroup() {
-      this.modal = null
-
-      const payload = {
-        groupHash: this.groupId,
-        _csrf: store.state._csrf,
-      }
-
-      fetch('/groups/delete', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-        body: JSON.stringify(payload),
-        credentials: 'same-origin',
-      }).then(() => {
-        console.log('done')
-        this.$router.push('/')
-      })
     },
   },
 }
