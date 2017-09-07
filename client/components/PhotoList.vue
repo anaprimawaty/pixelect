@@ -58,6 +58,9 @@ export default {
   },
   methods: {
     handleResize() {
+      if (!this.$refs.photoList) {
+        return
+      }
       const width = this.$refs.photoList.clientWidth
       const columns = width < 600 ? 1 : width < 900 ? 2 : width < 1200 ? 3 : 4
       const columnWidth = (width - (columns - 1) * PADDING) / columns
