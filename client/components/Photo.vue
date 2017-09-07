@@ -22,7 +22,7 @@
               />
           </svg>
         </a>
-        {{ votes }} likes
+        {{ votes }} like{{ votes === 1 ? '' : 's' }}
       </span>
       <a class="icon preview" @click="preview" aria-label="preview">
         <svg viewBox="0 0 24 24">
