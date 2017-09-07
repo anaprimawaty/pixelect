@@ -39,14 +39,16 @@
               <p>Pixelect uploads the best photos to Facebook for you.</p>
               <br>
               <p>Album name: </p>
-              <p style="margin-left: 1rem;">{{name}}</p>
+              <p clas="modal-body-indent">{{name}}</p>
               <br>
               <p>Number of Photos: </p>
-              <p style="margin-left: 1rem;">{{Object.keys(photos).length}}</p>
+              <p class="modal-body-indent">{{Object.keys(photos).length}}</p>
             </section>
             <footer class="modal-card-foot">
-              <button class="button is-primary" @click="publishGroup">Sure!</button>
-              <button class="button" @click="modal = null">Not yet..</button>
+              <button class="button is-primary" @click="publishGroup">
+                <img class="fb-logo" src="/assets/FB_logo.png" />
+                Upload to Facebook
+              </button>
             </footer>
           </div>
         </div>
@@ -327,5 +329,14 @@ export default {
 
 .modal-card-foot {
   justify-content: flex-end;
+}
+
+.modal-body-indent {
+  margin-left: 1rem;
+}
+
+.fb-logo {
+  height: 1.2rem;
+  margin-right: 0.4rem;
 }
 </style>
