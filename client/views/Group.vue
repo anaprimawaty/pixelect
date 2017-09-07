@@ -170,8 +170,7 @@ export default {
       users: state => state.users,
       preview: state => state.preview,
       link: function(state) {
-        return `${window.location.origin}/#/group/${this
-          .groupId}`
+        return `${window.location.origin}/#/group/${this.groupId}`
       },
     }),
   },
