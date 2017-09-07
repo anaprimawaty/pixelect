@@ -1,13 +1,7 @@
 module.exports = {
   log: function(source, msg) {
-    var date = new Date()
-    var timestamp = date.getDay() + "/" +
-                    date.getMonth() + "/" +
-                    date.getFullYear() + " " +
-                    date.getHours() + ":" +
-                    date.getMinutes() + ":" +
-                    date.getSeconds()
-    console.log("\n[" + timestamp + "]" + source + " " + msg + "\n")
+    var date = new Date().toLocaleString("en-US", {timeZone: "Asia/Singapore"})
+    console.log("\n[" + date + "]" + source + " " + msg + "\n")
   },
 
   success: function(msg) {
