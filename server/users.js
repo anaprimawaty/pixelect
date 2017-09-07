@@ -87,17 +87,15 @@ router.post('/', function(req, res) {
 })
 
 /* POST set session.facebookId. create user if user does not exist
- * body -> {facebookId: facebookId of user, name: firstName of user}
+ * body -> signed request from facebook
  * response -> success/error
  */
 router.post('/delete', function(req, res) {
   var source = '[POST /users/delete]'
   var models = req.app.get('models')
-  console.log(req.body.signed_request)
   var data = parser(req.body.signed_request, process.env.PIXELECT_APP_SECRET)
-  res.send(data)
 
-  /*  helper.getUser(models, req.session.facebookId)
+  helper.getUser(models, data.user_id)
   .then(user => {
     var userId = user.id
     user.destroy()
@@ -149,7 +147,7 @@ router.post('/delete', function(req, res) {
   .catch(e => {
     helper.log(source, e)
     res.status(500).send(helper.error(e))
-  })*/
+  })
 })
 
 

@@ -16,15 +16,16 @@ function parseSignedRequest(signedRequest, secret) {
     // decode the data
     var sig = encodedData[0];
     var json = atob(encodedData[1]);
-    var data = JSON.parse(JSON.stringify(json)); // ERROR Occurs Here!
+    var data = JSON.parse(json); // ERROR Occurs Here!
 
+    console.log(secret);		
     // check algorithm - not relevant to error
-    if (!data.algorithm || data.algorithm.toUpperCase() != 'HMAC-SHA256') {
+    if (!data.algorithm || data.algorithm.toUpperCase() != "HMAC-SHA256") {
         throw Error('Unknown algorithm: ' + data.algorithm + '. Expected HMAC-SHA256');
     }
 
     // check sig - not relevant to error
-    var expectedSig = crypto.createHmac('sha256', secret).update(encodedData[1]).digest('base64').replace(/\+/g,'-').replace(/\//g,'_').replace('=','');
+    var expectedSig = crypto.createHmac('sha256', secret).update(encodedData[1].toString()).digest('base64').replace(/\+/g,'-').replace(/\//g,'_').replace('=','');
     if (sig !== expectedSig) {
         throw Error('Invalid signature: ' + sig + '. Expected ' + expectedSig);
     }
