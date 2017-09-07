@@ -39,17 +39,8 @@ app.use(
   })
 )
 
-// Deauth
+//deauth
 app.use('/deauth', deauth)
-
-app.use(function(req, res, next) {
-  if (process.env.NODE_ENV === 'production') {
-    res.setHeader("Content-Security-Policy", "script-src 'self' https://graph.facebook.com http://connect.facebook.net/en_US/sdk.js https://www.google-analytics.com/analytics.js https://z-m-graph.facebook.com/v2.10 https://www.facebook.com/v2.10 https://www.facebook.com/dialog/;")
-  } else {
-    res.setHeader("Content-Security-Policy", "script-src 'self' 'unsafe-eval' https://graph.facebook.com http://connect.facebook.net/en_US/sdk.js https://www.google-analytics.com/analytics.js https://z-m-graph.facebook.com/v2.10 https://www.facebook.com/v2.10 https://www.facebook.com/dialog/;")
-  }
-  return next()
-})
 
 // CSRF
 app.use(require('csurf')())
