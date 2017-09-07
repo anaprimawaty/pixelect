@@ -18,10 +18,8 @@ module.exports = {
     return JSON.stringify({'Error':e})
   },
 
-  getHash: function(id) {
-    var data = new Date() + id;
-    var hash = require('crypto').createHash('md5').update(data).digest('hex');
-    return hash
+  getHash: function() {
+    return require('crypto').randomBytes(20).toString('hex');
   },
 
   getUser: function(models, facebookId) {

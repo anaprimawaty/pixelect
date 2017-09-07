@@ -142,7 +142,7 @@ router.post('/', helper.isAuthenticated, function(req, res) {
     models.Group.create({
       name: req.body.name,
       owner: user.id,
-      hash: helper.getHash(req.session.facebookId).substring(0,20)
+      hash: helper.getHash().substring(0,20)
     })
     .then(group => {
       user.addGroupings(group)

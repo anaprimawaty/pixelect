@@ -13,7 +13,7 @@ router.post('/create', uploader.single('file'), helper.hasAccess, function(req, 
   var models = req.app.get('models')
   var s3 = req.app.get('s3')
   var file = req.file.buffer
-  var filename = helper.getHash(req.session.facebookId) + req.body.ext
+  var filename = helper.getHash() + req.body.ext
   s3.putObject(
     'pixelectstaging',
     filename,
