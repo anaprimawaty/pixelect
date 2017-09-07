@@ -144,6 +144,8 @@ export default {
 }
 
 .icon:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 1px 3px rgba(10, 10, 10, 0.1);
   opacity: 0.5;
 }
 

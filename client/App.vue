@@ -63,6 +63,26 @@ html {
   background: $white-ter !important;
 }
 
+a {
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+}
+
+a:hover {
+  transform: translateY(-1px);
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.button {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
 .sk-folding-cube {
   margin: 20px auto;
   width: 40px;
