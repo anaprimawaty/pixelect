@@ -18,11 +18,9 @@ router.post('/', function(req, res) {
     user.destroy()
     .then(function(){
       helper.log(source, 'Success: userId:' + user.id + '\'s account deleted')
-      res.send(helper.success())
     })
     .catch(e => {
       helper.log(source, e)
-      res.send('Error deleting user account')
     })
     models.Group.destroy({
       where:{
@@ -34,7 +32,6 @@ router.post('/', function(req, res) {
       })
     .catch(e => {
       helper.log(source, e)
-      res.send('Error deleting user\'s groups')
     })
     models.Photo.destroy({
       where:{
@@ -46,7 +43,6 @@ router.post('/', function(req, res) {
       })
     .catch(e => {
       helper.log(source, e)
-      res.send('Error deleting user\'s photos')
     })
     models.Vote.destroy({
       where:{
@@ -55,15 +51,15 @@ router.post('/', function(req, res) {
     })
     .then(function(){
         helper.log(source, 'Success: userId:' + user.id + '\'s votes deleted')
+	res.send('success')
       })
     .catch(e => {
       helper.log(source, e)
-      res.send('Error deleting user\'s votes')
     })
   })
   .catch(e => {
     helper.log(source, e)
-    res.status(500).send(helper.error(e))
+    res.send('error')
   })
 })
 
