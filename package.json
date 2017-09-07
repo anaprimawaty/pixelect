@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon --exec babel-node server/index.js",
     "dev": "ssh -N pixelect | nodemon --exec babel-node server/index.js",
-    "production": "NODE_ENV=production nodemon --exec babel-node server/index.js",
+    "production": "NODE_ENV=production webpack --progress --color;NODE_ENV=production nodemon --exec babel-node server/index.js",
     "tunnel": "ssh -N pixelect",
     "build": "NODE_ENV=production webpack --progress --color",
     "lint": "eslint --ext .js,.vue .",
