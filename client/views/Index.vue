@@ -68,6 +68,12 @@ export default {
 .box {
   position: relative;
   overflow: hidden;
+  transition: all 0.3s;
+}
+
+.box:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
 }
 
 .cover-image {
@@ -75,10 +81,6 @@ export default {
 	height: 400px;
 	background-position: 50% 50%;
 	background-size: cover;
-  filter: blur(10px);
-}
-
-.box:hover .cover-image {
 }
 
 .group-details {
@@ -92,17 +94,18 @@ export default {
   width: 100%;
   height: 100%;
   text-align: center;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(10, 10, 10, 0.1);
   transition: all 0.3s;
 }
 
 .box:hover .group-details {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(10, 10, 10, 0.05);
 }
 
 .group-name {
   font-size: 2rem;
   font-weight: bold;
   color: #ffffff;
+  text-shadow: 0 1px 3px rgba(10, 10, 10, 0.3);
 }
 </style>
