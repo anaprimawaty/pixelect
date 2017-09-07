@@ -45,6 +45,7 @@ $family-serif: Helvetica, Arial, sans-serif;
 $primary: #5e9eff;
 $primary-invert: #fff;
 $family-primary: $family-serif;
+$modal-content-width: 480px;
 
 @import "../node_modules/bulma/bulma";
 

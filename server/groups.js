@@ -214,9 +214,11 @@ router.post('/delete', helper.hasAccess, function(req, res){
       })
     })
   })
-  .then(group => {
-    return group.destroy()
-  })
+  .then(group =>
+    models.Photo.findAll({ where: { groupId: group.id } })
+    .then(photos => Promise.all(photos.map(photo => photo.destroy())))
+    .then(() => group.destroy())
+  )
   .then(group => {
     helper.log(source, 'Success: Deleted groupId:' + group.id)
     res.send(helper.success())

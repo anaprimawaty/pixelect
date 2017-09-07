@@ -18,12 +18,14 @@ const state = {
 
 const mutations = {
   initialiseGroup(state, { valid, name, photos, users }) {
-    state.isGroupValid = valid || null
-    state.groupName = name
-    state.photos = photos
-    state.users = users
-    if (!users.some(user => user.facebookId === state.facebookId)) {
-      users.push({ facebookId: state.facebookId, firstName: state.username })
+    state.isGroupValid = valid
+    if (valid) {
+      state.groupName = name
+      state.photos = photos
+      state.users = users
+      if (!users.some(user => user.facebookId === state.facebookId)) {
+        users.push({ facebookId: state.facebookId, firstName: state.username })
+      }
     }
   },
   updateGroupName(state, name) {
@@ -89,9 +91,8 @@ const actions = {
         }
       })
       .then(json => commit(INITIALISE_GROUP, json))
-      .catch(err => {
+      .catch(() => {
         commit(INITIALISE_GROUP, { valid: false })
-        console.log(err)
       })
   },
   fetchGroupList({ commit }) {
@@ -106,7 +107,7 @@ const actions = {
       _csrf: store.state._csrf,
     }
 
-    fetch(`/groups/changeName`, {
+    fetch('/groups/changeName', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
