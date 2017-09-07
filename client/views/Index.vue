@@ -10,9 +10,28 @@
               <span class="group-name">{{ group.name }}</span>
             </div>
           </router-link>
+          <a v-if="group.owner === facebookId" class="delete-button" @click="modal = true; groupHash = group.hash">
+            <span class="material-icons">delete</span>
+          </a>
         </div>
       </transition-group>
       </section>
+    </div>
+    <div class="modal is-active" v-if="modal">
+      <div class="modal-background" @click="modal = false"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Delete Group?</p>
+          <button class="delete" aria-label="close" @click="modal = false"></button>
+        </header>
+        <section class="modal-card-body">
+          <p>This will delete all photos in this group.</p>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-danger" @click="deleteGroup">Delete</button>
+          <button class="button" @click="modal = false">Cancel</button>
+        </footer>
+      </div>
     </div>
     <custom-footer/>
   </div>
@@ -22,7 +41,7 @@
 <script>
 import { mapState } from 'vuex'
 import router from '@/router'
-import store, { FETCH_GROUP_LIST } from '@/store'
+import store, { FETCH_GROUP_LIST, DELETE_GROUP } from '@/store'
 import bus from '@/bus'
 import CustomFooter from '@/components/CustomFooter'
 
@@ -55,11 +74,39 @@ export default {
   destroyed() {
     bus.$off('createGroup')
   },
+  data() {
+    return {
+      groupHash: null,
+      modal: false,
+    }
+  },
   computed: mapState({
+    facebookId: state => state.facebookId,
     groups: state => state.groups,
   }),
   components: {
     CustomFooter,
+  },
+  methods: {
+    deleteGroup() {
+      this.modal = false
+
+      const payload = {
+        groupHash: this.groupHash,
+        _csrf: store.state._csrf,
+      }
+
+      fetch('/groups/delete', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(payload),
+        credentials: 'same-origin',
+      }).then(() => {
+        store.dispatch(DELETE_GROUP, this.groupHash)
+      })
+    },
   },
 }
 </script>
@@ -96,6 +143,23 @@ export default {
   text-align: center;
   background: rgba(10, 10, 10, 0.1);
   transition: all 0.3s;
+}
+
+.delete-button {
+  position: absolute;
+  font-size: 1.5em;
+  top: 0.5em;
+  right: 0.5em;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(10, 10, 10, 0.3);
+  opacity: 0.5;
+  transition: all 0.3s;
+}
+
+.delete-button:hover {
+  transform: translateY(-1px);
+  opacity: 1;
+  text-shadow: 0 2px 5px rgba(10, 10, 10, 0.3);
 }
 
 .box:hover .group-details {

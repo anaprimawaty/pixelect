@@ -29,6 +29,9 @@ const mutations = {
       }
     }
   },
+  deleteGroup(state, groupId) {
+    state.groups = state.groups.filter(group => group.hash !== groupId)
+  },
   updateGroupName(state, name) {
     state.groupName = name
   },
@@ -95,6 +98,9 @@ const actions = {
       .catch(() => {
         commit(INITIALISE_GROUP, { valid: false })
       })
+  },
+  deleteGroup({ commit }, groupId) {
+    commit(DELETE_GROUP, groupId)
   },
   fetchGroupList({ commit }) {
     fetch('/users/groups', { method: 'GET', credentials: 'same-origin' })
@@ -175,3 +181,4 @@ export const FETCH_GROUP_LIST = 'fetchGroupList'
 export const INVALIDATE_GROUP = 'invalidateGroup'
 export const ADD_PHOTO = 'addPhoto'
 export const SET_CSRF_TOKEN = 'setCsrfToken'
+export const DELETE_GROUP = 'deleteGroup'

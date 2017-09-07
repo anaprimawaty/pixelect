@@ -94,12 +94,6 @@ export default {
                   action: 'invite',
                   imgUrl: '',
                 },
-                {
-                  text: 'Delete',
-                  class: 'button',
-                  action: 'delete',
-                  imgUrl: '',
-                },
               ]
             : [
                 {
