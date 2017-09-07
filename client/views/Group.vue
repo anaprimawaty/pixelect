@@ -37,10 +37,16 @@
             </header>
             <section class="modal-card-body">
               <p>Pixelect uploads the best photos to Facebook for you.</p>
+              <br>
+              <p>Album name: </p>
+              <p style="margin-left: 1rem;">{{name}}</p>
+              <br>
+              <p>Number of Photos: </p>
+              <p style="margin-left: 1rem;">{{Object.keys(photos).length}}</p>
             </section>
             <footer class="modal-card-foot">
-              <button class="button is-primary" @click="publishGroup">Publish</button>
-              <button class="button" @click="modal = null">Cancel</button>
+              <button class="button is-primary" @click="publishGroup">Sure!</button>
+              <button class="button" @click="modal = null">Not yet..</button>
             </footer>
           </div>
         </div>
@@ -317,5 +323,9 @@ export default {
 
 .user-list {
   position: relative;
+}
+
+.modal-card-foot {
+  justify-content: flex-end;
 }
 </style>
