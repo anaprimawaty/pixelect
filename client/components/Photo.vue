@@ -89,7 +89,7 @@ export default {
 }
 
 .box.new {
-  animation: bounce 2s infinite ease-in-out;
+  animation: bounce 2s 1 ease-in-out;
 }
 
 @keyframes bounce {
