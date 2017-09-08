@@ -25,14 +25,13 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Delete Group?</p>
-          <button class="delete" aria-label="close" @click="modal = false"></button>
         </header>
         <section class="modal-card-body">
           <p>This will delete all photos in this group.</p>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-danger" @click="deleteGroup">Delete</button>
           <button class="button" @click="modal = false">Cancel</button>
+          <button class="button is-danger" @click="deleteGroup">Delete</button>
         </footer>
       </div>
     </div>

@@ -33,7 +33,6 @@
           <div class="modal-card">
             <header class="modal-card-head">
               <p class="modal-card-title">Publish to Facebook?</p>
-              <button class="delete" aria-label="close" @click="modal = null"></button>
             </header>
             <section class="modal-card-body">
               <p>Pixelect uploads the best photos to Facebook for you.</p>
@@ -45,6 +44,9 @@
               <p class="modal-body-indent">{{Object.keys(photos).length}}</p>
             </section>
             <footer class="modal-card-foot">
+              <button class="button" @click="modal = null">
+                Cancel
+              </button>
               <button class="button is-primary" @click="publishGroup">
                 <img class="fb-logo" src="/assets/FB_logo.png" />
                 Upload to Facebook
@@ -56,8 +58,7 @@
           <div class="modal-background" @click="modal = null"></div>
           <div class="modal-card">
             <header class="modal-card-head">
-              <p class="modal-card-title">Invite friends to Pixelect!</p>
-              <button class="delete" aria-label="close" @click="modal = null"></button>
+              <p class="modal-card-title">Invite friends to {{name}}!</p>
             </header>
             <section class="modal-card-body">
               <p class="has-text-centered">Share this link directly:</p>
@@ -72,6 +73,9 @@
               </div>
             </section>
             <footer class="modal-card-foot">
+              <button class="button" @click="modal = null">
+                Cancel
+              </button>
             </footer>
           </div>
         </div>
@@ -148,8 +152,7 @@ export default {
       users: state => state.users,
       preview: state => state.preview,
       link: function(state) {
-        return `${window.location.origin}/#/group/${this
-          .groupId}/${state.groupName.toLowerCase().replace(/ /g, '-')}`
+        return `${window.location.origin}/#/group/${this.groupId}/`
       },
     }),
   },
@@ -267,14 +270,6 @@ export default {
   position: relative;
 }
 
-.modal-card-foot {
-  justify-content: flex-end;
-}
-
-.modal-body-indent {
-  margin-left: 1rem;
-}
-
 .invite-body-item {
   margin: 0.7rem 0rem 0.8rem 0rem;
 }
@@ -290,6 +285,7 @@ export default {
   border-radius: 1px;
   border: 1px solid #d9d9d9;
   height: 1.7rem;
-  color: #555
+  color: #555;
+  text-align: center;
 }
 </style>

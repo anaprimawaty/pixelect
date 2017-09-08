@@ -83,6 +83,18 @@ a:hover {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
+.modal {
+  z-index: 1001;
+}
+
+.modal-card-foot {
+  justify-content: flex-end;
+}
+
+.modal-body-indent {
+  margin-left: 1rem;
+}
+
 .sk-folding-cube {
   margin: 20px auto;
   width: 40px;
