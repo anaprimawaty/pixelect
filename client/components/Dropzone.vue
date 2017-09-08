@@ -90,7 +90,16 @@ export default {
   transform: translateY(-1px);
 }
 
+#imageDropzone .dz-message::before {
+  text-align: center;
+  content: 'add';
+  font-family: Material Icons;
+  font-size: 8rem;
+  line-height: 4rem;
+}
+
 #imageDropzone .material-icons {
+  display: none;
   font-size: 5rem;
 }
 </style>
