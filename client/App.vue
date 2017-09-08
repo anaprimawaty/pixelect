@@ -56,7 +56,7 @@ $modal-content-width: 480px;
 
 html {
   background: $white-ter;
-  overflow-x: hidden;
+  overflow-x: hidden !important;
 }
 
 .loading-overlay, .loading-background {
