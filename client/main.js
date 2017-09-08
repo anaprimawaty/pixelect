@@ -5,6 +5,7 @@ import FBSignInButton from 'vue-facebook-signin-button'
 import VueAnalytics from 'vue-analytics'
 import VueImg from 'v-img'
 import VueTouch from 'vue-touch'
+import VueScrollTo from 'vue-scrollto'
 import App from '@/App'
 import router from '@/router'
 import store, { LOGIN } from '@/store'
@@ -24,13 +25,18 @@ Vue.use(VueAnalytics, {
 })
 Vue.use(VueImg)
 
+Vue.use(VueScrollTo, {
+  duration: 1000,
+  easing: 'ease',
+  cancelable: 'true',
+})
+Vue.use(VueScrollTo)
+
 VueTouch.registerCustomEvent('doubletap', {
   type: 'tap',
   taps: 2,
 })
-Vue.use(VueTouch, {
-  name: 'v-touch',
-})
+Vue.use(VueTouch, { name: 'v-touch' })
 
 // eslint-disable-next-line no-new
 new Vue({

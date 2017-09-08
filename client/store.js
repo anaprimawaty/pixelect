@@ -59,10 +59,14 @@ const mutations = {
       userId: state.facebookId,
       votes: 0,
       voted: false,
+      isNew: true,
     })
   },
   setCsrfToken(state, _csrf) {
     state._csrf = _csrf
+  },
+  seenPhoto(state, photoId) {
+    state.photos[photoId].isNew = false
   },
 }
 
@@ -152,6 +156,9 @@ const actions = {
   setCsrfToken({ commit }, _csrf) {
     commit(SET_CSRF_TOKEN, _csrf)
   },
+  seenPhoto({ commit }, photoId) {
+    commit(SEEN_PHOTO, photoId)
+  },
 }
 
 const store = new Vuex.Store({
@@ -176,3 +183,4 @@ export const INVALIDATE_GROUP = 'invalidateGroup'
 export const ADD_PHOTO = 'addPhoto'
 export const SET_CSRF_TOKEN = 'setCsrfToken'
 export const DELETE_GROUP = 'deleteGroup'
+export const SEEN_PHOTO = 'seenPhoto'

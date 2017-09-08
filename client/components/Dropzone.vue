@@ -62,6 +62,11 @@ export default {
         photoId: json.Success.id,
         link: json.Success.link,
       })
+      this.$toast.open({
+        message: 'Photo uploaded!',
+        type: 'is-success',
+      })
+      this.$scrollTo('footer')
     },
   },
 }

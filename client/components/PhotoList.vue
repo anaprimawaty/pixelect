@@ -15,6 +15,7 @@
           :url="photo.link"
           :voted="photo.voted"
           :votes="photo.votes"
+          :is-new="photo.isNew"
           :width="width"
           :columnCount="columnCount"
         />

@@ -1,5 +1,10 @@
 <template>
-  <div class="box is-paddingless is-clipped">
+  <div :class="{
+    'box': true,
+    'is-paddingless': true,
+    'is-clipped': true,
+    'new': isNew,
+  }" @mouseenter="seenPhoto">
     <figure :class="{ image: true, animate }" :style="imageStyle">
       <div class="loader" v-if="!loaded" />
       <img v-if="columnCount > 1" v-img:photos :src="url" :style="imageStyle" @load="loaded = true" />
@@ -39,10 +44,10 @@
 
 <script>
 import { mapState } from 'vuex'
-import store, { VOTE } from '@/store'
+import store, { VOTE, SEEN_PHOTO } from '@/store'
 
 export default {
-  props: ['photoId', 'url', 'voted', 'votes', 'width', 'columnCount'],
+  props: ['photoId', 'url', 'voted', 'votes', 'width', 'columnCount', 'isNew'],
   data() {
     return {
       animate: false,
@@ -71,6 +76,9 @@ export default {
       })
       e.preventDefault()
     },
+    seenPhoto() {
+      store.dispatch(SEEN_PHOTO, this.photoId)
+    },
   },
 }
 </script>
@@ -78,6 +86,22 @@ export default {
 <style scoped>
 .box {
   transition: all 0.5s ease-in-out;
+}
+
+.box.new {
+  animation: bounce 2s infinite ease-in-out;
+}
+
+@keyframes bounce {
+  0% { transform: translateY(0px); }
+  80% {
+    transform: translateY(0px);
+    box-shadow: 0 2px 5px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  }
+  90% {
+    transform: translateY(-15px);
+    box-shadow: 0 5px 10px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  }
 }
 
 .image img {
