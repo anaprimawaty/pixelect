@@ -70,6 +70,10 @@ export default {
   justify-content: center;
   width: 100vw;
   height: 100vh;
+  background-image: url(/assets/bg.png);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .logo {
@@ -102,15 +106,22 @@ export default {
 }
 
 .bg {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  z-index: 0;
-  transform: translate(-50%, -50%);
-  object-fit: cover;
+  display: none;
+}
+
+@media screen and (min-width: 900px) {
+  .bg {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 0;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+  }
 }
 </style>
