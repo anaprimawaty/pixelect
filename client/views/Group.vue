@@ -140,7 +140,7 @@ export default {
       photos: state => state.photos,
       users: state => state.users,
       link: function(state) {
-        return `${window.location.origin}/#/group/${this.groupId}/`
+        return `${window.location.origin}/group/${this.groupId}/`
       },
     }),
   },

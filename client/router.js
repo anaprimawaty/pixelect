@@ -9,6 +9,7 @@ import Privacy from '@/views/Privacy'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',

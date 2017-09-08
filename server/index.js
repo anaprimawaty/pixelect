@@ -1,4 +1,5 @@
 import express from 'express'
+import path from 'path'
 import bodyParser from 'body-parser'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
@@ -82,12 +83,20 @@ if (process.env.NODE_ENV === 'production') {
 app.use(express.static('static'))
 
 if (process.env.NODE_ENV === 'production') {
+  app.use('*', function(req, res) {
+    res.sendFile(path.resolve('dist/index.html'))
+  })
+
   const server = app.listen(3000, function() {
     const host = server.address().address
     const port = server.address().port
     console.log(`pixelect listening at http://${host}:${port}`)
   })
 } else {
+  app.use('*', function(req, res) {
+    res.sendFile(path.resolve('static/index.html'))
+  })
+
   const server = app.listen(8081, '127.0.0.1', function() {
     const host = server.address().address
     const port = server.address().port
