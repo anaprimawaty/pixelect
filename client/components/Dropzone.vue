@@ -114,6 +114,16 @@ export default {
   line-height: 4rem;
 }
 
+#imageDropzone .dz-error-message {
+  top: 20px;
+  left: unset;
+  right: 20px;
+}
+
+#imageDropzone .dz-error-message::after {
+  display: none;
+}
+
 #imageDropzone .dz-preview {
   min-height: 200px;
 }
