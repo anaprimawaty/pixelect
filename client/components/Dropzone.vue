@@ -10,6 +10,7 @@
       :language="language"
       @vdropzone-sending="sending"
       @vdropzone-success="showSuccess"
+      @vdropzone-queue-complete="queueComplete"
     />
   </div>
 </template>
@@ -56,6 +57,9 @@ export default {
       formData.append('ext', '.' + file.type.split('/')[1])
       formData.append('groupHash', this.groupId)
     },
+    queueComplete() {
+      this.$scrollTo('footer')
+    },
     showSuccess(file, response) {
       this.$refs.imageDropzone.dropzone.removeFile(file)
       const json = JSON.parse(response)
@@ -67,7 +71,6 @@ export default {
         message: 'Photo uploaded!',
         type: 'is-success',
       })
-      this.$scrollTo('footer')
     },
   },
 }
