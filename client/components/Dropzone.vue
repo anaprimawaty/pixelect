@@ -58,6 +58,10 @@ export default {
       formData.append('groupHash', this.groupId)
     },
     queueComplete() {
+      this.$toast.open({
+        message: 'All photos uploaded!',
+        type: 'is-success',
+      })
       this.$scrollTo('footer')
     },
     showSuccess(file, response) {
@@ -66,10 +70,6 @@ export default {
       store.dispatch(ADD_PHOTO, {
         photoId: json.Success.id,
         link: json.Success.link,
-      })
-      this.$toast.open({
-        message: 'Photo uploaded!',
-        type: 'is-success',
       })
     },
   },
