@@ -1,4 +1,4 @@
-![colloborate!](/public/assets/logo.png)
+![](/static/assets/logo.png)
 
 # Pixelect
 ## CS3216 Assignment 1 Group 4
