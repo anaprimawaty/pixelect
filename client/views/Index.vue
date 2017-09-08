@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="container">
+    <loading v-if="groups == null" />
+    <div v-else class="container">
       <section class="section">
       <transition-group name="slide-fade">
         <div class="box is-paddingless" v-for="group in groups" :key="group.hash">
@@ -8,7 +9,7 @@
             <div
               class="cover-image"
               :style="group.link != '' ? { 'background-image': `url(${group.link})` } : { 'background': '#606060' }"
-            />
+            ></div>
             <div class="group-details">
               <span class="group-name">{{ group.name }}</span>
             </div>
@@ -46,6 +47,7 @@ import router from '@/router'
 import store, { FETCH_GROUP_LIST, DELETE_GROUP } from '@/store'
 import bus from '@/bus'
 import CustomFooter from '@/components/CustomFooter'
+import Loading from '@/views/Loading'
 
 export default {
   mounted() {
@@ -88,6 +90,7 @@ export default {
   }),
   components: {
     CustomFooter,
+    Loading,
   },
   methods: {
     deleteGroup() {

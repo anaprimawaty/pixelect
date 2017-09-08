@@ -1,8 +1,6 @@
 <template>
   <transition name="slide-fade">
-    <div v-if="isGroupValid == null">
-      <loading />
-    </div>
+    <loading v-if="isGroupValid == null" />
     <div v-else-if="isGroupValid">
       <b-loading :active="isUploading" />
       <div class="container">

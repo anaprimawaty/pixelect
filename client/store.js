@@ -12,7 +12,7 @@ const state = {
   users: [],
   userName: '',
   facebookId: null,
-  groups: [],
+  groups: null,
   _csrf: null,
 }
 
