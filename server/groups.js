@@ -121,7 +121,7 @@ router.post('/changeName', helper.hasAccess, function(req, res) {
   helper.getGroup(models, groupHash)
   .then(group => {
     group.updateAttributes({
-      name: req.body.name
+      name: require('xss')(req.body.name)
     })
     .then(group => {
       helper.log(source, 'Success: Changed name of group with groupId:' + group.id)
@@ -149,7 +149,7 @@ router.post('/', helper.isAuthenticated, function(req, res) {
   helper.getUser(models, req.session.facebookId)
   .then(user => {
     models.Group.create({
-      name: req.body.name,
+      name: require('xss')(req.body.name),
       owner: user.id,
       hash: helper.getHash().substring(0,20)
     })
