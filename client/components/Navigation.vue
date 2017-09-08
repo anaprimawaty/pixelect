@@ -102,6 +102,7 @@ export default {
   methods: {
     logout: function() {
       FB.logout(function(response) {
+        this.$router.push('/')
         window.location.reload()
       })
     },
