@@ -26,7 +26,7 @@ export default {
 .user-list li {
 	position: relative;
 	display: inline-block;
-	overflow: hidden;
+	margin-right: 0.5em;
 }
 
 .user-list li img, .user-list li svg {
