@@ -101,7 +101,7 @@ export default {
   }),
   methods: {
     logout: function() {
-      FB.logout(function(response) {
+      FB.logout(response => {
         this.$router.push('/')
         window.location.reload()
       })
