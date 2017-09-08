@@ -1,4 +1,4 @@
-![](/static/assets/logo.png)
+![Pixelect](/static/assets/logo.png)
 
 # Pixelect
 ## Introduction
@@ -10,4 +10,7 @@ Imagine a world where you no longer have to deal with the messiness of sharing g
 - A0161459Y Kushagra Goyal (Backend)
 - A0131188H Chua Lin Jing Ana (Backend)
 
-### [Pixelect Demo](https://www.pixelect.me)
+## Demo
+### [Try it here!](https://www.pixelect.me)
+
+![Pixelect](/static/assets/demo.gif)
