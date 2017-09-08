@@ -85,6 +85,17 @@ export default {
   flex-direction: column;
   align-content: center;
   justify-content: center;
+  overflow-y: scroll;
+}
+
+#imageDropzone .dz-preview {
+  overflow-x: hidden;
+}
+
+#imageDropzone .dz-image,
+#imageDropzone .dz-image img {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 #imageDropzone .dz-message {
@@ -101,6 +112,10 @@ export default {
   font-family: Material Icons;
   font-size: 8rem;
   line-height: 4rem;
+}
+
+#imageDropzone .dz-preview {
+  min-height: 200px;
 }
 
 #imageDropzone .material-icons {
