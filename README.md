@@ -11,5 +11,3 @@ Imagine a world where you no longer have to deal with the messiness of sharing g
 - A0131188H Chua Lin Jing Ana (Backend)
 
 ### [Pixelect Demo](https://www.pixelect.me)
-
-![](/static/assets/demo.mp4)
