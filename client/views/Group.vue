@@ -18,14 +18,6 @@
               </svg>
             </span>
           </div>
-          <transition name="fade" mode="out-in">
-            <preview
-              v-show="preview != null"
-              :photo-id="preview && preview.photoId"
-              :link="preview && preview.link"
-              :voted="preview && preview.voted"
-            />
-          </transition>
           <photo-list :photos="photos" :group-id="groupId" />
         </section>
         <div class="modal is-active" v-if="modal === 'publish'">
@@ -96,7 +88,6 @@ import NotFound from '@/views/NotFound'
 import Loading from '@/views/Loading'
 import PhotoList from '@/components/PhotoList'
 import UserList from '@/components/UserList'
-import Preview from '@/components/Preview'
 import CustomFooter from '@/components/CustomFooter'
 
 export default {
@@ -150,7 +141,6 @@ export default {
       isGroupValid: state => state.isGroupValid,
       photos: state => state.photos,
       users: state => state.users,
-      preview: state => state.preview,
       link: function(state) {
         return `${window.location.origin}/#/group/${this.groupId}/`
       },
@@ -159,7 +149,6 @@ export default {
   components: {
     NotFound,
     PhotoList,
-    Preview,
     UserList,
     Loading,
     CustomFooter,

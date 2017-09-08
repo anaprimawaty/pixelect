@@ -10,7 +10,6 @@ const state = {
   groupName: '',
   photos: {},
   users: [],
-  preview: null,
   userName: '',
   facebookId: null,
   groups: [],
@@ -40,9 +39,6 @@ const mutations = {
     const photo = state.photos[photoId]
     photo.voted = !isUnvote
     photo.votes += isUnvote ? -1 : 1
-  },
-  preview(state, photoId) {
-    state.preview = state.photos[photoId]
   },
   login(state, { facebookId, name }) {
     state.facebookId = facebookId
@@ -144,9 +140,6 @@ const actions = {
 
     commit(VOTE, { photoId, isUnvote })
   },
-  preview({ commit }, photoId) {
-    commit(PREVIEW, photoId)
-  },
   login({ commit }, { facebookId, name }) {
     commit(LOGIN, { facebookId, name })
   },
@@ -177,7 +170,6 @@ export const INITIALISE_GROUP_LIST = 'initialiseGroupList'
 export const FETCH_GROUP = 'fetchGroup'
 export const UPDATE_GROUP_NAME = 'updateGroupName'
 export const VOTE = 'vote'
-export const PREVIEW = 'preview'
 export const LOGIN = 'login'
 export const FETCH_GROUP_LIST = 'fetchGroupList'
 export const INVALIDATE_GROUP = 'invalidateGroup'

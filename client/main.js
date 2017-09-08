@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Buefy from 'buefy'
-import VueProgressiveImage from 'vue-progressive-image'
 import VueResize from 'vue-resize'
 import FBSignInButton from 'vue-facebook-signin-button'
 import VueAnalytics from 'vue-analytics'
+import VueImg from 'v-img'
 import App from '@/App'
 import router from '@/router'
 import store, { LOGIN } from '@/store'
@@ -15,13 +15,13 @@ import 'buefy/lib/buefy.css'
 import '../static/assets/facebook'
 
 Vue.use(Buefy)
-Vue.use(VueProgressiveImage)
 Vue.use(VueResize)
 Vue.use(FBSignInButton)
 Vue.use(VueAnalytics, {
   id: 'UA-106073733-1',
   router,
 })
+Vue.use(VueImg)
 
 // eslint-disable-next-line no-new
 new Vue({

@@ -1,8 +1,8 @@
 <template>
   <div class="box is-paddingless is-clipped">
-    <figure :class="{ image: true, animate }" :style="imageStyle" @dblclick="vote">
+    <figure :class="{ image: true, animate }" :style="imageStyle">
       <div class="loader" v-if="!loaded" />
-      <progressive-background :src="url" @onLoad="loaded = true" />
+      <img v-img:photos :src="url" :style="imageStyle" @load="loaded = true" />
       <svg class="heart" viewBox="0 0 24 24">
         <path
           fill="#f95d55"
@@ -24,14 +24,6 @@
         </a>
         {{ votes }} like{{ votes === 1 ? '' : 's' }}
       </span>
-      <a class="icon preview" @click="preview" aria-label="preview">
-        <svg viewBox="0 0 24 24">
-          <path
-            fill="#404040"
-            d="M9.5,13.09L10.91,14.5L6.41,19H10V21H3V14H5V17.59L9.5,13.09M10.91,9.5L9.5,10.91L5,6.41V10H3V3H10V5H6.41L10.91,9.5M14.5,13.09L19,17.59V14H21V21H14V19H17.59L13.09,14.5L14.5,13.09M13.09,9.5L17.59,5H14V3H21V10H19V6.41L14.5,10.91L13.09,9.5Z"
-            />
-        </svg>
-      </a>
       <a class="icon download" :href="url" aria-label="download" download>
         <svg viewBox="0 0 24 24">
           <path
@@ -46,7 +38,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import store, { VOTE, PREVIEW } from '@/store'
+import store, { VOTE } from '@/store'
 
 export default {
   props: ['photoId', 'url', 'voted', 'votes', 'width'],
@@ -77,9 +69,6 @@ export default {
         isUnvote: this.voted,
       })
     },
-    preview(e) {
-      store.dispatch(PREVIEW, this.photoId)
-    },
   },
 }
 </script>
@@ -87,6 +76,10 @@ export default {
 <style scoped>
 .box {
   transition: all 0.5s ease-in-out;
+}
+
+.image img {
+  object-fit: cover;
 }
 
 .image > * {
@@ -99,6 +92,7 @@ export default {
   opacity: 0;
   z-index: 1;
   transition: opacity 500ms;
+  pointer-events: none;
 }
 
 .image .loader {
@@ -151,11 +145,6 @@ export default {
 
 svg path {
   transition: all 0.25s;
-}
-
-.preview {
-  position: absolute;
-  right: 37px;
 }
 
 .download {
