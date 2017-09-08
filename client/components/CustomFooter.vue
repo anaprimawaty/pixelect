@@ -16,8 +16,7 @@
               <p>© 2017 Pixelect</p>
             </div>
             <div class="level-item">
-              <!-- <iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fpixelect.me&width=250&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId=2034722683480772" width="250" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe> -->
-              <iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fpixelect.me&width=106&layout=button_count&action=like&size=small&show_faces=false&share=true&height=46&appId=2034722683480772" width="106" height="21" style="border:none;overflow:hidden;margin-top:0.2rem;" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+              <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.pixelect.me&width=106&layout=button_count&action=like&size=small&show_faces=false&share=true&height=46&appId=2034722683480772" width="116" height="21" style="border:none;overflow:hidden;margin-top:0.2rem;" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
             </div>
 
 

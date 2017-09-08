@@ -36,7 +36,7 @@
               <div class="navbar-divider">
               </div>
               <div class="navbar-item">
-                <iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fpixelect.me&width=250&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId=2034722683480772" width="250" height="60" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.pixelect.me&width=250&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId=2034722683480772" width="250" height="60" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
               </div>
               <div class="navbar-divider">
               </div>
