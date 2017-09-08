@@ -53,27 +53,13 @@ export default {
   mounted() {
     store.dispatch(FETCH_GROUP_LIST)
   },
+  updated() {
+    if (this.groups.length === 0) {
+      this.createGroup()
+    }
+  },
   created() {
-    bus.$on('createGroup', function() {
-      fetch('/groups', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: `${store.state.userName}'s Group`,
-          _csrf: store.state._csrf,
-        }),
-        credentials: 'same-origin',
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error()
-          }
-          return response.json()
-        })
-        .then(json => router.push(`/group/${json.Success}`))
-    })
+    bus.$on('createGroup', this.createGroup)
   },
   destroyed() {
     bus.$off('createGroup')
@@ -93,6 +79,26 @@ export default {
     Loading,
   },
   methods: {
+    createGroup() {
+      fetch('/groups', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: `${store.state.userName}'s Group`,
+          _csrf: store.state._csrf,
+        }),
+        credentials: 'same-origin',
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error()
+          }
+          return response.json()
+        })
+        .then(json => router.push(`/group/${json.Success}`))
+    },
     deleteGroup() {
       this.modal = false
 
