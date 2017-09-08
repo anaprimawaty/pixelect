@@ -257,6 +257,12 @@ export default {
   position: relative;
 }
 
+@media screen and (max-width: 768px) {
+  .user-list, .group-title .icon {
+    display: none;
+  }
+}
+
 .invite-body-item {
   margin: 0.7rem 0rem 0.8rem 0rem;
 }

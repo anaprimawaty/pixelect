@@ -73,12 +73,6 @@ export default {
 </script>
 
 <style>
-@media screen and (max-width: 500px) {
-  #imageDropzone {
-    height: 30px
-  }
-}
-
 #imageDropzone {
   border: none;
   display: flex;
@@ -132,4 +126,12 @@ export default {
   display: none;
   font-size: 5rem;
 }
+
+@media screen and (max-width: 650px) {
+  #imageDropzone .dz-message::before {
+    font-size: 3rem;
+    line-height: 3rem;
+  }
+}
+
 </style>

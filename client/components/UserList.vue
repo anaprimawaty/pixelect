@@ -19,14 +19,14 @@ export default {
 <style lang="css" scoped>
 .user-list {
 	position: absolute;
-	right: 1em;
+	right: 0;
 	top: 0;
 }
 
 .user-list li {
 	position: relative;
 	display: inline-block;
-	margin-right: 0.5em;
+	overflow: hidden;
 }
 
 .user-list li img, .user-list li svg {
