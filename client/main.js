@@ -4,6 +4,7 @@ import VueResize from 'vue-resize'
 import FBSignInButton from 'vue-facebook-signin-button'
 import VueAnalytics from 'vue-analytics'
 import VueImg from 'v-img'
+import VueTouch from 'vue-touch'
 import App from '@/App'
 import router from '@/router'
 import store, { LOGIN } from '@/store'
@@ -22,6 +23,14 @@ Vue.use(VueAnalytics, {
   router,
 })
 Vue.use(VueImg)
+
+VueTouch.registerCustomEvent('doubletap', {
+  type: 'tap',
+  taps: 2,
+})
+Vue.use(VueTouch, {
+  name: 'v-touch',
+})
 
 // eslint-disable-next-line no-new
 new Vue({

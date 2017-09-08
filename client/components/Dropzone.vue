@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     dropzoneStyle() {
-      if (this.columns == 1) {
+      if (this.columnCount == 1) {
         return { height: '50px', width: `${this.width}px` }
       } else {
         return { height: `${this.width + 40}px`, width: `${this.width}px` }
@@ -46,7 +46,7 @@ export default {
       _csrf: state => state._csrf,
     }),
   },
-  props: ['groupId', 'width', 'columns'],
+  props: ['groupId', 'width', 'columnCount'],
   components: {
     Dropzone,
   },

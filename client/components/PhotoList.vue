@@ -2,10 +2,22 @@
   <ul class="photo-list" ref="photoList" :style="{ height: `${height}px` }">
     <transition-group name="slide-fade">
       <li class="photo" :style="photoStyle(0)" key="dropzone">
-        <dropzone :group-id="groupId" :width="width" :columns="columnCount" />
+        <dropzone :group-id="groupId" :width="width" :columnCount="columnCount" />
       </li>
-      <li class="photo" v-for="photo in Object.values(sortedPhotos)" :key="photo.photoId" :style="photoStyle(photo.index + 1)">
-        <photo :photo-id="photo.photoId" :url="photo.link" :voted="photo.voted" :votes="photo.votes" :width="width" />
+      <li
+        class="photo"
+        v-for="photo in Object.values(sortedPhotos)"
+        :key="photo.photoId"
+        :style="photoStyle(photo.index + 1)"
+      >
+        <photo
+          :photo-id="photo.photoId"
+          :url="photo.link"
+          :voted="photo.voted"
+          :votes="photo.votes"
+          :width="width"
+          :columnCount="columnCount"
+        />
       </li>
     </transition-group>
     <resize-observer @notify="handleResize" />

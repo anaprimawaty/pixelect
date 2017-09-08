@@ -2,7 +2,8 @@
   <div class="box is-paddingless is-clipped">
     <figure :class="{ image: true, animate }" :style="imageStyle">
       <div class="loader" v-if="!loaded" />
-      <img v-img:photos :src="url" :style="imageStyle" @load="loaded = true" />
+      <img v-if="columnCount > 1" v-img:photos :src="url" :style="imageStyle" @load="loaded = true" />
+      <v-touch v-else tag="img" @doubletap="vote" :src="url" :style="imageStyle" @load="loaded = true" />
       <svg class="heart" viewBox="0 0 24 24">
         <path
           fill="#f95d55"
@@ -41,7 +42,7 @@ import { mapState } from 'vuex'
 import store, { VOTE } from '@/store'
 
 export default {
-  props: ['photoId', 'url', 'voted', 'votes', 'width'],
+  props: ['photoId', 'url', 'voted', 'votes', 'width', 'columnCount'],
   data() {
     return {
       animate: false,
@@ -68,6 +69,7 @@ export default {
         photoId: this.photoId,
         isUnvote: this.voted,
       })
+      e.preventDefault()
     },
   },
 }
