@@ -25,6 +25,7 @@ export default {
       customOptionsObject: {
         acceptedFileTypes: 'image/jpeg,image/png',
         maxFileSizeInMB: '5',
+        maxFiles: '50',
       },
       styleObject: {
         width: this.width,
